@@ -74,30 +74,94 @@ a{color:inherit;text-decoration:none}
  .about{grid-template-columns:1fr} .about img{height:190px} .about-copy{padding:20px}
  .features{grid-template-columns:repeat(2,1fr);gap:18px;padding:18px 6%} .footer-grid{grid-template-columns:1fr 1fr}
 }
-  #textile .products {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-#textile .product > a {
-  display: block;
-  background: #f8f7f4;
-}
-
-#textile .product img {
-  display: block;
-  width: 100%;
-  height: 180px;
-  object-fit: contain;
-  padding: 5px;
-}
-
-@media (max-width: 600px) {
-  #textile .products {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  #textile {
+    padding: 54px 5.5%;
+    background: #fff;
   }
-}
+  #textile > h2 {
+    margin: 0 0 10px;
+    color: var(--navy);
+    text-align: center;
+    font-family: Georgia, serif;
+    font-size: 30px;
+  }
+  #textile > p {
+    margin: 0 0 30px;
+    color: #7b756a;
+    text-align: center;
+  }
+  #textile .products {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  #textile .product {
+    overflow: hidden;
+    min-width: 0;
+    background: #f7f5ef;
+    border: 1px solid #e8e1d4;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(8, 36, 60, .07);
+  }
+  #textile .product > a:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+    padding: 14px;
+    background: #f7f5ef;
+  }
+  #textile .product img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 6px;
+  }
+  #textile .product .pbody {
+    padding: 16px 18px 20px;
+    background: #fffdf9;
+  }
+  #textile .product .pbody h3 {
+    margin: 0 0 10px;
+    color: var(--navy);
+    font-size: 17px;
+  }
+  #textile .product .pbody p {
+    margin: 6px 0;
+    color: #6c6a65;
+    font-size: 13px;
+  }
+  #textile .product .pbody p strong {
+    color: var(--navy);
+    font-size: 16px;
+  }
+  #textile .product .pbody > a {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: var(--navy);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  #textile .product .pbody > a:hover {
+    background: var(--blue);
+  }
+  @media (max-width: 760px) {
+    #textile { padding: 38px 4%; }
+    #textile .products { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    #textile .product > a:first-child { height: 185px; padding: 9px; }
+    #textile .product .pbody { padding: 13px 12px 16px; }
+  }
+  @media (max-width: 380px) {
+    #textile .products { grid-template-columns: 1fr; }
+    #textile .product > a:first-child { height: 230px; }
+  }
 </style>
 </head>
 <body>
@@ -220,53 +284,7 @@ a{color:inherit;text-decoration:none}
 
 </div>
 </section>
-  <section id="textile">
-<h2>Textile &amp; Gobelin Cushions</h2>
-<p>Elegant Turkish Gobelin Cushion Collection</p>
-
-<div class="products">
-
-<article class="product">
-<a href="IMG_20250901_205801.jpg" target="_blank">
-<img src="IMG_20250901_205801.jpg" alt="Gobelin Cushion 1">
-</a>
-<div class="pbody">
-<h3>Gobelin Cushion</h3>
-<p>Material: Gobelin Textile</p>
-<p>Size: 45 × 45 cm</p>
-<p><strong>Price: $10</strong></p>
-<a href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">Order Now</a>
-</div>
-</article>
-
-<article class="product">
-<a href="IMG_20250901_205830.jpg" target="_blank">
-<img src="IMG_20250901_205830.jpg" alt="Gobelin Cushion 2">
-</a>
-<div class="pbody">
-<h3>Gobelin Cushion</h3>
-<p>Material: Gobelin Textile</p>
-<p>Size: 45 × 45 cm</p>
-<p><strong>Price: $10</strong></p>
-<a href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">Order Now</a>
-</div>
-</article>
-
-<article class="product">
-<a href="IMG_20250901_205834.jpg" target="_blank">
-<img src="IMG_20250901_205834.jpg" alt="Gobelin Cushion 3">
-</a>
-<div class="pbody">
-<h3>Gobelin Cushion</h3>
-<p>Material: Gobelin Textile</p>
-<p>Size: 45 × 45 cm</p>
-<p><strong>Price: $10</strong></p>
-<a href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">Order Now</a>
-</div>
-</article>
-
-</div>
-</section>
+  
 
 
 <section class="about" id="about">
