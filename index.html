@@ -111,7 +111,11 @@ a{color:inherit;text-decoration:none}
     justify-content: center;
     height: 250px;
     padding: 14px;
-    background: #f7f5ef;
+    background:
+      radial-gradient(ellipse at 18% 18%, rgba(255,255,255,.96) 0, rgba(255,255,255,0) 48%),
+      radial-gradient(ellipse at 85% 82%, rgba(220,199,163,.34) 0, rgba(220,199,163,0) 52%),
+      linear-gradient(135deg, #f8f3e9 0%, #eee5d5 48%, #faf7f0 100%);
+    border-bottom: 1px solid #e7ddcc;
   }
   #textile .product img {
     display: block;
@@ -120,6 +124,28 @@ a{color:inherit;text-decoration:none}
     object-fit: contain;
     object-position: center;
     border-radius: 6px;
+    filter: drop-shadow(0 9px 10px rgba(61, 45, 25, .16));
+    transition: transform .25s ease, filter .25s ease;
+  }
+  #textile .product:hover img {
+    transform: scale(1.035);
+    filter: drop-shadow(0 13px 13px rgba(61, 45, 25, .22));
+  }
+  #textile .product .pbody > a.wa {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding: 11px 16px;
+    border-radius: 6px;
+    background: #19a85b;
+    color: #fff;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 3px 9px rgba(25, 168, 91, .2);
+  }
+  #textile .product .pbody > a.wa:hover {
+    background: #128746;
   }
   #textile .product .pbody {
     padding: 16px 18px 20px;
@@ -252,7 +278,7 @@ a{color:inherit;text-decoration:none}
 <p>Material: Gobelin Textile</p>
 <p>Size: 45 × 45 cm</p>
 <p><strong>Price: $10</strong></p>
-<a href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">Order Now</a>
+<a href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">◉ Order via WhatsApp</a>
 </div>
 </article>
 
@@ -265,7 +291,7 @@ a{color:inherit;text-decoration:none}
 <p>Material: Gobelin Textile</p>
 <p>Size: 45 × 45 cm</p>
 <p><strong>Price: $10</strong></p>
-<a href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">Order Now</a>
+<a href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">◉ Order via WhatsApp</a>
 </div>
 </article>
 
@@ -278,7 +304,7 @@ a{color:inherit;text-decoration:none}
 <p>Material: Gobelin Textile</p>
 <p>Size: 45 × 45 cm</p>
 <p><strong>Price: $10</strong></p>
-<a href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">Order Now</a>
+<a href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">◉ Order via WhatsApp</a>
 </div>
 </article>
 
