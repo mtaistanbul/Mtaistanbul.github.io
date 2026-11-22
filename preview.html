@@ -161,13 +161,18 @@
     const dict=translations[lang]||{};
     document.documentElement.lang=lang;
     document.documentElement.dir=lang==="ar"?"rtl":"ltr";
-    document.querySelectorAll("body *").forEach(el=>{
-      if(el.children.length===0 && el.tagName!=="SCRIPT" && el.tagName!=="STYLE"){
-        if(!originals.has(el)) originals.set(el,el.textContent);
-        const original=originals.get(el);
-        el.textContent=dict[original]||original;
-      }
-    });
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+    let node;
+    while(node=walker.nextNode()){
+      const parent=node.parentElement;
+      if(!parent || parent.closest("script,style")) continue;
+      if(!originals.has(node)) originals.set(node,node.nodeValue);
+      const original=originals.get(node);
+      const trimmed=original.trim();
+      if(!trimmed) continue;
+      const translated=dict[trimmed];
+      node.nodeValue=translated ? original.replace(trimmed,translated) : original;
+    }
     const label=document.querySelector(".language-label");
     if(label) label.textContent=lang==="ar"?"اللغة":(lang==="es"?"Idioma":"Language");
     const select=document.getElementById("site-language");
