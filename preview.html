@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f1e9">
+<title>MTA Istanbul — Curated Turkish Craft</title>
+<style>
+:root{--ink:#202522;--muted:#77786f;--paper:#f5f1e9;--white:#fffdf9;--line:#e4ddd0;--gold:#a98550;--deep:#26342e}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}a{color:inherit;text-decoration:none}button{font:inherit}
+.preview-note{background:#26342e;color:#e9dfcd;text-align:center;padding:8px 14px;font-size:10px;letter-spacing:1.8px;text-transform:uppercase}
+.site-header{height:82px;padding:0 6.5%;display:flex;align-items:center;justify-content:space-between;background:rgba(255,253,249,.96);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:12px}.monogram{font:italic 35px Georgia,serif;letter-spacing:-3px;color:var(--deep)}.brand-copy{border-left:1px solid #c9bda9;padding-left:12px}.brand-copy strong{display:block;font:600 11px Georgia,serif;letter-spacing:2.4px}.brand-copy small{display:block;margin-top:5px;color:var(--muted);font-size:8px;letter-spacing:2px}
+.nav{display:flex;gap:30px;align-items:center}.nav a{font-size:11px;letter-spacing:1.1px;text-transform:uppercase;color:#55594f}.nav a:hover{color:var(--gold)}.header-action{border:1px solid #b69a70;padding:11px 17px;font-size:10px;letter-spacing:1.4px;text-transform:uppercase}
+.hero{min-height:590px;display:grid;grid-template-columns:48% 52%;background:#e7dfd1}.hero-copy{padding:90px 9% 80px 13%;display:flex;flex-direction:column;justify-content:center}.eyebrow{font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase}.hero h1{font:normal clamp(46px,5.3vw,76px)/.99 Georgia,'Times New Roman',serif;letter-spacing:-2.6px;margin:25px 0 22px;max-width:570px}.hero h1 em{font-weight:normal;color:#9a784b}.hero p{font:14px/1.9 Georgia,serif;color:#66665d;max-width:390px;margin:0 0 32px}.primary-link{display:inline-flex;align-items:center;gap:18px;align-self:flex-start;border-bottom:1px solid var(--gold);padding:0 0 11px;font-size:10px;letter-spacing:1.8px;text-transform:uppercase}.primary-link span{font-size:17px;color:var(--gold)}.hero-visual{position:relative;min-height:590px;overflow:hidden;background:#bdb3a1}.hero-visual img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;object-position:center}.hero-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(38,52,46,.12),transparent 35%),linear-gradient(0deg,rgba(20,24,20,.16),transparent 45%)}
+.hero-caption{position:absolute;z-index:2;bottom:30px;right:34px;color:white;font:italic 17px Georgia,serif;letter-spacing:.5px}
+.trust-strip{display:grid;grid-template-columns:repeat(3,1fr);padding:24px 9%;background:var(--white);border-bottom:1px solid var(--line)}.trust-item{text-align:center;border-right:1px solid var(--line);font:italic 15px Georgia,serif;color:#62665c}.trust-item:last-child{border:0}.trust-item small{display:block;margin-top:6px;font:9px Arial,sans-serif;letter-spacing:1.4px;text-transform:uppercase;color:#999184}
+.section{padding:88px 7%}.section-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:35px}.section-head .eyebrow{margin-bottom:12px}.section-head h2{font:normal clamp(32px,4vw,49px) Georgia,serif;letter-spacing:-1.2px;margin:0}.section-head p{max-width:320px;color:var(--muted);font:13px/1.8 Georgia,serif;margin:0}
+.collections{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.collection{position:relative;min-height:360px;overflow:hidden;background:#d8cbbb}.collection img{width:100%;height:360px;object-fit:cover;display:block;transition:transform .6s}.collection:hover img{transform:scale(1.04)}.collection:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(17,24,19,.72))}.collection-label{position:absolute;z-index:2;left:25px;bottom:24px;color:#fff}.collection-label small{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e6d5b8}.collection-label h3{font:normal 27px Georgia,serif;margin:8px 0 0}
+.featured{background:#eeeadf}.products{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.product{background:var(--white);min-width:0}.product-image{height:300px;background:#e7e0d5;overflow:hidden}.product-image img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}.product:hover .product-image img{transform:scale(1.035)}.product-info{padding:18px 17px 21px}.product-info small{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold)}.product-info h3{font:normal 19px Georgia,serif;margin:9px 0 8px}.product-info p{font-size:11px;color:var(--muted);line-height:1.6;margin:0}.product-link{display:inline-block;margin-top:17px;padding-bottom:6px;border-bottom:1px solid #b79a6e;font-size:9px;letter-spacing:1.3px;text-transform:uppercase}
+.story{display:grid;grid-template-columns:1fr 1fr;background:var(--deep);color:#f5f1e9}.story-image{min-height:420px;background:#8d8374}.story-image img{width:100%;height:100%;object-fit:cover;display:block}.story-copy{padding:75px 12%;display:flex;flex-direction:column;justify-content:center}.story-copy .eyebrow{color:#c7a878}.story-copy h2{font:normal 43px/1.1 Georgia,serif;margin:20px 0}.story-copy p{font:13px/2 Georgia,serif;color:#d2d1c7;max-width:440px}.story-copy a{color:#e6c99a;margin-top:20px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
+.newsletter{padding:70px 7%;text-align:center;background:#e8e0d2}.newsletter h2{font:normal 36px Georgia,serif;margin:0 0 12px}.newsletter p{font:13px/1.8 Georgia,serif;color:var(--muted);margin:0 auto 25px;max-width:480px}.newsletter a{display:inline-block;padding:13px 24px;background:var(--deep);color:#fff;font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
+.footer{background:#1d2924;color:#f5f1e9;padding:55px 7% 22px}.footer-top{display:flex;justify-content:space-between;gap:30px;align-items:start}.footer-brand{font:italic 32px Georgia,serif}.footer p{max-width:340px;color:#c4c7bd;font:12px/1.8 Georgia,serif}.footer-links{display:flex;gap:25px;flex-wrap:wrap}.footer-links a{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#deded5}.footer-bottom{border-top:1px solid #465149;margin-top:40px;padding-top:17px;color:#aeb5aa;font-size:9px;letter-spacing:1px;display:flex;justify-content:space-between}
+@media(max-width:900px){.nav{gap:14px}.hero{min-height:500px}.hero-copy{padding:65px 8%}.hero-visual{min-height:500px}.collections{grid-template-columns:repeat(2,1fr)}.products{grid-template-columns:repeat(2,1fr)}.product-image{height:280px}.story-copy{padding:55px 9%}}
+@media(max-width:620px){.preview-note{font-size:8px;letter-spacing:1px}.site-header{height:auto;min-height:72px;padding:13px 5%;flex-wrap:wrap;gap:12px}.nav{order:3;width:100%;overflow:auto;justify-content:space-between;gap:18px;padding:8px 0}.nav a{white-space:nowrap;font-size:9px}.header-action{font-size:8px;padding:9px 11px}.hero{display:flex;flex-direction:column-reverse}.hero-visual{width:100%;min-height:360px;height:360px}.hero-copy{padding:48px 7% 55px}.hero h1{font-size:52px}.trust-strip{padding:18px 4%;gap:8px}.trust-item{font-size:12px}.trust-item small{font-size:7px;letter-spacing:.8px}.section{padding:58px 5%}.section-head{display:block}.section-head p{margin-top:14px}.collections{grid-template-columns:1fr 1fr;gap:10px}.collection,.collection img{min-height:235px;height:235px}.collection-label{left:13px;bottom:15px}.collection-label h3{font-size:19px}.collection-label small{font-size:7px}.products{gap:10px}.product-image{height:210px}.product-info{padding:13px 11px 16px}.product-info h3{font-size:16px}.story{grid-template-columns:1fr}.story-image{min-height:280px;height:280px}.story-copy{padding:48px 7%}.story-copy h2{font-size:36px}.newsletter{padding:55px 6%}.newsletter h2{font-size:30px}.footer-top{display:block}.footer-links{margin-top:25px;gap:16px}.footer-bottom{display:block;line-height:2}}
+</style>
+</head>
+<body>
+<div class="preview-note">A new direction for MTA Istanbul · Design preview</div>
+<header class="site-header">
+  <a class="brand" href="#">
+    <span class="monogram">MTA</span>
+    <span class="brand-copy"><strong>ISTANBUL</strong><small>TRADING · EST. 2018</small></span>
+  </a>
+  <nav class="nav"><a href="#collections">Collections</a><a href="#featured">Discover</a><a href="#story">Our Story</a></nav>
+  <a class="header-action" href="#collections">Explore the store</a>
+</header>
+<main>
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow">Crafted in Türkiye · Selected in Istanbul</div>
+    <h1>Objects with a story. <em>Made to be kept.</em></h1>
+    <p>Discover distinctive Turkish craftsmanship, from luminous glass and mosaic art to timeless accessories and pieces for the home.</p>
+    <a class="primary-link" href="#collections">Discover the collections <span>↗</span></a>
+  </div>
+  <div class="hero-visual">
+    <img src="/IMG_20261122_202852.jpg?v=4" alt="Turkish glassware collection">
+    <div class="hero-caption">A little piece of Istanbul</div>
+  </div>
+</section>
+<section class="trust-strip">
+  <div class="trust-item">Thoughtfully selected<small>Distinctive Turkish finds</small></div>
+  <div class="trust-item">Rooted in craftsmanship<small>Made with care and character</small></div>
+  <div class="trust-item">From Istanbul to you<small>Personal worldwide service</small></div>
+</section>
+<section class="section" id="collections">
+  <div class="section-head"><div><div class="eyebrow">Explore MTA Istanbul</div><h2>Collections to discover</h2></div><p>A considered selection of objects, textures and traditions — each with its own character.</p></div>
+  <div class="collections">
+    <a class="collection" href="#featured"><img src="/IMG_20250901_205801.jpg" alt="Turkish handmade glass"><div class="collection-label"><small>01 · Decorative craft</small><h3>Glass & Mosaic</h3></div></a>
+    <a class="collection" href="#featured"><img src="/IMG_20261122_202915.jpg?v=4" alt="Turkish tea glass set"><div class="collection-label"><small>02 · At the table</small><h3>Tea & Coffee</h3></div></a>
+    <a class="collection" href="#featured"><img src="/handbags/1795362545302.jpg?v=3" alt="Turkish leather handbag"><div class="collection-label"><small>03 · Everyday elegance</small><h3>Leather & Accessories</h3></div></a>
+    <a class="collection" href="#featured"><img src="/handbags/1795362550042.jpg?v=2" alt="Leather handbag collection"><div class="collection-label"><small>04 · Selected pieces</small><h3>Handbags</h3></div></a>
+    <a class="collection" href="#featured"><img src="/IMG_20261122_202942.jpg?v=4" alt="Turkish glassware"><div class="collection-label"><small>05 · Home details</small><h3>Glassware</h3></div></a>
+    <a class="collection" href="#featured"><img src="/handbags/1795362554765.jpg?v=2" alt="Leather accessories"><div class="collection-label"><small>06 · Artful living</small><h3>Art & Objects</h3></div></a>
+  </div>
+</section>
+<section class="section featured" id="featured">
+  <div class="section-head"><div><div class="eyebrow">A closer look</div><h2>Selected for you</h2></div><p>Explore a few highlights from our growing collection. More pieces are being added.</p></div>
+  <div class="products">
+    <article class="product"><div class="product-image"><img src="/IMG_20261122_202852.jpg?v=4" alt="Turkish glassware"></div><div class="product-info"><small>Table & Living</small><h3>Turkish Glass Collection</h3><p>Beautifully presented pieces for everyday rituals.</p><a class="product-link" href="#collections">Explore collection ↗</a></div></article>
+    <article class="product"><div class="product-image"><img src="/IMG_20261122_202915.jpg?v=4" alt="Tea glass set"></div><div class="product-info"><small>Tea & Coffee</small><h3>Traditional Tea Sets</h3><p>A timeless expression of Turkish hospitality.</p><a class="product-link" href="#collections">Explore collection ↗</a></div></article>
+    <article class="product"><div class="product-image"><img src="/handbags/1795362545302.jpg?v=3" alt="Leather handbag"></div><div class="product-info"><small>Accessories</small><h3>Leather Handbags</h3><p>Distinctive shapes with an elegant finish.</p><a class="product-link" href="#collections">Explore collection ↗</a></div></article>
+    <article class="product"><div class="product-image"><img src="/handbags/1795362559538.jpg?v=2" alt="Leather handbag"></div><div class="product-info"><small>Selected pieces</small><h3>Everyday Classics</h3><p>Considered accessories for a personal style.</p><a class="product-link" href="#collections">Explore collection ↗</a></div></article>
+  </div>
+</section>
+<section class="story" id="story">
+  <div class="story-image"><img src="/IMG_20250901_205830.jpg" alt="Turkish craft detail"></div>
+  <div class="story-copy"><div class="eyebrow">Our point of view</div><h2>From Istanbul, with an eye for the extraordinary.</h2><p>MTA Istanbul brings together distinctive pieces inspired by the artistry, heritage and creativity of Türkiye. We believe the objects we choose for our homes and lives should carry meaning, character and a sense of place.</p><a href="#collections">Discover what makes us different ↗</a></div>
+</section>
+<section class="newsletter"><div class="eyebrow">Stay in the picture</div><h2>Discover something distinctive.</h2><p>Explore our latest finds and new collections from Istanbul.</p><a href="#collections">Browse the collections</a></section>
+</main>
+<footer class="footer">
+  <div class="footer-top"><div><div class="footer-brand">MTA Istanbul</div><p>Distinctive Turkish craftsmanship and carefully selected pieces, brought to you from Istanbul.</p></div><div class="footer-links"><a href="#collections">Collections</a><a href="#featured">Discover</a><a href="#story">Our story</a></div></div>
+  <div class="footer-bottom"><span>© 2026 MTA Istanbul Trading</span><span>Made with care in Istanbul</span></div>
+</footer>
+</body>
+</html>
