@@ -299,6 +299,20 @@ html[lang="ar"] .handbag-ar{direction:rtl;unicode-bidi:plaintext;line-height:1.9
 html[lang="ar"] .footer-grid{direction:rtl}
 @media(max-width:760px){.header{height:auto;min-height:72px;flex-wrap:wrap;padding:12px 4%;gap:10px}.nav{order:3;width:100%;justify-content:center;gap:14px;flex-wrap:wrap}.nav a{padding:8px 0;font-size:11px}.icons{gap:5px}.language-label{display:none}.language-select{padding:7px 9px}}
 
+
+/* MTA collection navigation: open one product gallery when its category is selected */
+#textile, #handbags, #silver, #stone-art, #tea-coffee { display:none; }
+#textile.mta-collection-open, #handbags.mta-collection-open,
+#silver.mta-collection-open, #stone-art.mta-collection-open,
+#tea-coffee.mta-collection-open { display:block; }
+.mta-collection-back{
+  display:inline-flex;align-items:center;gap:8px;margin:0 0 24px;
+  padding:10px 16px;border:1px solid #d6c39f;border-radius:24px;
+  color:#18304a;background:#fffdf8;font-size:13px;font-weight:700;
+  cursor:pointer;box-shadow:0 3px 10px rgba(61,45,25,.07);
+}
+.mta-collection-back:hover{background:#f5ecdc}
+
 </style>
 </head>
 <body>
@@ -601,6 +615,53 @@ function addToCart(name){
   });
   window.addEventListener("load",function(){const selector=document.getElementById("site-language");if(selector&&!selector.dataset.ready){selector.addEventListener("change",()=>setLanguage(selector.value));selector.dataset.ready="1";}});
   window.mtaSetLanguage=setLanguage;
+})();
+</script>
+
+
+<script id="mta-collection-navigation">
+(function(){
+  const ids=["textile","handbags","silver","stone-art","tea-coffee"];
+  const sections=ids.map(id=>document.getElementById(id)).filter(Boolean);
+  const categoryBar=document.querySelector(".categories");
+  function closeCollections(){
+    sections.forEach(section=>section.classList.remove("mta-collection-open"));
+    if(location.hash && ids.includes(location.hash.slice(1))) history.replaceState(null,"",location.pathname+location.search);
+    if(categoryBar) categoryBar.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  function openCollection(id,updateHash){
+    const target=document.getElementById(id);
+    if(!target || !ids.includes(id)) return false;
+    sections.forEach(section=>section.classList.toggle("mta-collection-open",section===target));
+    if(!target.querySelector(".mta-collection-back")){
+      const back=document.createElement("button");
+      back.type="button";back.className="mta-collection-back";
+      back.textContent=document.documentElement.lang==="ar"?"← العودة إلى الأقسام":(document.documentElement.lang==="es"?"← Volver a las colecciones":"← Back to collections");
+      back.addEventListener("click",closeCollections);
+      target.insertBefore(back,target.firstChild);
+    }
+    const back=target.querySelector(".mta-collection-back");
+    if(back) back.textContent=document.documentElement.lang==="ar"?"← العودة إلى الأقسام":(document.documentElement.lang==="es"?"← Volver a las colecciones":"← Back to collections");
+    if(updateHash && location.hash!=="#"+id) history.pushState(null,"","#"+id);
+    target.scrollIntoView({behavior:"smooth",block:"start"});
+    return true;
+  }
+  document.addEventListener("click",function(event){
+    const link=event.target.closest('a[href^="#"]');
+    if(!link) return;
+    const id=link.getAttribute("href").slice(1);
+    if(ids.includes(id)){
+      event.preventDefault();
+      openCollection(id,true);
+    }
+  });
+  window.addEventListener("popstate",function(){
+    const id=location.hash.slice(1);
+    if(ids.includes(id)) openCollection(id,false);
+    else sections.forEach(section=>section.classList.remove("mta-collection-open"));
+  });
+  const initial=location.hash.slice(1);
+  if(ids.includes(initial)) openCollection(initial,false);
 })();
 </script>
 
