@@ -23,7 +23,7 @@
 .footer{background:#1d2924;color:#f5f1e9;padding:55px 7% 22px}.footer-top{display:flex;justify-content:space-between;gap:30px;align-items:start}.footer-brand{font:italic 32px Georgia,serif}.footer p{max-width:340px;color:#c4c7bd;font:12px/1.8 Georgia,serif}.footer-links{display:flex;gap:25px;flex-wrap:wrap}.footer-links a{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#deded5}.footer-bottom{border-top:1px solid #465149;margin-top:40px;padding-top:17px;color:#aeb5aa;font-size:9px;letter-spacing:1px;display:flex;justify-content:space-between}
 @media(max-width:900px){.nav{gap:14px}.hero{min-height:500px}.hero-copy{padding:65px 8%}.hero-visual{min-height:500px}.collections{grid-template-columns:repeat(2,1fr)}.products{grid-template-columns:repeat(2,1fr)}.product-image{height:280px}.story-copy{padding:55px 9%}}
 @media(max-width:620px){.preview-note{font-size:8px;letter-spacing:1px}.site-header{height:auto;min-height:72px;padding:13px 5%;flex-wrap:wrap;gap:12px}.nav{order:3;width:100%;overflow:auto;justify-content:space-between;gap:18px;padding:8px 0}.nav a{white-space:nowrap;font-size:9px}.header-action{font-size:8px;padding:9px 11px}.hero{display:flex;flex-direction:column-reverse}.hero-visual{width:100%;min-height:360px;height:360px}.hero-copy{padding:48px 7% 55px}.hero h1{font-size:52px}.trust-strip{padding:18px 4%;gap:8px}.trust-item{font-size:12px}.trust-item small{font-size:7px;letter-spacing:.8px}.section{padding:58px 5%}.section-head{display:block}.section-head p{margin-top:14px}.collections{grid-template-columns:1fr 1fr;gap:10px}.collection,.collection img{min-height:235px;height:235px}.collection-label{left:13px;bottom:15px}.collection-label h3{font-size:19px}.collection-label small{font-size:7px}.products{gap:10px}.product-image{height:210px}.product-info{padding:13px 11px 16px}.product-info h3{font-size:16px}.story{grid-template-columns:1fr}.story-image{min-height:280px;height:280px}.story-copy{padding:48px 7%}.story-copy h2{font-size:36px}.newsletter{padding:55px 6%}.newsletter h2{font-size:30px}.footer-top{display:block}.footer-links{margin-top:25px;gap:16px}.footer-bottom{display:block;line-height:2}}
-</style>
+.header-tools{display:flex;align-items:center;gap:14px}.language-label{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}.language-select{border:1px solid #b69a70;background:var(--white);color:var(--ink);padding:10px 12px;font-size:10px;border-radius:0;cursor:pointer}.header-action{white-space:nowrap}html[dir="rtl"] body{text-align:right}html[dir="rtl"] .site-header{direction:rtl}html[dir="rtl"] .brand-copy{border-left:0;border-right:1px solid #c9bda9;padding-left:0;padding-right:12px}html[dir="rtl"] .hero{direction:rtl}html[dir="rtl"] .hero-copy{padding:90px 13% 80px 9%}html[dir="rtl"] .primary-link{align-self:flex-start}html[dir="rtl"] .section-head{direction:rtl}html[dir="rtl"] .collection-label{left:auto;right:25px}html[dir="rtl"] .story{direction:rtl}@media(max-width:760px){.header-tools{gap:8px}.language-label{display:none}.language-select{padding:9px 7px}.header-action{padding:10px 9px;font-size:9px}}\n</style>
 </head>
 <body>
 <div class="preview-note">A new direction for MTA Istanbul · Design preview</div>
@@ -33,7 +33,7 @@
     <span class="brand-copy"><strong>ISTANBUL</strong><small>TRADING · EST. 2018</small></span>
   </a>
   <nav class="nav"><a href="#collections">Collections</a><a href="#featured">Discover</a><a href="#story">Our Story</a></nav>
-  <a class="header-action" href="#collections">Explore the store</a>
+  <div class="header-tools"><label class="language-label" for="site-language">Language</label><select id="site-language" class="language-select" aria-label="Choose language"><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option></select><a class="header-action" href="#collections" data-i18n="Explore the store">Explore the store</a></div>
 </header>
 <main>
 <section class="hero">
@@ -83,5 +83,105 @@
   <div class="footer-top"><div><div class="footer-brand">MTA Istanbul</div><p>Distinctive Turkish craftsmanship and carefully selected pieces, brought to you from Istanbul.</p></div><div class="footer-links"><a href="#collections">Collections</a><a href="#featured">Discover</a><a href="#story">Our story</a></div></div>
   <div class="footer-bottom"><span>© 2026 MTA Istanbul Trading</span><span>Made with care in Istanbul</span></div>
 </footer>
+
+<script id="mta-language-switch">
+(function(){
+  const translations={
+    ar:{
+      "A new direction for MTA Istanbul · Design preview":"اتجاه جديد لموقع MTA Istanbul · معاينة التصميم",
+      "Collections":"الأقسام","Discover":"اكتشف","Our Story":"قصتنا","Explore the store":"تسوق الآن",
+      "Crafted in Türkiye · Selected in Istanbul":"صناعة تركية · اختيار من إسطنبول",
+      "Objects with a story. ":"قطع تحكي قصة. ","Made to be kept.":"صُنعت لتدوم.",
+      "Discover distinctive Turkish craftsmanship, from luminous glass and mosaic art to timeless accessories and pieces for the home.":"اكتشف الحرفية التركية المميزة، من الزجاج اللامع وفن الفسيفساء إلى الإكسسوارات الخالدة وقطع المنزل.",
+      "Discover the collections ":"اكتشف المجموعات ","A little piece of Istanbul":"قطعة صغيرة من إسطنبول",
+      "Thoughtfully selected":"مختارة بعناية","Distinctive Turkish finds":"منتجات تركية مميزة",
+      "Rooted in craftsmanship":"أصالة الحرفية","Made with care and character":"صُنعت بعناية وشخصية",
+      "From Istanbul to you":"من إسطنبول إليك","Personal worldwide service":"خدمة شخصية حول العالم",
+      "Explore MTA Istanbul":"اكتشف MTA Istanbul","Collections to discover":"مجموعات تستحق الاكتشاف",
+      "A considered selection of objects, textures and traditions — each with its own character.":"اختيارات مدروسة من القطع والخامات والتقاليد، لكل منها طابعها الخاص.",
+      "01 · Decorative craft":"٠١ · فنون وزخارف","Glass & Mosaic":"الزجاج والفسيفساء",
+      "02 · At the table":"٠٢ · مائدة الطعام","Tea & Coffee":"الشاي والقهوة",
+      "03 · Everyday elegance":"٠٣ · أناقة يومية","Leather & Accessories":"الجلود والإكسسوارات",
+      "04 · Selected pieces":"٠٤ · قطع مختارة","Handbags":"حقائب اليد",
+      "05 · Home details":"٠٥ · تفاصيل المنزل","Glassware":"الأواني الزجاجية",
+      "06 · Artful living":"٠٦ · لمسات فنية","Art & Objects":"الفنون والقطع المميزة",
+      "A closer look":"نظرة عن قرب","Selected for you":"مختارة لك",
+      "Explore a few highlights from our growing collection. More pieces are being added.":"اكتشف بعض القطع المميزة من مجموعتنا المتنامية. نضيف المزيد من المنتجات باستمرار.",
+      "Table & Living":"المنزل والمائدة","Turkish Glass Collection":"مجموعة الزجاج التركي",
+      "Beautifully presented pieces for everyday rituals.":"قطع أنيقة تضيف جمالًا إلى تفاصيل يومك.",
+      "Explore collection ↗":"اكتشف المجموعة ↗","Traditional Tea Sets":"أطقم شاي تقليدية",
+      "A timeless expression of Turkish hospitality.":"تجسيد خالد لكرم الضيافة التركية.",
+      "Accessories":"إكسسوارات","Leather Handbags":"حقائب جلدية",
+      "Distinctive shapes with an elegant finish.":"تصميمات مميزة بلمسات أنيقة.",
+      "Everyday Classics":"كلاسيكيات يومية","Considered accessories for a personal style.":"إكسسوارات مختارة لتكمل أسلوبك الشخصي.",
+      "Our point of view":"رؤيتنا","From Istanbul, with an eye for the extraordinary.":"من إسطنبول، نختار لك كل ما هو استثنائي.",
+      "MTA Istanbul brings together distinctive pieces inspired by the artistry, heritage and creativity of Türkiye. We believe the objects we choose for our homes and lives should carry meaning, character and a sense of place.":"تجمع MTA Istanbul قطعًا مميزة تستلهم الفن والتراث والإبداع التركي. نؤمن أن الأشياء التي نختارها لمنازلنا وحياتنا يجب أن تحمل معنى وشخصية وروح المكان.",
+      "Discover what makes us different ↗":"اكتشف ما يميزنا ↗","Stay in the picture":"ابقَ على اطلاع",
+      "Discover something distinctive.":"اكتشف شيئًا استثنائيًا.","Explore our latest finds and new collections from Istanbul.":"تعرّف على أحدث اختياراتنا ومجموعاتنا الجديدة من إسطنبول.",
+      "Browse the collections":"تصفح المجموعات","Distinctive Turkish craftsmanship and carefully selected pieces, brought to you from Istanbul.":"حرفية تركية مميزة وقطع مختارة بعناية، نقدمها إليك من إسطنبول.",
+      "Our story":"قصتنا","Made with care in Istanbul":"صُنع بعناية في إسطنبول"
+    },
+    es:{
+      "A new direction for MTA Istanbul · Design preview":"Una nueva dirección para MTA Istanbul · Vista previa",
+      "Collections":"Colecciones","Discover":"Descubrir","Our Story":"Nuestra historia","Explore the store":"Explorar la tienda",
+      "Crafted in Türkiye · Selected in Istanbul":"Hecho en Türkiye · Seleccionado en Estambul",
+      "Objects with a story. ":"Objetos con historia. ","Made to be kept.":"Hechos para conservarse.",
+      "Discover distinctive Turkish craftsmanship, from luminous glass and mosaic art to timeless accessories and pieces for the home.":"Descubre la artesanía turca: vidrio luminoso, mosaicos, accesorios atemporales y piezas para el hogar.",
+      "Discover the collections ":"Descubre las colecciones ","A little piece of Istanbul":"Un pequeño rincón de Estambul",
+      "Thoughtfully selected":"Seleccionado con cuidado","Distinctive Turkish finds":"Piezas turcas únicas",
+      "Rooted in craftsmanship":"Arraigado en la artesanía","Made with care and character":"Hecho con cuidado y carácter",
+      "From Istanbul to you":"De Estambul para ti","Personal worldwide service":"Atención personalizada en todo el mundo",
+      "Explore MTA Istanbul":"Explora MTA Istanbul","Collections to discover":"Colecciones por descubrir",
+      "A considered selection of objects, textures and traditions — each with its own character.":"Una selección cuidada de objetos, texturas y tradiciones, cada uno con su propio carácter.",
+      "01 · Decorative craft":"01 · Artesanía decorativa","Glass & Mosaic":"Vidrio y mosaico",
+      "02 · At the table":"02 · En la mesa","Tea & Coffee":"Té y café",
+      "03 · Everyday elegance":"03 · Elegancia diaria","Leather & Accessories":"Piel y accesorios",
+      "04 · Selected pieces":"04 · Piezas seleccionadas","Handbags":"Bolsos",
+      "05 · Home details":"05 · Detalles para el hogar","Glassware":"Cristalería",
+      "06 · Artful living":"06 · Vida con arte","Art & Objects":"Arte y objetos",
+      "A closer look":"Más de cerca","Selected for you":"Seleccionado para ti",
+      "Explore a few highlights from our growing collection. More pieces are being added.":"Descubre algunas piezas destacadas de nuestra colección. Pronto añadiremos más.",
+      "Table & Living":"Mesa y hogar","Turkish Glass Collection":"Colección de vidrio turco",
+      "Beautifully presented pieces for everyday rituals.":"Piezas elegantes para tus rituales cotidianos.",
+      "Explore collection ↗":"Explorar colección ↗","Traditional Tea Sets":"Juegos de té tradicionales",
+      "A timeless expression of Turkish hospitality.":"Una expresión atemporal de la hospitalidad turca.",
+      "Accessories":"Accesorios","Leather Handbags":"Bolsos de piel",
+      "Distinctive shapes with an elegant finish.":"Formas distintivas con un acabado elegante.",
+      "Everyday Classics":"Clásicos cotidianos","Considered accessories for a personal style.":"Accesorios elegidos para un estilo personal.",
+      "Our point of view":"Nuestra visión","From Istanbul, with an eye for the extraordinary.":"Desde Estambul, con mirada para lo extraordinario.",
+      "MTA Istanbul brings together distinctive pieces inspired by the artistry, heritage and creativity of Türkiye. We believe the objects we choose for our homes and lives should carry meaning, character and a sense of place.":"MTA Istanbul reúne piezas únicas inspiradas en el arte, el patrimonio y la creatividad de Türkiye. Creemos que los objetos de nuestros hogares deben tener significado, carácter y sentido de lugar.",
+      "Discover what makes us different ↗":"Descubre qué nos hace diferentes ↗","Stay in the picture":"Mantente al día",
+      "Discover something distinctive.":"Descubre algo especial.","Explore our latest finds and new collections from Istanbul.":"Explora nuestros últimos hallazgos y nuevas colecciones de Estambul.",
+      "Browse the collections":"Ver colecciones","Distinctive Turkish craftsmanship and carefully selected pieces, brought to you from Istanbul.":"Artesanía turca distintiva y piezas cuidadosamente seleccionadas, desde Estambul.",
+      "Our story":"Nuestra historia","Made with care in Istanbul":"Hecho con cuidado en Estambul"
+    }
+  };
+  const originals=new WeakMap();
+  function setLanguage(lang){
+    const dict=translations[lang]||{};
+    document.documentElement.lang=lang;
+    document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+    document.querySelectorAll("body *").forEach(el=>{
+      if(el.children.length===0 && el.tagName!=="SCRIPT" && el.tagName!=="STYLE"){
+        if(!originals.has(el)) originals.set(el,el.textContent);
+        const original=originals.get(el);
+        el.textContent=dict[original]||original;
+      }
+    });
+    const label=document.querySelector(".language-label");
+    if(label) label.textContent=lang==="ar"?"اللغة":(lang==="es"?"Idioma":"Language");
+    const select=document.getElementById("site-language");
+    if(select) select.value=lang;
+    try{localStorage.setItem("mta-language",lang)}catch(e){}
+  }
+  document.addEventListener("DOMContentLoaded",()=>{
+    const select=document.getElementById("site-language");
+    if(select) select.addEventListener("change",()=>setLanguage(select.value));
+    let lang="en";try{lang=localStorage.getItem("mta-language")||"en"}catch(e){}
+    setLanguage(lang);
+  });
+})();
+</script>
+
 </body>
 </html>
