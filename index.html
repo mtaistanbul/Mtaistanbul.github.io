@@ -188,6 +188,61 @@ a{color:inherit;text-decoration:none}
     #textile .products { grid-template-columns: 1fr; }
     #textile .product > a:first-child { height: 230px; }
   }
+
+  /* Textile collection: richer editorial presentation */
+  #textile {
+    padding: 58px 5.5%;
+    background:
+      radial-gradient(ellipse at 12% 8%, rgba(214,168,77,.13), transparent 34%),
+      radial-gradient(ellipse at 88% 92%, rgba(18,91,82,.12), transparent 38%),
+      linear-gradient(145deg, #fbf8f1 0%, #f0e8d9 48%, #faf7f0 100%);
+  }
+  #textile > h2 { letter-spacing: .3px; }
+  #textile .product {
+    background: #fff;
+    border: 1px solid rgba(177,145,91,.38);
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(8,36,60,.12);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  #textile .product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 36px rgba(8,36,60,.17);
+  }
+  #textile .product > a:first-child {
+    height: 270px;
+    padding: 18px;
+    background:
+      radial-gradient(circle at 20% 18%, rgba(255,255,255,.2) 0 1px, transparent 2px),
+      radial-gradient(circle at 78% 75%, rgba(214,168,77,.22), transparent 42%),
+      linear-gradient(135deg, #123d45 0%, #1d5b5b 52%, #0d3040 100%);
+    background-size: 22px 22px, auto, auto;
+    border-bottom: 3px solid #d6a84d;
+  }
+  #textile .product img {
+    object-fit: contain;
+    border-radius: 10px;
+    filter: drop-shadow(0 12px 16px rgba(0,0,0,.28));
+  }
+  #textile .product .pbody { background: #fffefa; }
+  #textile .product .pbody > a.wa {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 7px;
+    background: #19a85b;
+    color: #fff;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 4px 11px rgba(25,168,91,.24);
+  }
+  #textile .product .pbody > a.wa:hover { background: #128746; }
+  @media (max-width: 760px) {
+    #textile .product > a:first-child { height: 195px; padding: 10px; }
+  }
+
 </style>
 </head>
 <body>
@@ -270,7 +325,7 @@ a{color:inherit;text-decoration:none}
 <div class="products">
 
 <article class="product">
-<a href="IMG_20250901_205801.jpg" target="_blank">
+<a class="textile-photo" href="IMG_20250901_205801.jpg" target="_blank">
 <img src="IMG_20250901_205801.jpg" alt="Gobelin Cushion 1">
 </a>
 <div class="pbody">
@@ -278,7 +333,7 @@ a{color:inherit;text-decoration:none}
 <p>Material: Gobelin Textile</p>
 <p>Size: 45 × 45 cm</p>
 <p><strong>Price: $10</strong></p>
-<a href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">◉ Order via WhatsApp</a>
+<a class="wa" href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">◉ Order via WhatsApp</a>
 </div>
 </article>
 
@@ -291,7 +346,7 @@ a{color:inherit;text-decoration:none}
 <p>Material: Gobelin Textile</p>
 <p>Size: 45 × 45 cm</p>
 <p><strong>Price: $10</strong></p>
-<a href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">◉ Order via WhatsApp</a>
+<a class="wa" href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">◉ Order via WhatsApp</a>
 </div>
 </article>
 
@@ -304,7 +359,7 @@ a{color:inherit;text-decoration:none}
 <p>Material: Gobelin Textile</p>
 <p>Size: 45 × 45 cm</p>
 <p><strong>Price: $10</strong></p>
-<a href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">◉ Order via WhatsApp</a>
+<a class="wa" href="https://wa.me/905344921008?text=I%20want%20to%20order%20a%20Gobelin%20Cushion" target="_blank">◉ Order via WhatsApp</a>
 </div>
 </article>
 
