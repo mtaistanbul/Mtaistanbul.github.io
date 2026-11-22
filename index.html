@@ -310,7 +310,7 @@ html[lang="ar"] .footer-grid{direction:rtl}
   <nav class="nav">
     <a class="active" href="#">Home</a><a href="#products">Shop</a><a href="#textile">Textile</a><a href="#handbags">Handbags</a><a href="#about">About Us</a><a href="#contact">Contact</a>
   </nav>
-  <div class="icons"><span aria-hidden="true">⌕　♙　🛒<sup>0</sup></span><label class="language-label" for="site-language">Language</label><select id="site-language" class="language-select" aria-label="Choose language"><option value="en">English</option><option value="ar">العربية</option></select></div>
+  <div class="icons"><span aria-hidden="true">⌕　♙　🛒<sup>0</sup></span><label class="language-label" for="site-language">Language</label><select id="site-language" class="language-select" aria-label="Choose language"><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option></select></div>
 </header>
 
 <section class="hero">
@@ -527,13 +527,37 @@ function addToCart(name){
     "From Istanbul, with Love ♡":"من إسطنبول، بكل حب ♡","Worldwide Shipping":"شحن إلى جميع أنحاء العالم","Safe & reliable delivery":"توصيل آمن وموثوق","Secure Payment":"دفع آمن","Your information is safe":"بياناتك في أمان","Handmade Products":"منتجات يدوية","Authentic & unique":"أصيلة وفريدة","Customer Support":"خدمة العملاء","We're here to help":"نحن هنا لمساعدتك",
     "Authentic Turkish Handcrafts to the World":"حرف يدوية تركية أصيلة إلى العالم","Quick Links":"روابط سريعة","Contact Us":"اتصل بنا","Follow Us":"تابعنا","Your email address":"بريدك الإلكتروني","Subscribe":"اشترك","© 2025 MTA Istanbul Trading. All rights reserved.":"© 2025 MTA Istanbul Trading. جميع الحقوق محفوظة.","Made with ♥ in Istanbul":"صُنع بكل حب في إسطنبول","Added to cart":"تمت الإضافة إلى السلة"
   };
+  const spanish = {
+    "Language":"Idioma","Home":"Inicio","Shop":"Tienda","Textile":"Textiles","Handbags":"Bolsos","About Us":"Sobre nosotros","Contact":"Contacto",
+    "HANDMADE • AUTHENTIC • UNIQUE":"ARTESANAL • AUTÉNTICO • ÚNICO","Turkish Art,":"Arte turco,","Timeless Beauty":"Belleza atemporal",
+    "Discover authentic Turkish handcrafts, mosaic lamps, glass art, silverware and more — directly from Istanbul to your doorstep.":"Descubra artesanía turca auténtica, lámparas de mosaico, arte en vidrio, artículos de plata y mucho más, directamente desde Estambul hasta su hogar.",
+    "Shop Now →":"Comprar ahora →","Mosaic Lamps":"Lámparas de mosaico","Glass Art":"Arte en vidrio","Silver Products":"Artículos de plata","Tea & Coffee Sets":"Juegos de té y café","Stone Art":"Arte en piedra",
+    "Featured Products":"Productos destacados","Handcrafted with passion. Perfect for your home or as a unique gift.":"Elaborados con pasión. Perfectos para su hogar o como regalo único.",
+    "Mosaic Table Lamp":"Lámpara de mesa de mosaico","Handmade Glass Vase (Mamluk Design)":"Jarrón de vidrio artesanal (diseño mameluco)","Traditional Tea Glass Set (6 pcs)":"Juego tradicional de vasos de té (6 piezas)","Silver Coffee Cup Set":"Juego de tazas de café de plata","Istanbul Magnet (New Shape)":"Imán de Estambul (nuevo diseño)",
+    "🛒 Add to Cart":"🛒 Añadir al carrito","◉ Order via WhatsApp":"◉ Pedir por WhatsApp","Textile & Gobelin Cushions":"Textiles y cojines de gobelino","Elegant Turkish Gobelin Cushion Collection":"Elegante colección turca de cojines de gobelino","Gobelin Cushion":"Cojín de gobelino","Material: Gobelin Textile":"Material: tejido de gobelino","Size: 45 × 45 cm":"Tamaño: 45 × 45 cm","Price: $10":"Precio: $10",
+    "Silver Collection":"Colección de plata","Discover our selection of elegant Turkish silver pieces.":"Descubra nuestra selección de elegantes piezas de plata turca.","Product photos and details will be added soon.":"Próximamente añadiremos fotos y detalles de los productos.",
+    "Stone Art & Paintings":"Arte y cuadros en piedra","Unique artwork created on natural stone, inspired by Turkish artistry.":"Obras únicas sobre piedra natural, inspiradas en el arte turco.","Stone Paintings":"Cuadros en piedra",
+    "Turkish Tea & Coffee Sets":"Juegos turcos de té y café","Traditional tea and coffee sets to bring a touch of Türkiye to your table.":"Juegos tradicionales de té y café que aportan un toque de Turquía a su mesa.",
+    "Handbags Collection | مجموعة الحقائب":"Colección de bolsos","Discover our elegant genuine leather handbag collection, selected for its refined style, beautiful finish and everyday versatility.":"Descubra nuestra elegante colección de bolsos de cuero auténtico, seleccionados por su estilo refinado, acabado cuidado y versatilidad para el día a día.",
+    "Orange Top-Handle Bag":"Bolso naranja de asa superior","Made from genuine leather, this statement piece pairs a vibrant orange tone with a beautifully structured silhouette for a polished, confident look.":"Este bolso de cuero auténtico combina un vibrante tono naranja con una silueta estructurada y elegante para un estilo seguro y sofisticado.",
+    "Dark Brown Shoulder Bag":"Bolso bandolera marrón oscuro","Crafted from genuine leather, its rich dark-brown look and elegant gold-tone clasp create a timeless accessory that moves effortlessly from day to evening.":"Confeccionado en cuero auténtico, su intenso tono marrón oscuro y su elegante cierre dorado crean un accesorio atemporal, ideal del día a la noche.",
+    "Pink Top-Handle Bag":"Bolso rosa de asa superior","Designed in genuine leather, this striking pink handbag adds a fresh touch of colour while keeping a graceful shape and sophisticated appeal.":"Este llamativo bolso rosa de cuero auténtico aporta un toque fresco de color con una forma elegante y un atractivo sofisticado.",
+    "Cognac Textured Handbag":"Bolso texturizado color coñac","Made from genuine leather, the warm cognac shade and distinctive textured finish give this handbag a rich, elegant character with lasting style.":"El cuero auténtico, el cálido tono coñac y su distintivo acabado texturizado dan a este bolso un carácter elegante y un estilo duradero.",
+    "◉ Enquire on WhatsApp":"◉ Consultar por WhatsApp","About MTA Istanbul Trading":"Sobre MTA Istanbul Trading",
+    "MTA Istanbul Trading connects the distinctive character of Turkish craftsmanship with customers around the world. Based in Istanbul, we source and carefully select a varied collection of Turkish-made goods, including decorative glass and mosaic pieces, traditional textiles and gobelin cushions, lamps, and thoughtfully chosen accessories.":"MTA Istanbul Trading conecta el carácter único de la artesanía turca con clientes de todo el mundo. Desde Estambul, seleccionamos cuidadosamente una variada colección de productos turcos, como piezas decorativas de vidrio y mosaico, textiles tradicionales, cojines de gobelino, lámparas y accesorios cuidadosamente elegidos.",
+    "Our focus is on sharing products that reflect the creativity, heritage and everyday artistry of Türkiye. We aim to make discovering and ordering these pieces from abroad simple and personal, with attentive service and clear communication at every step.":"Nuestro objetivo es compartir productos que reflejan la creatividad, el patrimonio y el arte cotidiano de Turquía. Queremos que descubrir y pedir estas piezas desde otros países sea sencillo y personal, con atención cercana y comunicación clara en cada paso.",
+    "From Istanbul, with Love ♡":"Desde Estambul, con cariño ♡","Worldwide Shipping":"Envíos a todo el mundo","Safe & reliable delivery":"Entrega segura y fiable","Secure Payment":"Pago seguro","Your information is safe":"Su información está protegida","Handmade Products":"Productos artesanales","Authentic & unique":"Auténticos y únicos","Customer Support":"Atención al cliente","We're here to help":"Estamos aquí para ayudarle",
+    "Authentic Turkish Handcrafts to the World":"Artesanía turca auténtica para el mundo","Quick Links":"Enlaces rápidos","Contact Us":"Contáctenos","Follow Us":"Síganos","Your email address":"Su correo electrónico","Subscribe":"Suscribirse","© 2025 MTA Istanbul Trading. All rights reserved.":"© 2025 MTA Istanbul Trading. Todos los derechos reservados.","Made with ♥ in Istanbul":"Hecho con ♥ en Estambul","Added to cart":"Añadido al carrito"
+  };
   const english = new Map();
   const arabic = new Map(Object.entries(translations));
   function setLanguage(lang){
     const isArabic=lang==="ar";
+    const isSpanish=lang==="es";
+    const dictionary=isArabic?translations:(isSpanish?spanish:{});
     document.documentElement.lang=lang;
     document.documentElement.dir=isArabic?"rtl":"ltr";
-    document.title=isArabic?"MTA Istanbul Trading | منتجات تركية أصيلة":"MTA Istanbul Trading";
+    document.title=isArabic?"MTA Istanbul Trading | منتجات تركية أصيلة":(isSpanish?"MTA Istanbul Trading | Artesanía turca auténtica":"MTA Istanbul Trading");
     const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
     let node;
     while(node=walker.nextNode()){
@@ -541,18 +565,18 @@ function addToCart(name){
       const original=english.get(node);
       const trimmed=original.trim();
       if(!trimmed) continue;
-      const translated=translations[trimmed];
-      if(isArabic && translated) node.nodeValue=original.replace(trimmed,translated);
-      else if(!isArabic) node.nodeValue=original;
+      const translated=dictionary[trimmed];
+      if((isArabic||isSpanish) && translated) node.nodeValue=original.replace(trimmed,translated);
+      else if(!isArabic && !isSpanish) node.nodeValue=original;
     }
     document.querySelectorAll("[placeholder]").forEach(el=>{
       if(!el.dataset.originalPlaceholder) el.dataset.originalPlaceholder=el.placeholder;
-      el.placeholder=isArabic?"بريدك الإلكتروني":el.dataset.originalPlaceholder;
+      el.placeholder=isArabic?"بريدك الإلكتروني":(isSpanish?"Su correo electrónico":el.dataset.originalPlaceholder);
     });
     document.querySelectorAll(".handbag-ar").forEach(el=>{el.style.display=isArabic?"block":"none"});
     document.querySelectorAll(".handbag-intro").forEach(el=>{el.style.display=isArabic?"none":""});
     document.querySelectorAll(".handbag-info>p:not(.handbag-price):not(.handbag-ar)").forEach(el=>{el.style.display=isArabic?"none":""});
-    const label=document.querySelector(".language-label"); if(label) label.textContent=isArabic?"اللغة":"Language";
+    const label=document.querySelector(".language-label"); if(label) label.textContent=isArabic?"اللغة":(isSpanish?"Idioma":"Language");
     const selector=document.getElementById("site-language"); if(selector) selector.value=lang;
     try{localStorage.setItem("mta-language",lang)}catch(e){}
   }
