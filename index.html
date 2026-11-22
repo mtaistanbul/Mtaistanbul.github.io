@@ -283,6 +283,22 @@ a{color:inherit;text-decoration:none}
 @media(max-width:480px){#handbags .handbag-grid{grid-template-columns:1fr}#handbags .handbag-photo{height:330px}}
 
 #handbags .handbag-info p.handbag-ar{display:block;direction:rtl;unicode-bidi:plaintext;text-align:right;font-family:Tahoma,Arial,sans-serif;font-size:14px;line-height:1.9;color:#26384a;background:#f8f4ed;border-right:3px solid #c5a36a;border-radius:6px;padding:10px 12px;margin:12px 0 18px;white-space:normal}
+
+/* Bilingual language switch */
+.language-label{font-size:12px;color:#526579;margin-left:8px}
+.language-select{border:1px solid #d6a84d;border-radius:20px;padding:8px 12px;background:#fff;color:#102c45;font-weight:600;cursor:pointer;font-size:13px}
+.handbag-ar{display:none}
+html[lang="ar"] body{direction:rtl;text-align:right}
+html[lang="ar"] .header,html[lang="ar"] .brand,html[lang="ar"] .nav,html[lang="ar"] .icons{direction:rtl}
+html[lang="ar"] .hero-copy,html[lang="ar"] .section-title,html[lang="ar"] .about-copy{text-align:right}
+html[lang="ar"] .handbag-ar{display:block}
+html[lang="ar"] .handbag-info>p:not(.handbag-price):not(.handbag-ar){display:none}
+html[lang="ar"] .handbag-intro{display:none}
+html[lang="ar"] .handbag-card,html[lang="ar"] .product,html[lang="ar"] .collection-note{text-align:right}
+html[lang="ar"] .handbag-ar{direction:rtl;unicode-bidi:plaintext;line-height:1.9}
+html[lang="ar"] .footer-grid{direction:rtl}
+@media(max-width:760px){.header{height:auto;min-height:72px;flex-wrap:wrap;padding:12px 4%;gap:10px}.nav{order:3;width:100%;justify-content:center;gap:14px;flex-wrap:wrap}.nav a{padding:8px 0;font-size:11px}.icons{gap:5px}.language-label{display:none}.language-select{padding:7px 9px}}
+
 </style>
 </head>
 <body>
@@ -294,7 +310,7 @@ a{color:inherit;text-decoration:none}
   <nav class="nav">
     <a class="active" href="#">Home</a><a href="#products">Shop</a><a href="#textile">Textile</a><a href="#handbags">Handbags</a><a href="#about">About Us</a><a href="#contact">Contact</a>
   </nav>
-  <div class="icons">⌕　♙　🛒<sup>0</sup>　◉ English⌄</div>
+  <div class="icons"><span aria-hidden="true">⌕　♙　🛒<sup>0</sup></span><label class="language-label" for="site-language">Language</label><select id="site-language" class="language-select" aria-label="Choose language"><option value="en">English</option><option value="ar">العربية</option></select></div>
 </header>
 
 <section class="hero">
@@ -484,5 +500,72 @@ function addToCart(name){
   setTimeout(()=>t.style.display='none',1800);
 }
 </script>
+
+<script>
+(function(){
+  const translations = {
+    "Language":"اللغة","Home":"الرئيسية","Shop":"تسوق","Textile":"المفروشات","Handbags":"الحقائب","About Us":"من نحن","Contact":"اتصل بنا",
+    "HANDMADE • AUTHENTIC • UNIQUE":"صناعة يدوية • أصالة • تميّز",
+    "Turkish Art,":"الفن التركي،","Timeless Beauty":"جمال يدوم",
+    "Discover authentic Turkish handcrafts, mosaic lamps, glass art, silverware and more — directly from Istanbul to your doorstep.":"اكتشف الحرف اليدوية التركية الأصيلة، ومصابيح الموزاييك وفنون الزجاج والفضيات والمزيد — من إسطنبول إلى باب منزلك.",
+    "Shop Now →":"تسوق الآن ←","Mosaic Lamps":"مصابيح الموزاييك","Glass Art":"فن الزجاج","Silver Products":"المنتجات الفضية","Tea & Coffee Sets":"أطقم الشاي والقهوة","Stone Art":"الفن على الحجر",
+    "Featured Products":"منتجات مميزة","Handcrafted with passion. Perfect for your home or as a unique gift.":"صُنعت بحرفية وشغف، لتكون إضافة جميلة لمنزلك أو هدية فريدة.",
+    "Mosaic Table Lamp":"مصباح طاولة موزاييك","Handmade Glass Vase (Mamluk Design)":"مزهرية زجاجية يدوية بتصميم مملوكي","Traditional Tea Glass Set (6 pcs)":"طقم كاسات شاي تقليدية (6 قطع)","Silver Coffee Cup Set":"طقم فناجين قهوة فضي","Istanbul Magnet (New Shape)":"مغناطيس إسطنبول بتصميم جديد",
+    "🛒 Add to Cart":"🛒 أضف إلى السلة","◉ Order via WhatsApp":"◉ اطلب عبر واتساب","Textile & Gobelin Cushions":"المنسوجات وخدديات الجوبلان","Elegant Turkish Gobelin Cushion Collection":"تشكيلة أنيقة من خدديات الجوبلان التركية","Gobelin Cushion":"خدادية جوبلان","Material: Gobelin Textile":"الخامة: نسيج جوبلان","Size: 45 × 45 cm":"المقاس: 45 × 45 سم","Price: $10":"السعر: 10 دولارات",
+    "Silver Collection":"مجموعة الفضيات","Discover our selection of elegant Turkish silver pieces.":"اكتشف تشكيلتنا المختارة من القطع الفضية التركية الأنيقة.","Silver Products":"منتجات فضية","Product photos and details will be added soon.":"ستُضاف صور المنتجات وتفاصيلها قريبًا.",
+    "Stone Art & Paintings":"الفن واللوحات الحجرية","Unique artwork created on natural stone, inspired by Turkish artistry.":"أعمال فنية مميزة على الحجر الطبيعي، مستوحاة من الفن التركي.","Stone Paintings":"لوحات حجرية",
+    "Turkish Tea & Coffee Sets":"أطقم الشاي والقهوة التركية","Traditional tea and coffee sets to bring a touch of Türkiye to your table.":"أطقم شاي وقهوة تقليدية تضيف لمسة من تركيا إلى مائدتك.",
+    "Handbags Collection | مجموعة الحقائب":"مجموعة الحقائب","Discover our elegant genuine leather handbag collection, selected for its refined style, beautiful finish and everyday versatility.":"اكتشفوا مجموعتنا الأنيقة من الحقائب المصنوعة من الجلد الطبيعي، بتصميمات راقية وتشطيبات مميزة تجمع بين الجمال والعملية.",
+    "Orange Top-Handle Bag":"حقيبة برتقالية بمقبض علوي","Made from genuine leather, this statement piece pairs a vibrant orange tone with a beautifully structured silhouette for a polished, confident look.":"حقيبة مصنوعة من الجلد الطبيعي، تتميز بلونها البرتقالي الحيوي وتصميمها الأنيق المتناسق، لتمنحك إطلالة مميزة تجمع بين الجرأة والرقي.",
+    "Dark Brown Shoulder Bag":"حقيبة كتف بنية داكنة","Crafted from genuine leather, its rich dark-brown look and elegant gold-tone clasp create a timeless accessory that moves effortlessly from day to evening.":"حقيبة كتف من الجلد الطبيعي باللون البني الداكن، مزودة بإغلاق أنيق بلمسات ذهبية. تصميم كلاسيكي راقٍ يناسب الاستخدام اليومي والمناسبات.",
+    "Pink Top-Handle Bag":"حقيبة وردية بمقبض علوي","Designed in genuine leather, this striking pink handbag adds a fresh touch of colour while keeping a graceful shape and sophisticated appeal.":"حقيبة أنيقة من الجلد الطبيعي باللون الوردي الجذاب، تجمع بين التصميم الانسيابي واللمسة العصرية، لتضيف إشراقة وأناقة إلى إطلالتك.",
+    "Cognac Textured Handbag":"حقيبة بلون الكونياك وملمس مميز","Made from genuine leather, the warm cognac shade and distinctive textured finish give this handbag a rich, elegant character with lasting style.":"حقيبة من الجلد الطبيعي بدرجة الكونياك الدافئة، تتميز بملمسها الغني وتفاصيلها الراقية. اختيار أنيق يضفي لمسة من الفخامة على إطلالتك.",
+    "◉ Enquire on WhatsApp":"◉ استفسر عبر واتساب",
+    "About MTA Istanbul Trading":"عن MTA Istanbul Trading",
+    "MTA Istanbul Trading connects the distinctive character of Turkish craftsmanship with customers around the world. Based in Istanbul, we source and carefully select a varied collection of Turkish-made goods, including decorative glass and mosaic pieces, traditional textiles and gobelin cushions, lamps, and thoughtfully chosen accessories.":"تربط MTA Istanbul Trading بين تميز الحرفية التركية والعملاء حول العالم. ومن مقرنا في إسطنبول، نختار بعناية مجموعة متنوعة من المنتجات التركية، تشمل القطع الزجاجية والموزاييك الديكورية، والمنسوجات التقليدية وخدديات الجوبلان، والمصابيح والإكسسوارات المختارة بعناية.",
+    "Our focus is on sharing products that reflect the creativity, heritage and everyday artistry of Türkiye. We aim to make discovering and ordering these pieces from abroad simple and personal, with attentive service and clear communication at every step.":"نركز على تقديم منتجات تعكس الإبداع والتراث والفن التركي في تفاصيل الحياة اليومية. ونسعى إلى تسهيل اكتشاف هذه القطع وطلبها من خارج تركيا، من خلال خدمة شخصية وتواصل واضح في كل خطوة.",
+    "From Istanbul, with Love ♡":"من إسطنبول، بكل حب ♡","Worldwide Shipping":"شحن إلى جميع أنحاء العالم","Safe & reliable delivery":"توصيل آمن وموثوق","Secure Payment":"دفع آمن","Your information is safe":"بياناتك في أمان","Handmade Products":"منتجات يدوية","Authentic & unique":"أصيلة وفريدة","Customer Support":"خدمة العملاء","We're here to help":"نحن هنا لمساعدتك",
+    "Authentic Turkish Handcrafts to the World":"حرف يدوية تركية أصيلة إلى العالم","Quick Links":"روابط سريعة","Contact Us":"اتصل بنا","Follow Us":"تابعنا","Your email address":"بريدك الإلكتروني","Subscribe":"اشترك","© 2025 MTA Istanbul Trading. All rights reserved.":"© 2025 MTA Istanbul Trading. جميع الحقوق محفوظة.","Made with ♥ in Istanbul":"صُنع بكل حب في إسطنبول","Added to cart":"تمت الإضافة إلى السلة"
+  };
+  const english = new Map();
+  const arabic = new Map(Object.entries(translations));
+  function setLanguage(lang){
+    const isArabic=lang==="ar";
+    document.documentElement.lang=lang;
+    document.documentElement.dir=isArabic?"rtl":"ltr";
+    document.title=isArabic?"MTA Istanbul Trading | منتجات تركية أصيلة":"MTA Istanbul Trading";
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+    let node;
+    while(node=walker.nextNode()){
+      if(!english.has(node)) english.set(node,node.nodeValue);
+      const original=english.get(node);
+      const trimmed=original.trim();
+      if(!trimmed) continue;
+      const translated=translations[trimmed];
+      if(isArabic && translated) node.nodeValue=original.replace(trimmed,translated);
+      else if(!isArabic) node.nodeValue=original;
+    }
+    document.querySelectorAll("[placeholder]").forEach(el=>{
+      if(!el.dataset.originalPlaceholder) el.dataset.originalPlaceholder=el.placeholder;
+      el.placeholder=isArabic?"بريدك الإلكتروني":el.dataset.originalPlaceholder;
+    });
+    document.querySelectorAll(".handbag-ar").forEach(el=>{el.style.display=isArabic?"block":"none"});
+    document.querySelectorAll(".handbag-intro").forEach(el=>{el.style.display=isArabic?"none":""});
+    document.querySelectorAll(".handbag-info>p:not(.handbag-price):not(.handbag-ar)").forEach(el=>{el.style.display=isArabic?"none":""});
+    const label=document.querySelector(".language-label"); if(label) label.textContent=isArabic?"اللغة":"Language";
+    const selector=document.getElementById("site-language"); if(selector) selector.value=lang;
+    try{localStorage.setItem("mta-language",lang)}catch(e){}
+  }
+  document.addEventListener("DOMContentLoaded",function(){
+    const selector=document.getElementById("site-language");
+    if(selector) selector.addEventListener("change",()=>setLanguage(selector.value));
+    let preferred="en";try{preferred=localStorage.getItem("mta-language")||"en"}catch(e){}
+    setLanguage(preferred);
+  });
+  window.addEventListener("load",function(){const selector=document.getElementById("site-language");if(selector&&!selector.dataset.ready){selector.addEventListener("change",()=>setLanguage(selector.value));selector.dataset.ready="1";}});
+  window.mtaSetLanguage=setLanguage;
+})();
+</script>
+
 </body>
 </html>
