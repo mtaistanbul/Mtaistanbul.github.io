@@ -9,6 +9,7 @@ on:
       - '**.jpeg'
       - '**.png'
       - '.github/workflows/optimize-images.yml'
+      - '.github/scripts/optimize_images.py'
   workflow_dispatch:
 
 permissions:
