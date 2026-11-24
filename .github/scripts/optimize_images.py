@@ -46,6 +46,20 @@ for src in files:
     optimize(src, dest)
     mapping[src.as_posix()] = dest.as_posix()
 
+# Split the two tea-set product panels from the combined promotional graphic.
+composite = Path("images/tea-coffee/file_00000000d7f881f4a1dcfb3a985c2d58.webp")
+if composite.exists():
+    with Image.open(composite) as source:
+        source = ImageOps.exif_transpose(source).convert("RGB")
+        w, h = source.size
+        # Each crop contains one complete product panel, excluding the shared header/footer.
+        panels = {
+            "tea-set-mosaic.webp": (int(w * 0.025), int(h * 0.225), int(w * 0.49), int(h * 0.75)),
+            "tea-set-gold.webp": (int(w * 0.51), int(h * 0.225), int(w * 0.975), int(h * 0.75)),
+        }
+        for filename, bounds in panels.items():
+            source.crop(bounds).save(Path("images/tea-coffee") / filename, "WEBP", quality=82, method=6)
+
 for html in ROOT.rglob("*.html"):
     if ".git" in html.parts:
         continue
