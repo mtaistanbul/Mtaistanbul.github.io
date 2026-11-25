@@ -352,7 +352,7 @@ html[lang="ar"] .footer-grid{direction:rtl}
   <nav class="nav">
     <a class="active" href="#">Home</a><a href="#about">About Us</a><a href="#contact">Contact</a>
   </nav>
-  <div class="icons"><span aria-hidden="true">⌕　♙</span><button id="mta-basket-header" class="mta-basket-fab" type="button" aria-label="Open shopping basket">🛒 Basket <span class="mta-basket-count">0</span></button><label class="language-label" for="site-language">Language</label><select id="site-language" class="language-select" aria-label="Choose language"><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option></select></div>
+  <div class="icons"><span aria-hidden="true">⌕　♙</span><button id="mta-basket-header" class="mta-basket-fab" type="button" aria-label="Open shopping basket">🛒 Basket <span class="mta-basket-count">0</span></button><label class="language-label" for="site-language">Language</label><select id="site-language" class="language-select" aria-label="Choose language"><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="tr">Türkçe</option></select></div>
 </header>
 
 <section class="hero">
@@ -625,15 +625,38 @@ function addToCart(name){
     "From Istanbul, with Love ♡":"Desde Estambul, con cariño ♡","Worldwide Shipping":"Envíos a todo el mundo","Safe & reliable delivery":"Entrega segura y fiable","Secure Payment":"Pago seguro","Your information is safe":"Su información está protegida","Handmade Products":"Productos artesanales","Authentic & unique":"Auténticos y únicos","Customer Support":"Atención al cliente","We're here to help":"Estamos aquí para ayudarle",
     "Authentic Turkish Handcrafts to the World":"Artesanía turca auténtica para el mundo","Quick Links":"Enlaces rápidos","Contact Us":"Contáctenos","Follow Us":"Síganos","Your email address":"Su correo electrónico","Subscribe":"Suscribirse","© 2025 MTA Istanbul Trading. All rights reserved.":"© 2025 MTA Istanbul Trading. Todos los derechos reservados.","Made with ♥ in Istanbul":"Hecho con ♥ en Estambul","Added to cart":"Añadido al carrito"
   };
+  const turkish = {
+    "Language":"Dil","Home":"Ana Sayfa","Shop":"Mağaza","Textile":"Tekstil","Handbags":"Çantalar","About Us":"Hakkımızda","Contact":"İletişim",
+    "HANDMADE • AUTHENTIC • UNIQUE":"EL YAPIMI • OTANTİK • EŞSİZ","Turkish Art,":"Türk Sanatı,","Timeless Beauty":"Zamansız Güzellik",
+    "Discover authentic Turkish handcrafts, mosaic lamps, glass art, silverware and more — directly from Istanbul to your doorstep.":"Otantik Türk el sanatlarını, mozaik lambaları, cam sanatını, gümüş ürünleri ve daha fazlasını İstanbul'dan kapınıza kadar keşfedin.",
+    "Shop Now →":"Şimdi Alışveriş Yap →","Mosaic Lamps":"Mozaik Lambalar","Turkish Delights":"Türk Lokumu","Turkish Gifts":"Türk Hediyeleri","Glass Art":"Cam Sanatı","Silver Products":"Gümüş Ürünler","Tea & Coffee Sets":"Çay ve Kahve Setleri","Stone Art":"Taş Sanatı",
+    "Featured Products":"Öne Çıkan Ürünler","Handcrafted with passion. Perfect for your home or as a unique gift.":"Özenle el işçiliğiyle üretildi. Eviniz veya özel bir hediye için mükemmel.",
+    "Mosaic Table Lamp":"Mozaik Masa Lambası","Handmade Glass Vase (Mamluk Design)":"El Yapımı Cam Vazo (Memlük Tasarımı)","Traditional Tea Glass Set (6 pcs)":"Geleneksel Çay Bardağı Seti (6 adet)","Silver Coffee Cup Set":"Gümüş Kahve Fincanı Seti","Istanbul Magnet (New Shape)":"İstanbul Magneti (Yeni Tasarım)",
+    "🛒 Add to Cart":"🛒 Sepete Ekle","◉ Order via WhatsApp":"◉ WhatsApp ile Sipariş Ver","Textile & Gobelin Cushions":"Tekstil ve Goblen Kırlentler","Elegant Turkish Gobelin Cushion Collection":"Şık Türk Goblen Kırlent Koleksiyonu","Gobelin Cushion":"Goblen Kırlent","Material: Gobelin Textile":"Malzeme: Goblen Kumaş","Size: 45 × 45 cm":"Boyut: 45 × 45 cm","Price: $10":"Fiyat: $10",
+    "Silver Collection":"Gümüş Koleksiyonu","Discover our selection of elegant Turkish silver pieces.":"Zarif Türk gümüş ürünlerinden oluşan seçkimizi keşfedin.","Product photos and details will be added soon.":"Ürün fotoğrafları ve detayları yakında eklenecektir.",
+    "Stone Art & Paintings":"Taş Sanatı ve Tablolar","Unique artwork created on natural stone, inspired by Turkish artistry.":"Türk sanatından ilham alan, doğal taş üzerine yapılmış özgün eserler.","Stone Paintings":"Taş Tablolar",
+    "Unbreakable Glass Set":"Kırılmaz Cam Seti","12-piece set":"12 Parçalık Set","Price: $25":"Fiyat: $25","Turkish Tea & Coffee Sets":"Türk Çay ve Kahve Setleri","Traditional tea and coffee sets to bring a touch of Türkiye to your table.":"Sofranıza Türkiye'den bir dokunuş katacak geleneksel çay ve kahve setleri.",
+    "Handbags Collection | مجموعة الحقائب":"Çanta Koleksiyonu","Discover our elegant genuine leather handbag collection, selected for its refined style, beautiful finish and everyday versatility.":"Zarif tarzı, kaliteli işçiliği ve günlük kullanıma uygun tasarımlarıyla seçilmiş hakiki deri çanta koleksiyonumuzu keşfedin.",
+    "Orange Top-Handle Bag":"Turuncu Saplı Çanta","Made from genuine leather, this statement piece pairs a vibrant orange tone with a beautifully structured silhouette for a polished, confident look.":"Hakiki deriden üretilen bu özel çanta, canlı turuncu rengi ve zarif formuyla şık ve özgüvenli bir görünüm sunar.",
+    "Dark Brown Shoulder Bag":"Koyu Kahverengi Omuz Çantası","Crafted from genuine leather, its rich dark-brown look and elegant gold-tone clasp create a timeless accessory that moves effortlessly from day to evening.":"Hakiki deriden üretilen koyu kahverengi görünümü ve zarif altın tonlu tokasıyla gündüzden geceye uyum sağlayan zamansız bir aksesuardır.",
+    "Pink Top-Handle Bag":"Pembe Saplı Çanta","Designed in genuine leather, this striking pink handbag adds a fresh touch of colour while keeping a graceful shape and sophisticated appeal.":"Hakiki deriden tasarlanan bu göz alıcı pembe çanta, zarif formuyla stilinize taze ve sofistike bir renk katar.",
+    "Cognac Textured Handbag":"Dokulu Konyak Rengi Çanta","Made from genuine leather, the warm cognac shade and distinctive textured finish give this handbag a rich, elegant character with lasting style.":"Hakiki deriden üretilen sıcak konyak tonu ve özgün dokulu yüzeyi, bu çantaya zarif ve kalıcı bir şıklık kazandırır.",
+    "◉ Enquire on WhatsApp":"◉ WhatsApp'tan Bilgi Al","About MTA Istanbul Trading":"MTA Istanbul Trading Hakkında",
+    "MTA Istanbul Trading connects the distinctive character of Turkish craftsmanship with customers around the world. Based in Istanbul, we source and carefully select a varied collection of Turkish-made goods, including decorative glass and mosaic pieces, traditional textiles and gobelin cushions, lamps, and thoughtfully chosen accessories.":"MTA Istanbul Trading, Türk el sanatlarının özgün karakterini dünyanın dört bir yanındaki müşterilerle buluşturur. İstanbul merkezli olarak dekoratif cam ve mozaik ürünleri, geleneksel tekstil ve goblen kırlentler, lambalar ve özenle seçilmiş aksesuarlar dahil çeşitli Türk ürünlerini seçiyoruz.",
+    "Our focus is on sharing products that reflect the creativity, heritage and everyday artistry of Türkiye. We aim to make discovering and ordering these pieces from abroad simple and personal, with attentive service and clear communication at every step.":"Amacımız, Türkiye'nin yaratıcılığını, kültürel mirasını ve günlük yaşam sanatını yansıtan ürünleri dünyayla paylaşmaktır. Yurt dışından bu ürünleri keşfetmeyi ve sipariş vermeyi, özenli hizmet ve açık iletişimle kolaylaştırıyoruz.",
+    "From Istanbul, with Love ♡":"İstanbul'dan Sevgiyle ♡","Worldwide Shipping":"Dünya Çapında Kargo","Safe & reliable delivery":"Güvenli ve güvenilir teslimat","Secure Payment":"Güvenli Ödeme","Your information is safe":"Bilgileriniz güvende","Handmade Products":"El Yapımı Ürünler","Authentic & unique":"Otantik ve eşsiz","Customer Support":"Müşteri Desteği","We're here to help":"Size yardımcı olmak için buradayız",
+    "Authentic Turkish Handcrafts to the World":"Dünyaya Otantik Türk El Sanatları","Quick Links":"Hızlı Bağlantılar","Contact Us":"Bize Ulaşın","Follow Us":"Bizi Takip Edin","Your email address":"E-posta adresiniz","Subscribe":"Abone Ol","© 2025 MTA Istanbul Trading. All rights reserved.":"© 2025 MTA Istanbul Trading. Tüm hakları saklıdır.","Made with ♥ in Istanbul":"İstanbul'da ♥ ile yapıldı","Added to cart":"Sepete eklendi"
+  };
   const english = new Map();
   const arabic = new Map(Object.entries(translations));
   function setLanguage(lang){
     const isArabic=lang==="ar";
     const isSpanish=lang==="es";
-    const dictionary=isArabic?translations:(isSpanish?spanish:{});
+    const isTurkish=lang==="tr";
+    const dictionary=isArabic?translations:(isSpanish?spanish:(isTurkish?turkish:{}));
     document.documentElement.lang=lang;
     document.documentElement.dir=isArabic?"rtl":"ltr";
-    document.title=isArabic?"MTA Istanbul Trading | منتجات تركية أصيلة":(isSpanish?"MTA Istanbul Trading | Artesanía turca auténtica":"MTA Istanbul Trading");
+    document.title=isArabic?"MTA Istanbul Trading | منتجات تركية أصيلة":(isSpanish?"MTA Istanbul Trading | Artesanía turca auténtica":(isTurkish?"MTA Istanbul Trading | Türk El Sanatları":"MTA Istanbul Trading"));
     const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
     let node;
     while(node=walker.nextNode()){
@@ -642,17 +665,17 @@ function addToCart(name){
       const trimmed=original.trim();
       if(!trimmed) continue;
       const translated=dictionary[trimmed];
-      if((isArabic||isSpanish) && translated) node.nodeValue=original.replace(trimmed,translated);
-      else if(!isArabic && !isSpanish) node.nodeValue=original;
+      if((isArabic||isSpanish||isTurkish) && translated) node.nodeValue=original.replace(trimmed,translated);
+      else if(!isArabic && !isSpanish && !isTurkish) node.nodeValue=original;
     }
     document.querySelectorAll("[placeholder]").forEach(el=>{
       if(!el.dataset.originalPlaceholder) el.dataset.originalPlaceholder=el.placeholder;
-      el.placeholder=isArabic?"بريدك الإلكتروني":(isSpanish?"Su correo electrónico":el.dataset.originalPlaceholder);
+      el.placeholder=isArabic?"بريدك الإلكتروني":(isSpanish?"Su correo electrónico":(isTurkish?"E-posta adresiniz":el.dataset.originalPlaceholder));
     });
     document.querySelectorAll(".handbag-ar").forEach(el=>{el.style.display=isArabic?"block":"none"});
     document.querySelectorAll(".handbag-intro").forEach(el=>{el.style.display=isArabic?"none":""});
     document.querySelectorAll(".handbag-info>p:not(.handbag-price):not(.handbag-ar)").forEach(el=>{el.style.display=isArabic?"none":""});
-    const label=document.querySelector(".language-label"); if(label) label.textContent=isArabic?"اللغة":(isSpanish?"Idioma":"Language");
+    const label=document.querySelector(".language-label"); if(label) label.textContent=isArabic?"اللغة":(isSpanish?"Idioma":(isTurkish?"Dil":"Language"));
     const selector=document.getElementById("site-language"); if(selector) selector.value=lang;
     try{localStorage.setItem("mta-language",lang)}catch(e){}
   }
