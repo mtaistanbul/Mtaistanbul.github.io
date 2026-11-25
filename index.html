@@ -778,6 +778,47 @@ back.addEventListener("click",closeCollections);
 })();
 </script>
 
+
+<style id="mta-basket-styles">
+.mta-add-basket{display:block;width:100%;margin-top:8px;padding:10px 12px;border:1px solid #d6a84d;border-radius:24px;background:#f7f3e9;color:#102f50;font-size:12px;font-weight:700;cursor:pointer}
+.mta-add-basket:hover{background:#efe3c9}
+.mta-basket-fab{position:fixed;right:18px;bottom:18px;z-index:9998;background:#08243c;color:#fff;border:2px solid #d6a84d;border-radius:28px;padding:12px 17px;font-weight:700;box-shadow:0 5px 18px #0003;cursor:pointer}
+.mta-basket-count{display:inline-flex;min-width:21px;height:21px;align-items:center;justify-content:center;margin-left:6px;border-radius:50%;background:#d6a84d;color:#08243c}
+.mta-basket-panel{display:none;position:fixed;right:16px;bottom:76px;width:min(360px,calc(100vw - 32px));max-height:70vh;overflow:auto;z-index:9999;background:#fff;color:#18304a;border:1px solid #d6a84d;border-radius:14px;padding:18px;box-shadow:0 12px 38px #0003}
+.mta-basket-panel.open{display:block}.mta-basket-panel h3{margin:0 0 12px}.mta-basket-item{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #eee;font-size:13px}.mta-basket-actions{display:flex;gap:8px;margin-top:14px}.mta-basket-actions button{flex:1;padding:10px;border:0;border-radius:20px;font-weight:700;cursor:pointer}.mta-basket-checkout{background:#10a85a;color:white}.mta-basket-clear{background:#eee;color:#18304a}
+</style>
+<script id="mta-basket-functionality">
+(function(){
+  let items=[];try{items=JSON.parse(localStorage.getItem('mta-basket')||'[]')}catch(e){}
+  const save=()=>{try{localStorage.setItem('mta-basket',JSON.stringify(items))}catch(e){};render()};
+  const fab=document.createElement('button');fab.className='mta-basket-fab';fab.type='button';fab.innerHTML='🛒 Basket <span class="mta-basket-count">0</span>';
+  const panel=document.createElement('div');panel.className='mta-basket-panel';panel.setAttribute('aria-label','Shopping basket');
+  document.body.append(fab,panel);
+  function render(){
+    fab.querySelector('.mta-basket-count').textContent=items.reduce((n,x)=>n+x.qty,0);
+    panel.innerHTML='<h3>Shopping Basket</h3>';
+    if(!items.length)panel.insertAdjacentHTML('beforeend','<p>Your basket is empty.</p>');
+    items.forEach((x,i)=>{const row=document.createElement('div');row.className='mta-basket-item';const name=document.createElement('span');name.textContent=x.name+' × '+x.qty;const price=document.createElement('strong');price.textContent=x.price;row.append(name,price);panel.append(row)});
+    const actions=document.createElement('div');actions.className='mta-basket-actions';
+    const checkout=document.createElement('button');checkout.className='mta-basket-checkout';checkout.textContent='Order basket on WhatsApp';checkout.disabled=!items.length;
+    checkout.onclick=()=>{const msg='Hello MTA, I would like to order:\n'+items.map(x=>x.name+' x '+x.qty+' ('+x.price+')').join('\n');window.open('https://wa.me/905344921008?text='+encodeURIComponent(msg),'_blank','noopener')};
+    const clear=document.createElement('button');clear.className='mta-basket-clear';clear.textContent='Clear';clear.onclick=()=>{items=[];save()};
+    actions.append(checkout,clear);panel.append(actions);
+  }
+  fab.addEventListener('click',()=>panel.classList.toggle('open'));
+  document.querySelectorAll('a.wa').forEach(link=>{
+    const card=link.closest('article')||link.closest('.product')||link.parentElement;
+    if(!card||card.querySelector('.mta-add-basket'))return;
+    const name=(card.querySelector('h3')||card.querySelector('h2'))?.textContent.trim()||'MTA product';
+    const price=(card.querySelector('.price,.handbag-price')||card.querySelector('strong'))?.textContent.trim()||'Price on request';
+    const btn=document.createElement('button');btn.type='button';btn.className='mta-add-basket';btn.textContent='＋ Add to Basket';
+    btn.addEventListener('click',()=>{const found=items.find(x=>x.name===name);if(found)found.qty++;else items.push({name,price,qty:1});save();panel.classList.add('open');});
+    link.insertAdjacentElement('afterend',btn);
+  });
+  render();
+})();
+</script>
+
 </body>
 </html>
 /
