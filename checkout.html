@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#08243c">
+<title>Checkout | MTA Istanbul</title>
+<style>
+:root{--navy:#08243c;--blue:#0b477f;--gold:#d6a84d;--cream:#f7f5ef;--line:#e7e1d5;--text:#18304a}
+*{box-sizing:border-box}
+body{margin:0;background:#f7f5ef;color:var(--text);font-family:Arial,Helvetica,sans-serif}
+header{background:#fff;border-bottom:1px solid #eee;padding:18px 5%;display:flex;align-items:center;justify-content:space-between}
+.brand{font: bold 24px Georgia,serif;color:var(--navy);letter-spacing:.3px}.brand small{display:block;font:10px Arial,sans-serif;letter-spacing:1.4px;margin-top:4px}
+header a,.back{color:var(--navy);text-decoration:none;font-size:13px;font-weight:700}
+main{width:min(900px,92%);margin:38px auto 64px}
+h1{font: bold 32px Georgia,serif;color:var(--navy);margin:0 0 8px}
+.lead{color:#687789;margin:0 0 26px;line-height:1.55}
+.layout{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:start}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 8px 24px #102c4510}
+.card h2{font-size:18px;color:var(--navy);margin:0 0 16px}
+.payment-icon{display:flex;gap:9px;align-items:center;font-size:13px;font-weight:700;color:var(--navy)}
+.chip{border:1px solid #d8dce1;border-radius:6px;padding:5px 8px;background:#fff;letter-spacing:1px}
+.status{display:inline-block;background:#fff4dc;color:#795516;border:1px solid #efd79f;border-radius:20px;padding:6px 10px;font-size:11px;font-weight:700;margin:16px 0 10px}
+.notice{background:#faf8f2;border:1px solid #eee4cf;border-radius:10px;padding:14px;font-size:13px;line-height:1.6;color:#5e6670}
+.muted{font-size:12px;color:#77818c;line-height:1.55}
+.whatsapp{display:block;width:100%;border:0;border-radius:26px;background:#0a9f58;color:white;font-weight:700;padding:14px 18px;margin-top:16px;font-size:14px;cursor:pointer}
+.whatsapp:disabled{opacity:.45;cursor:not-allowed}
+.items{margin:0;padding:0;list-style:none}.items li{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #eee;font-size:13px}.items li span:last-child{font-weight:700;text-align:right}
+.empty{padding:18px 0;color:#77818c;font-size:14px}
+.summary-note{margin-top:14px;font-size:12px;line-height:1.5;color:#77818c}
+footer{text-align:center;padding:24px;color:#82909c;font-size:11px}
+@media(max-width:680px){.layout{grid-template-columns:1fr}main{margin-top:28px}.card{padding:20px}h1{font-size:28px}}
+</style>
+</head>
+<body>
+<header><div class="brand">MTA ISTANBUL<small>TRADING • HANDMADE • AUTHENTIC</small></div><a href="index.html">← Continue shopping</a></header>
+<main>
+<h1>Checkout</h1>
+<p class="lead">Review your order and choose how you would like to complete your purchase.</p>
+<div class="layout">
+<section class="card" aria-labelledby="card-title">
+<h2 id="card-title">1. Pay by card</h2>
+<div class="payment-icon"><span class="chip">VISA</span><span class="chip">Mastercard</span><span>Secure card payment</span></div>
+<div class="status">Card payment setup in progress</div>
+<div class="notice"><strong>Secure payment coming soon</strong><br>We are preparing our secure payment-provider connection. Card payments will be enabled here after the provider approves and activates the service. For your security, this website does not collect or store card numbers, expiry dates or security codes.</div>
+<p class="muted">Please do not send card details by WhatsApp, email or message.</p>
+</section>
+<section class="card" aria-labelledby="order-title">
+<h2 id="order-title">Your order</h2>
+<ul class="items" id="order-items"><li class="empty">Loading your basket…</li></ul>
+<p class="summary-note">Final prices, shipping and total will be confirmed with you before payment.</p>
+</section>
+<section class="card" style="grid-column:1/-1" aria-labelledby="whatsapp-title">
+<h2 id="whatsapp-title">2. Pay / order via WhatsApp</h2>
+<p class="muted">Prefer personal assistance? Send your basket to our team on WhatsApp. We will confirm availability, shipping cost and the payment options available for your order.</p>
+<button class="whatsapp" id="whatsapp-order" type="button">Continue with WhatsApp</button>
+</section>
+</div>
+</main>
+<footer>© 2026 MTA Istanbul Trading · From Istanbul, with Love</footer>
+<script>
+(function(){
+ let basket=[];try{basket=JSON.parse(localStorage.getItem('mta-basket')||'[]')}catch(e){basket=[]}
+ const list=document.getElementById('order-items');
+ const button=document.getElementById('whatsapp-order');
+ const clean=basket.filter(x=>x&&typeof x.name==='string'&&Number(x.qty)>0);
+ list.innerHTML='';
+ if(!clean.length){const li=document.createElement('li');li.className='empty';li.textContent='Your basket is empty. Return to the shop to add products.';list.append(li);button.disabled=true;}
+ else clean.forEach(item=>{const li=document.createElement('li');const name=document.createElement('span');name.textContent=item.name+' × '+item.qty;const price=document.createElement('span');price.textContent=item.price||'Price on request';li.append(name,price);list.append(li)});
+ button.addEventListener('click',function(){
+  if(!clean.length)return;
+  const message='Hello MTA Istanbul, I would like to place this order:\n'+clean.map(x=>x.name+' x '+x.qty+' — '+(x.price||'Price on request')).join('\n')+'\nPlease confirm availability, shipping cost and payment options.';
+  window.open('https://wa.me/905344921008?text='+encodeURIComponent(message),'_blank','noopener');
+ });
+})();
+</script>
+</body>
+</html>
