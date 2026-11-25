@@ -775,9 +775,9 @@ back.addEventListener("click",closeCollections);
 
 .mta-add-basket{display:block;width:100%;margin-top:8px;padding:10px 12px;border:1px solid #d6a84d;border-radius:24px;background:#f7f3e9;color:#102f50;font-size:12px;font-weight:700;cursor:pointer}
 .mta-add-basket:hover{background:#efe3c9}
-.mta-basket-fab{position:relative;right:auto;bottom:auto;z-index:20;background:#08243c;color:#fff;border:2px solid #d6a84d;border-radius:28px;padding:9px 13px;font-size:13px;font-weight:700;white-space:nowrap;box-shadow:0 3px 10px #0002;cursor:pointer;flex-shrink:0}.mta-basket-fab:hover{background:#123d60;transform:translateY(-1px)}
+.mta-basket-fab{position:fixed;right:18px;bottom:18px;z-index:10000;background:#08243c;color:#fff;border:2px solid #d6a84d;border-radius:28px;padding:12px 17px;font-size:13px;font-weight:700;white-space:nowrap;box-shadow:0 5px 18px #0003;cursor:pointer;flex-shrink:0}.mta-basket-fab:hover{background:#123d60;transform:translateY(-1px)}
 .mta-basket-count{display:inline-flex;min-width:21px;height:21px;align-items:center;justify-content:center;margin-left:6px;border-radius:50%;background:#d6a84d;color:#08243c}
-.mta-basket-panel{display:none;position:fixed;right:16px;top:82px;bottom:auto;width:min(360px,calc(100vw - 32px));max-height:70vh;overflow:auto;z-index:9999;background:#fff;color:#18304a;border:1px solid #d6a84d;border-radius:14px;padding:18px;box-shadow:0 12px 38px #0003}
+.mta-basket-panel{display:none;position:fixed;right:16px;top:auto;bottom:82px;width:min(390px,calc(100vw - 32px));max-height:76vh;overflow:auto;z-index:9999;background:#fff;color:#18304a;border:1px solid #d6a84d;border-radius:14px;padding:18px;box-shadow:0 12px 38px #0003}
 .mta-basket-panel.open{display:block}.mta-basket-panel h3{margin:0 0 12px}.mta-basket-item{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #eee;font-size:13px}.mta-basket-actions{display:flex;gap:8px;margin-top:14px}.mta-basket-actions button{flex:1;padding:10px;border:0;border-radius:20px;font-weight:700;cursor:pointer}.mta-basket-checkout{background:#10a85a;color:white}.mta-basket-clear{background:#eee;color:#18304a}
 
 /* MTA warm luxury page background */
@@ -788,29 +788,64 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
 .about{background:linear-gradient(120deg,#f8f5ee 0%,#eee7da 100%)}
 .features{background:linear-gradient(135deg,#f5f0e6 0%,#fbf8f2 55%,#eee7db 100%)}
 </style>
+<script src="shipping-config.js"></script>
 <script id="mta-basket-functionality">
 (function(){
   let items=[];try{items=JSON.parse(localStorage.getItem('mta-basket')||'[]')}catch(e){}
+  items=Array.isArray(items)?items.filter(x=>x&&typeof x.name==='string'&&Number(x.qty)>0):[];
+  const cfg=window.MTA_SHIPPING||{currency:'USD',defaultRate:25,expressExtra:15,rates:{}};
+  let selectedCountry='US',selectedMethod='standard';
   const save=()=>{try{localStorage.setItem('mta-basket',JSON.stringify(items))}catch(e){};render()};
   const fab=document.getElementById('mta-basket-header')||document.createElement('button');
-  fab.className='mta-basket-fab';fab.type='button';fab.innerHTML='🛒 Basket <span class="mta-basket-count">0</span>';
-  if(!fab.isConnected){const headerIcons=document.querySelector('.header .icons');if(headerIcons)headerIcons.insertBefore(fab,headerIcons.querySelector('.language-label'));else document.body.append(fab);}
-  const panel=document.createElement('div');panel.className='mta-basket-panel';panel.setAttribute('aria-label','Shopping basket');
+  fab.className='mta-basket-fab';fab.type='button';fab.setAttribute('aria-label','Open shopping basket');
+  fab.innerHTML='🛒 Basket <span class="mta-basket-count">0</span>';
+  if(!fab.isConnected)document.body.append(fab);
+  const panel=document.createElement('div');panel.className='mta-basket-panel';panel.setAttribute('aria-label','Shopping basket');panel.setAttribute('aria-hidden','true');
   document.body.append(panel);
-  function render(){
-    const totalItems=items.reduce((n,x)=>n+x.qty,0);
-    fab.querySelector('.mta-basket-count').textContent=totalItems;
-    panel.innerHTML='<h3>Shopping Basket</h3>';
-    if(!items.length)panel.insertAdjacentHTML('beforeend','<p>Your basket is empty.</p>');
-    items.forEach((x,i)=>{const row=document.createElement('div');row.className='mta-basket-item';const name=document.createElement('span');name.textContent=x.name+' × '+x.qty;const price=document.createElement('strong');price.textContent=x.price;row.append(name,price);panel.append(row)});
-    const actions=document.createElement('div');actions.className='mta-basket-actions';
-    const checkout=document.createElement('button');checkout.className='mta-basket-checkout';checkout.textContent='Order basket on WhatsApp';checkout.disabled=!items.length;
-    checkout.onclick=()=>{const msg='Hello MTA, I would like to order:\n'+items.map(x=>x.name+' x '+x.qty+' ('+x.price+')').join('\n');window.open('https://wa.me/905344921008?text='+encodeURIComponent(msg),'_blank','noopener')};
-    const clear=document.createElement('button');clear.className='mta-basket-clear';clear.textContent='Clear';clear.onclick=()=>{items=[];save()};
-    const payPage=document.createElement('button');payPage.className='mta-basket-checkout';payPage.textContent='Continue to Checkout';payPage.onclick=()=>{window.location.href='checkout.html'};
-    actions.append(payPage,checkout,clear);panel.append(actions);
+  const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:cfg.currency||'USD'}).format(n);
+  const amount=v=>{const n=parseFloat(String(v||'').replace(/[^0-9.]/g,''));return Number.isFinite(n)?n:null};
+  function totals(){
+    let subtotal=0,priced=true;
+    items.forEach(x=>{const v=amount(x.price);if(v===null)priced=false;else subtotal+=v*Number(x.qty)});
+    const base=Object.prototype.hasOwnProperty.call(cfg.rates||{},selectedCountry)?Number(cfg.rates[selectedCountry]):Number(cfg.defaultRate||0);
+    const shipping=base+(selectedMethod==='express'?Number(cfg.expressExtra||15):0);
+    return {subtotal,priced,shipping,total:priced?subtotal+shipping:null};
   }
-  function toggleBasket(){panel.classList.toggle('open');}
+  function closeBasket(){panel.classList.remove('open');panel.setAttribute('aria-hidden','true')}
+  function render(){
+    const totalItems=items.reduce((n,x)=>n+Number(x.qty||0),0);
+    fab.querySelector('.mta-basket-count').textContent=totalItems;
+    panel.innerHTML='<div class="mta-basket-heading"><h3>Shopping Basket</h3><button type="button" class="mta-basket-close" aria-label="Close basket">×</button></div>';
+    const close=panel.querySelector('.mta-basket-close');close.style.cssText='border:0;background:transparent;font-size:25px;line-height:1;color:#18304a;cursor:pointer;padding:0 4px';
+    panel.querySelector('.mta-basket-heading').style.cssText='display:flex;align-items:center;justify-content:space-between;gap:12px';
+    close.addEventListener('click',closeBasket);
+    if(!items.length){
+      panel.insertAdjacentHTML('beforeend','<p>Your basket is empty.</p>');
+    } else {
+      items.forEach(x=>{const row=document.createElement('div');row.className='mta-basket-item';const name=document.createElement('span');name.textContent=x.name+' × '+x.qty;const price=document.createElement('strong');price.textContent=x.price||'Price on request';row.append(name,price);panel.append(row)});
+      panel.insertAdjacentHTML('beforeend',
+        '<div class="mta-basket-shipping" style="margin-top:14px;padding:13px;background:#faf8f2;border:1px solid #e8dfd2;border-radius:11px">'+
+        '<strong style="display:block;margin-bottom:10px;color:#08243c">Shipping Options</strong>'+
+        '<label style="display:block;font-size:12px;margin:8px 0 5px">Delivery country</label>'+
+        '<select class="mta-shipping-country" style="width:100%;padding:10px;border:1px solid #ddd3c3;border-radius:8px;background:#fff">'+
+        '<option value="US">United States</option><option value="CA">Canada</option><option value="GB">United Kingdom</option><option value="DE">Germany</option><option value="FR">France</option><option value="NL">Netherlands</option><option value="IT">Italy</option><option value="ES">Spain</option><option value="AU">Australia</option><option value="TR">Türkiye</option><option value="OTHER">Other country</option></select>'+
+        '<label style="display:block;font-size:12px;margin:10px 0 5px">Delivery speed</label>'+
+        '<select class="mta-shipping-method" style="width:100%;padding:10px;border:1px solid #ddd3c3;border-radius:8px;background:#fff"><option value="standard">Standard Shipping</option><option value="express">Express Shipping</option></select>'+
+        '<div class="mta-basket-totals" style="margin-top:12px;padding-top:10px;border-top:1px solid #e5dccb;font-size:13px;line-height:1.9"></div>'+
+        '<p style="font-size:11px;line-height:1.45;color:#77818c;margin:8px 0 0">Shipping is an estimate. Final postage is confirmed according to parcel weight and dimensions. Rates can be edited in shipping-config.js.</p></div>');
+      const country=panel.querySelector('.mta-shipping-country'),method=panel.querySelector('.mta-shipping-method');
+      country.value=selectedCountry;method.value=selectedMethod;
+      const updateTotals=()=>{selectedCountry=country.value;selectedMethod=method.value;const t=totals(),box=panel.querySelector('.mta-basket-totals');box.innerHTML='<div style="display:flex;justify-content:space-between"><span>Products subtotal</span><strong>'+(t.priced?money(t.subtotal):'To be confirmed')+'</strong></div><div style="display:flex;justify-content:space-between"><span>Estimated shipping</span><strong>'+money(t.shipping)+'</strong></div><div style="display:flex;justify-content:space-between;border-top:1px solid #ddd3c3;margin-top:5px;padding-top:6px;font-size:15px;color:#08243c"><strong>Total</strong><strong>'+(t.total===null?'To be confirmed':money(t.total))+'</strong></div>'};
+      country.addEventListener('change',updateTotals);method.addEventListener('change',updateTotals);updateTotals();
+    }
+    const actions=document.createElement('div');actions.className='mta-basket-actions';
+    const checkout=document.createElement('button');checkout.className='mta-basket-checkout';checkout.textContent='Continue to Checkout';checkout.disabled=!items.length;checkout.onclick=()=>{window.location.href='checkout.html'};
+    const order=document.createElement('button');order.className='mta-basket-checkout';order.textContent='Order on WhatsApp';order.disabled=!items.length;
+    order.onclick=()=>{const t=totals();const msg='Hello MTA Istanbul, I would like to order:\n'+items.map(x=>x.name+' x '+x.qty+' ('+(x.price||'Price on request')+')').join('\n')+'\nDelivery country: '+selectedCountry+'\nShipping: '+(selectedMethod==='express'?'Express':'Standard')+'\nProducts subtotal: '+(t.priced?money(t.subtotal):'To be confirmed')+'\nEstimated shipping: '+money(t.shipping)+'\nEstimated total: '+(t.total===null?'To be confirmed':money(t.total))+'\nPlease confirm final shipping and payment details.';window.open('https://wa.me/905344921008?text='+encodeURIComponent(msg),'_blank','noopener')};
+    const clear=document.createElement('button');clear.className='mta-basket-clear';clear.textContent='Clear Basket';clear.onclick=()=>{items=[];save();closeBasket()};
+    actions.append(checkout,order,clear);panel.append(actions);
+  }
+  function toggleBasket(){const open=!panel.classList.contains('open');panel.classList.toggle('open',open);panel.setAttribute('aria-hidden',String(!open))}
   fab.addEventListener('click',toggleBasket);
   document.querySelectorAll('a.wa').forEach(link=>{
     const card=link.closest('article')||link.closest('.product')||link.parentElement;
@@ -818,7 +853,7 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
     const name=(card.querySelector('h3')||card.querySelector('h2'))?.textContent.trim()||'MTA product';
     const price=(card.querySelector('.price,.handbag-price')||card.querySelector('strong'))?.textContent.trim()||'Price on request';
     const btn=document.createElement('button');btn.type='button';btn.className='mta-add-basket';btn.textContent='＋ Add to Basket';
-    btn.addEventListener('click',()=>{const found=items.find(x=>x.name===name);if(found)found.qty++;else items.push({name,price,qty:1});save();panel.classList.add('open');});
+    btn.addEventListener('click',()=>{const found=items.find(x=>x.name===name);if(found)found.qty++;else items.push({name,price,qty:1});save();panel.classList.add('open');panel.setAttribute('aria-hidden','false')});
     link.insertAdjacentElement('afterend',btn);
   });
   render();
