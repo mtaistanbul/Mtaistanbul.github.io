@@ -693,6 +693,35 @@ function addToCart(name){
       back.type="button";back.className="mta-collection-back";
       back.textContent=document.documentElement.lang==="ar"?"← العودة إلى الأقسام":(document.documentElement.lang==="es"?"← Volver a las colecciones":"← Back to collections");
       
+back.addEventListener("click",closeCollections);
+      target.insertBefore(back,target.firstChild);
+    }
+    const back=target.querySelector(".mta-collection-back");
+    if(back) back.textContent=document.documentElement.lang==="ar"?"← العودة إلى الأقسام":(document.documentElement.lang==="es"?"← Volver a las colecciones":"← Back to collections");
+    if(updateHash && location.hash!=="#"+id) history.pushState(null,"","#"+id);
+    target.scrollIntoView({behavior:"smooth",block:"start"});
+    return true;
+  }
+  document.addEventListener("click",function(event){
+    const link=event.target.closest('a[href^="#"]');
+    if(!link) return;
+    const id=link.getAttribute("href").slice(1);
+    if(ids.includes(id)){
+      event.preventDefault();
+      openCollection(id,true);
+    }
+  });
+  window.addEventListener("popstate",function(){
+    const id=location.hash.slice(1);
+    if(ids.includes(id)) openCollection(id,false);
+    else sections.forEach(section=>section.classList.remove("mta-collection-open"));
+  });
+  const initial=location.hash.slice(1);
+  if(ids.includes(initial)) openCollection(initial,false);
+})();
+</script>
+
+
 <div id="mta-image-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Product image preview">
   <button class="mta-lightbox-close" type="button" aria-label="Close image preview">&times;</button>
   <img class="mta-lightbox-image" alt="">
@@ -726,47 +755,19 @@ function addToCart(name){
   }
   document.addEventListener("click",function(event){
     const img=event.target.closest("img");
-    if(!img || img.closest("#mta-image-lightbox")) return;
-    if(img.closest(".header,.logo,.icons,.social-icons,.language-select")) return;
-    if(img.naturalWidth===0) return;
+    if(!img || img.closest("#mta-image-lightbox,.cat,.header,.logo,.icons,.social-icons,.language-select")) return;
+    if(!img.closest("#tea-coffee,#handbags,#textile,#silver,#stone-art,.product,.product-card")) return;
+    if(!img.complete || img.naturalWidth===0) return;
     event.preventDefault();
     openViewer(img);
   });
-  document.addEventListener("DOMContentLoaded",function(){
-    document.querySelectorAll("img").forEach(function(img){
-      if(!img.closest(".header,.logo,.icons,.social-icons")) img.classList.add("mta-zoomable-image");
-    });
+  document.querySelectorAll("#tea-coffee img,#handbags img,#textile img,#silver img,#stone-art img,.product img,.product-card img").forEach(function(img){
+    img.classList.add("mta-zoomable-image");
+    img.style.cursor="zoom-in";
   });
   closeButton.addEventListener("click",closeViewer);
   viewer.addEventListener("click",function(event){if(event.target===viewer) closeViewer()});
   document.addEventListener("keydown",function(event){if(event.key==="Escape"&&viewer.classList.contains("is-open")) closeViewer()});
-})();
-</script>
-back.addEventListener("click",closeCollections);
-      target.insertBefore(back,target.firstChild);
-    }
-    const back=target.querySelector(".mta-collection-back");
-    if(back) back.textContent=document.documentElement.lang==="ar"?"← العودة إلى الأقسام":(document.documentElement.lang==="es"?"← Volver a las colecciones":"← Back to collections");
-    if(updateHash && location.hash!=="#"+id) history.pushState(null,"","#"+id);
-    target.scrollIntoView({behavior:"smooth",block:"start"});
-    return true;
-  }
-  document.addEventListener("click",function(event){
-    const link=event.target.closest('a[href^="#"]');
-    if(!link) return;
-    const id=link.getAttribute("href").slice(1);
-    if(ids.includes(id)){
-      event.preventDefault();
-      openCollection(id,true);
-    }
-  });
-  window.addEventListener("popstate",function(){
-    const id=location.hash.slice(1);
-    if(ids.includes(id)) openCollection(id,false);
-    else sections.forEach(section=>section.classList.remove("mta-collection-open"));
-  });
-  const initial=location.hash.slice(1);
-  if(ids.includes(initial)) openCollection(initial,false);
 })();
 </script>
 
