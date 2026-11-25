@@ -54,8 +54,9 @@ header{box-shadow:0 3px 14px rgba(44,35,22,.04)}
 </section>
 <section class="card" aria-labelledby="order-title">
 <h2 id="order-title">Your order</h2>
+<label for="shipping-country" class="muted" style="display:block;margin:0 0 8px;font-weight:700">Delivery country</label><select id="shipping-country" style="width:100%;padding:12px;border:1px solid #e2d8c8;border-radius:10px;background:#fff;color:#18304a;margin-bottom:14px"><option value="US">United States</option><option value="CA">Canada</option><option value="GB">United Kingdom</option><option value="DE">Germany</option><option value="FR">France</option><option value="NL">Netherlands</option><option value="IT">Italy</option><option value="ES">Spain</option><option value="AU">Australia</option><option value="TR">Türkiye</option><option value="OTHER">Other country</option></select>
 <ul class="items" id="order-items"><li class="empty">Loading your basket…</li></ul>
-<p class="summary-note">Final prices, shipping and total will be confirmed with you before payment.</p>
+<div style="border-top:1px solid #e8dfd2;margin-top:14px;padding-top:12px;font-size:13px"><div style="display:flex;justify-content:space-between;padding:6px 0"><span>Products subtotal</span><strong id="products-subtotal">—</strong></div><div style="display:flex;justify-content:space-between;padding:6px 0"><span>Shipping estimate</span><strong id="shipping-cost">—</strong></div><div style="display:flex;justify-content:space-between;padding:12px 0 4px;border-top:1px solid #eee;margin-top:6px;font-size:17px;color:#08243c"><strong>Total</strong><strong id="order-total">—</strong></div></div><p class="summary-note" id="shipping-note">Shipping is an estimate and will be confirmed before payment.</p>
 </section>
 <section class="card" style="grid-column:1/-1" aria-labelledby="bank-title">
 <h2 id="bank-title">3. Pay by bank transfer</h2>
@@ -71,25 +72,20 @@ header{box-shadow:0 3px 14px rgba(44,35,22,.04)}
 </div>
 </main>
 <footer>© 2026 MTA Istanbul Trading · From Istanbul, with Love</footer>
-<script>
+<script src="shipping-config.js"></script><script>
 (function(){
- let basket=[];try{basket=JSON.parse(localStorage.getItem('mta-basket')||'[]')}catch(e){basket=[]}
- const list=document.getElementById('order-items');
- const button=document.getElementById('whatsapp-order');
- const clean=basket.filter(x=>x&&typeof x.name==='string'&&Number(x.qty)>0);
- list.innerHTML='';
- if(!clean.length){const li=document.createElement('li');li.className='empty';li.textContent='Your basket is empty. Return to the shop to add products.';list.append(li);button.disabled=true;}
- else clean.forEach(item=>{const li=document.createElement('li');const name=document.createElement('span');name.textContent=item.name+' × '+item.qty;const price=document.createElement('span');price.textContent=item.price||'Price on request';li.append(name,price);list.append(li)});
- const bankButton=document.getElementById('bank-transfer');
- bankButton.addEventListener('click',function(){
-  const message='Hello MTA Istanbul, I would like to pay by bank transfer. Please send me your verified bank details and order reference.\\n'+(clean.length?clean.map(x=>x.name+' x '+x.qty+' — '+(x.price||'Price on request')).join('\\n'):'I will share my order details shortly.');
-  window.open('https://wa.me/905344921008?text='+encodeURIComponent(message),'_blank','noopener');
- });
- button.addEventListener('click',function(){
-  if(!clean.length)return;
-  const message='Hello MTA Istanbul, I would like to place this order:\n'+clean.map(x=>x.name+' x '+x.qty+' — '+(x.price||'Price on request')).join('\n')+'\nPlease confirm availability, shipping cost and payment options.';
-  window.open('https://wa.me/905344921008?text='+encodeURIComponent(message),'_blank','noopener');
- });
+let basket=[];try{basket=JSON.parse(localStorage.getItem('mta-basket')||'[]')}catch(e){}
+const list=document.getElementById('order-items'),button=document.getElementById('whatsapp-order'),bank=document.getElementById('bank-transfer'),country=document.getElementById('shipping-country'),cfg=window.MTA_SHIPPING||{currency:'USD',defaultRate:25,rates:{}},clean=basket.filter(x=>x&&typeof x.name==='string'&&Number(x.qty)>0);
+const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:cfg.currency||'USD'}).format(n);
+function amount(v){if(typeof v==='number')return v;const n=parseFloat(String(v||'').replace(/[^0-9.]/g,''));return Number.isFinite(n)?n:null}
+let subtotal=0,priced=true;list.innerHTML='';
+if(!clean.length){const li=document.createElement('li');li.className='empty';li.textContent='Your basket is empty. Return to the shop to add products.';list.append(li);button.disabled=true;bank.disabled=true}
+else clean.forEach(x=>{const li=document.createElement('li'),n=document.createElement('span'),p=document.createElement('span');n.textContent=x.name+' × '+x.qty;p.textContent=x.price||'Price on request';li.append(n,p);list.append(li);const v=amount(x.price);if(v===null)priced=false;else subtotal+=v*Number(x.qty)});
+function calc(){const r=Object.prototype.hasOwnProperty.call(cfg.rates||{},country.value)?Number(cfg.rates[country.value]):Number(cfg.defaultRate||0),free=cfg.freeShippingFrom!=null&&priced&&subtotal>=Number(cfg.freeShippingFrom),ship=free?0:(Number.isFinite(r)?r:0);document.getElementById('products-subtotal').textContent=priced?money(subtotal):'To be confirmed';document.getElementById('shipping-cost').textContent=money(ship)+(free?' (free)':'');document.getElementById('order-total').textContent=priced?money(subtotal+ship):'To be confirmed';document.getElementById('shipping-note').textContent='Estimated shipping for '+country.options[country.selectedIndex].text+'. Final cost is confirmed against parcel weight and dimensions before payment. Edit rates in shipping-config.js.';return {ship,total:priced?subtotal+ship:null}}
+country.addEventListener('change',calc);calc();
+function msg(action){const t=calc();return 'Hello MTA Istanbul, I would like to '+action+'.\nDelivery country: '+country.options[country.selectedIndex].text+'\n'+clean.map(x=>x.name+' x '+x.qty+' — '+(x.price||'Price on request')).join('\n')+'\nProducts subtotal: '+(priced?money(subtotal):'To be confirmed')+'\nEstimated shipping: '+money(t.ship)+'\nEstimated total: '+(t.total===null?'To be confirmed':money(t.total))+'\nPlease confirm final shipping and payment instructions.'}
+bank.addEventListener('click',()=>window.open('https://wa.me/905344921008?text='+encodeURIComponent(msg('pay by bank transfer')),'_blank','noopener'));
+button.addEventListener('click',()=>{if(clean.length)window.open('https://wa.me/905344921008?text='+encodeURIComponent(msg('place this order')),'_blank','noopener')});
 })();
 </script>
 </body>
