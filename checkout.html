@@ -50,6 +50,12 @@ footer{text-align:center;padding:24px;color:#82909c;font-size:11px}
 <ul class="items" id="order-items"><li class="empty">Loading your basket…</li></ul>
 <p class="summary-note">Final prices, shipping and total will be confirmed with you before payment.</p>
 </section>
+<section class="card" style="grid-column:1/-1" aria-labelledby="bank-title">
+<h2 id="bank-title">3. Pay by bank transfer</h2>
+<p class="muted">You can also pay by bank transfer. Contact us on WhatsApp to receive the correct bank details and your order reference. We will confirm the total, currency and transfer instructions before you send any money.</p>
+<div class="notice"><strong>Bank details on request</strong><br>For your security, please use only bank account details confirmed directly by MTA Istanbul. Do not transfer money to an unverified account.</div>
+<button class="whatsapp" id="bank-transfer" type="button">Request Bank Transfer Details</button>
+</section>
 <section class="card" style="grid-column:1/-1" aria-labelledby="whatsapp-title">
 <h2 id="whatsapp-title">2. Pay / order via WhatsApp</h2>
 <p class="muted">Prefer personal assistance? Send your basket to our team on WhatsApp. We will confirm availability, shipping cost and the payment options available for your order.</p>
@@ -67,6 +73,11 @@ footer{text-align:center;padding:24px;color:#82909c;font-size:11px}
  list.innerHTML='';
  if(!clean.length){const li=document.createElement('li');li.className='empty';li.textContent='Your basket is empty. Return to the shop to add products.';list.append(li);button.disabled=true;}
  else clean.forEach(item=>{const li=document.createElement('li');const name=document.createElement('span');name.textContent=item.name+' × '+item.qty;const price=document.createElement('span');price.textContent=item.price||'Price on request';li.append(name,price);list.append(li)});
+ const bankButton=document.getElementById('bank-transfer');
+ bankButton.addEventListener('click',function(){
+  const message='Hello MTA Istanbul, I would like to pay by bank transfer. Please send me your verified bank details and order reference.\\n'+(clean.length?clean.map(x=>x.name+' x '+x.qty+' — '+(x.price||'Price on request')).join('\\n'):'I will share my order details shortly.');
+  window.open('https://wa.me/905344921008?text='+encodeURIComponent(message),'_blank','noopener');
+ });
  button.addEventListener('click',function(){
   if(!clean.length)return;
   const message='Hello MTA Istanbul, I would like to place this order:\n'+clean.map(x=>x.name+' x '+x.qty+' — '+(x.price||'Price on request')).join('\n')+'\nPlease confirm availability, shipping cost and payment options.';
