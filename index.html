@@ -803,7 +803,8 @@ back.addEventListener("click",closeCollections);
     const checkout=document.createElement('button');checkout.className='mta-basket-checkout';checkout.textContent='Order basket on WhatsApp';checkout.disabled=!items.length;
     checkout.onclick=()=>{const msg='Hello MTA, I would like to order:\n'+items.map(x=>x.name+' x '+x.qty+' ('+x.price+')').join('\n');window.open('https://wa.me/905344921008?text='+encodeURIComponent(msg),'_blank','noopener')};
     const clear=document.createElement('button');clear.className='mta-basket-clear';clear.textContent='Clear';clear.onclick=()=>{items=[];save()};
-    actions.append(checkout,clear);panel.append(actions);
+    const payPage=document.createElement('button');payPage.className='mta-basket-checkout';payPage.textContent='Continue to Checkout';payPage.onclick=()=>{window.location.href='checkout.html'};
+    actions.append(payPage,checkout,clear);panel.append(actions);
   }
   fab.addEventListener('click',()=>panel.classList.toggle('open'));
   document.querySelectorAll('a.wa').forEach(link=>{
