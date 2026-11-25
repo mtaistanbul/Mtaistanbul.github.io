@@ -352,7 +352,7 @@ html[lang="ar"] .footer-grid{direction:rtl}
   <nav class="nav">
     <a class="active" href="#">Home</a><a href="#about">About Us</a><a href="#contact">Contact</a>
   </nav>
-  <div class="icons"><span aria-hidden="true">⌕　♙　🛒<sup>0</sup></span><label class="language-label" for="site-language">Language</label><select id="site-language" class="language-select" aria-label="Choose language"><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option></select></div>
+  <div class="icons"><span aria-hidden="true">⌕　♙</span><button id="mta-header-basket" class="mta-header-basket" type="button" aria-label="Open shopping basket">🛒 <sup id="mta-header-basket-count">0</sup></button><label class="language-label" for="site-language">Language</label><select id="site-language" class="language-select" aria-label="Choose language"><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option></select></div>
 </header>
 
 <section class="hero">
@@ -780,6 +780,7 @@ back.addEventListener("click",closeCollections);
 
 
 <style id="mta-basket-styles">
+.mta-header-basket{border:0;background:transparent;color:#08243c;font-size:19px;cursor:pointer;padding:8px 2px}.mta-header-basket sup{display:inline-flex;min-width:18px;height:18px;align-items:center;justify-content:center;border-radius:50%;background:#d6a84d;color:#08243c;font-size:10px;font-weight:700;vertical-align:top;margin-left:2px}
 .mta-add-basket{display:block;width:100%;margin-top:8px;padding:10px 12px;border:1px solid #d6a84d;border-radius:24px;background:#f7f3e9;color:#102f50;font-size:12px;font-weight:700;cursor:pointer}
 .mta-add-basket:hover{background:#efe3c9}
 .mta-basket-fab{position:fixed;right:18px;bottom:18px;z-index:9998;background:#08243c;color:#fff;border:2px solid #d6a84d;border-radius:28px;padding:12px 17px;font-weight:700;box-shadow:0 5px 18px #0003;cursor:pointer}
@@ -795,7 +796,9 @@ back.addEventListener("click",closeCollections);
   const panel=document.createElement('div');panel.className='mta-basket-panel';panel.setAttribute('aria-label','Shopping basket');
   document.body.append(fab,panel);
   function render(){
-    fab.querySelector('.mta-basket-count').textContent=items.reduce((n,x)=>n+x.qty,0);
+    const totalItems=items.reduce((n,x)=>n+x.qty,0);
+    fab.querySelector('.mta-basket-count').textContent=totalItems;
+    if(headerCount)headerCount.textContent=totalItems;
     panel.innerHTML='<h3>Shopping Basket</h3>';
     if(!items.length)panel.insertAdjacentHTML('beforeend','<p>Your basket is empty.</p>');
     items.forEach((x,i)=>{const row=document.createElement('div');row.className='mta-basket-item';const name=document.createElement('span');name.textContent=x.name+' × '+x.qty;const price=document.createElement('strong');price.textContent=x.price;row.append(name,price);panel.append(row)});
@@ -806,7 +809,11 @@ back.addEventListener("click",closeCollections);
     const payPage=document.createElement('button');payPage.className='mta-basket-checkout';payPage.textContent='Continue to Checkout';payPage.onclick=()=>{window.location.href='checkout.html'};
     actions.append(payPage,checkout,clear);panel.append(actions);
   }
-  fab.addEventListener('click',()=>panel.classList.toggle('open'));
+  const headerBasket=document.getElementById('mta-header-basket');
+  const headerCount=document.getElementById('mta-header-basket-count');
+  function toggleBasket(){panel.classList.toggle('open');}
+  fab.addEventListener('click',toggleBasket);
+  if(headerBasket)headerBasket.addEventListener('click',toggleBasket);
   document.querySelectorAll('a.wa').forEach(link=>{
     const card=link.closest('article')||link.closest('.product')||link.parentElement;
     if(!card||card.querySelector('.mta-add-basket'))return;
