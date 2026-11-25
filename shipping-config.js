@@ -5,6 +5,7 @@
 window.MTA_SHIPPING = {
   currency: 'USD',
   defaultRate: 25,
+  expressExtra: 15,
   rates: {
     'TR': 0,
     'US': 25,
