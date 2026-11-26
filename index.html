@@ -911,7 +911,6 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
       const amount=Number(option.dataset.price);
       const unit=selector.dataset.unit||'Persons';
       return {name:name+' — '+option.value+' '+unit,price:'
-    }
     function syncVariant(){
       if(!selector)return;
       const details=selectedDetails();
@@ -919,31 +918,6 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
       const option=selector.options[selector.selectedIndex];
       const unit=selector.dataset.unit||'persons';
       link.href='https://wa.me/905344921008?text='+encodeURIComponent('Hello MTA, I am interested in the '+name+' — '+option.value+' '+unit+' - '+details.price);
-    }
-    if(selector){selector.addEventListener('change',syncVariant);syncVariant();}
-    const btn=document.createElement('button');btn.type='button';btn.className='mta-add-basket';btn.textContent='＋ Add to Basket';
-    btn.addEventListener('click',()=>{
-      const details=selectedDetails();
-      const found=items.find(x=>x.name===details.name&&x.price===details.price);
-      if(found)found.qty++;else items.push({name:details.name,price:details.price,qty:1});
-      save();panel.classList.add('open');panel.setAttribute('aria-hidden','false');
-    });
-    link.insertAdjacentElement('afterend',btn);
-  });
-  render();
-})();
-</script>
-
-</body>
-</html>
-+amount.toFixed(2).replace(/\.00$/,'')};
-    }
-    function syncVariant(){
-      if(!selector)return;
-      const details=selectedDetails();
-      if(priceElement)priceElement.textContent=details.price;
-      const option=selector.options[selector.selectedIndex];
-      link.href='https://wa.me/905344921008?text='+encodeURIComponent('Hello MTA, I am interested in the '+name+' for '+option.value+' persons - '+details.price);
     }
     if(selector){selector.addEventListener('change',syncVariant);syncVariant();}
     const btn=document.createElement('button');btn.type='button';btn.className='mta-add-basket';btn.textContent='＋ Add to Basket';
