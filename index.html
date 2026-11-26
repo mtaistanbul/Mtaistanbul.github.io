@@ -504,7 +504,14 @@ html[lang="ar"] .footer-grid{direction:rtl}
       <div class="tea-product-image"><img src="/images/tea-coffee/IMG_20261122_202915.webp?v=6" alt="Swarovski Turkish coffee cup" loading="lazy"></div>
       <div class="tea-product-info">
         <h3>Swarovski Turkish Coffee Cup</h3>
-        <p class="tea-product-description">An elegant Turkish coffee cup adorned with sparkling Swarovski crystal details. A refined decorative touch for your coffee moments and a thoughtful gift for someone special.</p>
+        <p class="tea-product-description">An elegant Turkish coffee cup adorned with sparkling Swarovski crystal details. Choose a set of 2, 4, or 6 cups to suit your table or gifting needs.</p>
+        <label class="cezve-option-label" for="swarovski-cup-quantity">Choose quantity:</label>
+        <select id="swarovski-cup-quantity" class="cezve-size-select" data-unit="Cups" aria-label="Choose number of Swarovski coffee cups">
+          <option value="1" data-price="25">1 Cup — $25</option>
+          <option value="2" data-price="50">2 Cups — $50</option>
+          <option value="4" data-price="100">4 Cups — $100</option>
+          <option value="6" data-price="150">6 Cups — $150</option>
+        </select>
         <div class="tea-price">$25</div>
         <a class="wa" href="https://wa.me/905344921008?text=Hello%20MTA%2C%20I%27m%20interested%20in%20the%20Swarovski%20Turkish%20Coffee%20Cup%20-%20%2425" target="_blank" rel="noopener">🟢 WhatsApp Order</a>
       </div>
@@ -902,7 +909,34 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
       if(!selector)return {name,price:priceElement?.textContent.trim()||'Price on request'};
       const option=selector.options[selector.selectedIndex];
       const amount=Number(option.dataset.price);
-      return {name:name+' — '+option.value+' Persons',price:'$'+amount.toFixed(2).replace(/\.00$/,'')};
+      const unit=selector.dataset.unit||'Persons';
+      return {name:name+' — '+option.value+' '+unit,price:'
+    }
+    function syncVariant(){
+      if(!selector)return;
+      const details=selectedDetails();
+      if(priceElement)priceElement.textContent=details.price;
+      const option=selector.options[selector.selectedIndex];
+      const unit=selector.dataset.unit||'persons';
+      link.href='https://wa.me/905344921008?text='+encodeURIComponent('Hello MTA, I am interested in the '+name+' — '+option.value+' '+unit+' - '+details.price);
+    }
+    if(selector){selector.addEventListener('change',syncVariant);syncVariant();}
+    const btn=document.createElement('button');btn.type='button';btn.className='mta-add-basket';btn.textContent='＋ Add to Basket';
+    btn.addEventListener('click',()=>{
+      const details=selectedDetails();
+      const found=items.find(x=>x.name===details.name&&x.price===details.price);
+      if(found)found.qty++;else items.push({name:details.name,price:details.price,qty:1});
+      save();panel.classList.add('open');panel.setAttribute('aria-hidden','false');
+    });
+    link.insertAdjacentElement('afterend',btn);
+  });
+  render();
+})();
+</script>
+
+</body>
+</html>
++amount.toFixed(2).replace(/\.00$/,'')};
     }
     function syncVariant(){
       if(!selector)return;
