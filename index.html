@@ -554,7 +554,7 @@ html[lang="ar"] .footer-grid{direction:rtl}
       const option=selector.options[selector.selectedIndex];
       const people=option.value;
       const amount=Number(option.dataset.price);
-      const formatted='$'+amount.toFixed(2).replace(/\\.00$/,'');
+      const formatted='$'+amount.toFixed(2).replace(/\.00$/,'');
       if(price) price.textContent=formatted;
       if(link){
         const unit=selector.id==='cezve-size'?'people':'persons';
