@@ -909,7 +909,7 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
       const option=selector.options[selector.selectedIndex];
       const people=option.value;
       const amount=Number(option.dataset.price);
-      return {name:name+' — '+people+' Persons',price:'$'+amount.toFixed(2).replace(/\\.00$/,'')};
+      return {name:name+' — '+people+' Persons',price:'$'+amount.toFixed(2).replace(/\.00$/,'')};
     }
     function syncVariant(){
       if(!selector)return;
