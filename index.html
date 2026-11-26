@@ -369,6 +369,10 @@ html[lang="ar"] .footer-grid{direction:rtl}
 
 
 <style id="mta-turkish-delights-subcategories">
+/* Keep the entire Turkish Delights collection and its subcategory menu off the homepage. */
+#turkish-delights:not(.mta-collection-open){display:none!important;}
+#turkish-delights.mta-collection-open{display:block!important;}
+
 #turkish-delights .td-subcategory-menu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;max-width:1120px;margin:30px auto;padding:0 18px}
 #turkish-delights .td-category-card{display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-height:190px;padding:24px 22px;text-align:left;border:1px solid #dfc58e;border-radius:15px;background:linear-gradient(145deg,#fffefa 0%,#f4ecdc 100%);color:#102f50;box-shadow:0 8px 22px rgba(25,43,62,.08);cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
 #turkish-delights .td-category-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(25,43,62,.13)}
