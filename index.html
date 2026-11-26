@@ -910,7 +910,8 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
       const option=selector.options[selector.selectedIndex];
       const amount=Number(option.dataset.price);
       const unit=selector.dataset.unit||'Persons';
-      return {name:name+' — '+option.value+' '+unit,price:'
+      return {name:name+' — '+option.value+' '+unit,price:'$'+amount.toFixed(2).replace(/\.00$/,'')};
+    }
     function syncVariant(){
       if(!selector)return;
       const details=selectedDetails();
