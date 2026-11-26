@@ -307,6 +307,8 @@ html[lang="ar"] .footer-grid{direction:rtl}
 #textile.mta-collection-open, #handbags.mta-collection-open,
 #silver.mta-collection-open, #stone-art.mta-collection-open,
 #tea-coffee.mta-collection-open { display:block; }
+/* Keep handbag product photos inside their own category only. */
+#handbags:not(.mta-collection-open) { display:none !important; }
 .mta-collection-back{
   display:inline-flex;align-items:center;gap:8px;margin:0 0 24px;
   padding:10px 16px;border:1px solid #d6c39f;border-radius:24px;
@@ -509,8 +511,8 @@ html[lang="ar"] .footer-grid{direction:rtl}
     <article class="tea-product-card">
       <div class="tea-product-image"><img src="/images/tea-coffee/IMG_20261122_202942.webp?v=6" alt="Handmade Turkish coffee set of two cups" loading="lazy"></div>
       <div class="tea-product-info">
-        <h3>Handmade Turkish Coffee Set — 10 Pieces</h3>
-        <p class="tea-product-description">A handmade 10-piece Turkish coffee set. Each place setting includes an inner porcelain cup with its lid and an elegant outer copper layer with a matching lid. Choose a set for 2, 4 or 6 persons.</p>
+        <h3>Handmade Turkish Coffee Set</h3>
+        <p class="tea-product-description">Handmade 10-piece set for 2 persons, including porcelain cups and lids with elegant outer copper layers and matching lids. The 4-person set contains 20 pieces, and the 6-person set contains 30 pieces.</p>
         <label class="cezve-option-label" for="coffee-set-size">Choose set size:</label>
         <select id="coffee-set-size" class="cezve-size-select" aria-label="Choose Turkish coffee set size">
           <option value="2" data-price="117">2 Persons — $117</option>
