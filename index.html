@@ -1018,7 +1018,18 @@ function addToCart(name){
       back.type="button";
       back.className="mta-collection-back";
       back.textContent=document.documentElement.lang==="ar"?"← العودة إلى الأقسام":(document.documentElement.lang==="es"?"← Volver a las colecciones":"← Back to collections");
-      back.addEventListener("click",closeCollections);
+      back.addEventListener("click",function(){
+        if(id==="turkish-delights"){
+          const hasOpenSubcategory=Array.from(target.querySelectorAll(".td-subcategory-panel")).some(panel=>!panel.hidden);
+          if(hasOpenSubcategory){
+            resetTurkishDelights();
+            const menu=target.querySelector(".td-subcategory-menu");
+            if(menu)menu.scrollIntoView({behavior:"smooth",block:"start"});
+            return;
+          }
+        }
+        closeCollections();
+      });
       target.insertBefore(back,target.firstChild);
     }
     const back=target.querySelector(".mta-collection-back");
