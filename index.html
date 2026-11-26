@@ -382,6 +382,7 @@ html[lang="ar"] .footer-grid{direction:rtl}
 #turkish-delights .td-category-arrow{margin-top:auto;font-size:12px;font-weight:700;color:#0b477f}
 #turkish-delights .td-subcategory-panel[hidden],#turkish-delights .td-subcategory-menu[hidden]{display:none!important}
 #turkish-delights .td-subcategory-back{display:inline-flex;align-items:center;margin:0 0 22px;padding:10px 16px;border:1px solid #d6c39f;border-radius:24px;background:#fffdf8;color:#18304a;font-size:13px;font-weight:700;cursor:pointer}
+#turkish-delights .td-menu-exit{display:inline-flex;align-items:center;margin:0 18px 0;padding:10px 16px;border:1px solid #d6c39f;border-radius:24px;background:#fffdf8;color:#18304a;font-size:13px;font-weight:700;cursor:pointer}
 #turkish-delights .td-coming-soon{max-width:1120px;margin:12px auto;padding:45px 20px;text-align:center;border:1px solid #dfc58e;border-radius:15px;background:linear-gradient(145deg,#fffefa 0%,#f4ecdc 100%);color:#18304a}
 #turkish-delights .td-coming-soon strong{font-family:Georgia,serif;font-size:22px}
 #turkish-delights .td-coming-soon p{font-size:13px;color:#6f6a60}
@@ -1008,32 +1009,35 @@ function addToCart(name){
     const target=document.getElementById(id);
     if(!target || !ids.includes(id)) return false;
 
-    // Opening any other collection clears the last Turkish Delights subpage.
-    // Reopening Turkish Delights always starts from its three category choices.
     resetTurkishDelights();
     sections.forEach(section=>section.classList.toggle("mta-collection-open",section===target));
 
-    if(!target.querySelector(".mta-collection-back")){
-      const back=document.createElement("button");
-      back.type="button";
-      back.className="mta-collection-back";
+    if(id==="turkish-delights"){
+      // Turkish Delights has two distinct back levels:
+      // subcategory -> its three choices; choices -> main collections.
+      const menu=target.querySelector(".td-subcategory-menu");
+      let exit=target.querySelector(".td-menu-exit");
+      if(menu && !exit){
+        exit=document.createElement("button");
+        exit.type="button";
+        exit.className="td-menu-exit";
+        exit.textContent=document.documentElement.lang==="ar"?"← العودة إلى الأقسام":(document.documentElement.lang==="es"?"← Volver a las colecciones":"← Back to collections");
+        exit.addEventListener("click",closeCollections);
+        menu.parentNode.insertBefore(exit,menu);
+      }
+      const oldBack=target.querySelector(".mta-collection-back");
+      if(oldBack)oldBack.remove();
+    }else{
+      let back=target.querySelector(".mta-collection-back");
+      if(!back){
+        back=document.createElement("button");
+        back.type="button";
+        back.className="mta-collection-back";
+        back.addEventListener("click",closeCollections);
+        target.insertBefore(back,target.firstChild);
+      }
       back.textContent=document.documentElement.lang==="ar"?"← العودة إلى الأقسام":(document.documentElement.lang==="es"?"← Volver a las colecciones":"← Back to collections");
-      back.addEventListener("click",function(){
-        if(id==="turkish-delights"){
-          const hasOpenSubcategory=Array.from(target.querySelectorAll(".td-subcategory-panel")).some(panel=>!panel.hidden);
-          if(hasOpenSubcategory){
-            resetTurkishDelights();
-            const menu=target.querySelector(".td-subcategory-menu");
-            if(menu)menu.scrollIntoView({behavior:"smooth",block:"start"});
-            return;
-          }
-        }
-        closeCollections();
-      });
-      target.insertBefore(back,target.firstChild);
     }
-    const back=target.querySelector(".mta-collection-back");
-    if(back) back.textContent=document.documentElement.lang==="ar"?"← العودة إلى الأقسام":(document.documentElement.lang==="es"?"← Volver a las colecciones":"← Back to collections");
 
     if(updateHash && location.hash!=="#"+id) history.pushState(null,"","#"+id);
     target.scrollIntoView({behavior:"smooth",block:"start"});
