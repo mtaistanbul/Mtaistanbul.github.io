@@ -908,6 +908,12 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
 .about{background:linear-gradient(120deg,#f8f5ee 0%,#eee7da 100%)}
 .features{background:linear-gradient(135deg,#f5f0e6 0%,#fbf8f2 55%,#eee7db 100%)}
 </style>
+<style id="mta-mosaic-layout-fix">
+/* Keep each lamp control on its own centered row */
+#mosaic-lamps .mosaic-lamp-info .mosaic-spec-toggle{display:table!important;float:none!important;clear:both!important;margin:4px auto 12px!important;text-align:center}
+#mosaic-lamps .mosaic-lamp-info .mosaic-lamp-choice{display:block!important;position:relative!important;float:none!important;clear:both!important;width:100%!important;margin:10px auto 6px!important;text-align:center!important}
+#mosaic-lamps .mosaic-lamp-info .mosaic-lamp-size-buttons{display:flex!important;position:relative!important;float:none!important;clear:both!important;width:100%!important;justify-content:center!important;margin:8px auto 12px!important}
+</style>
 <script id="mta-mosaic-specifications">
 (function(){
   document.addEventListener("click",function(event){
