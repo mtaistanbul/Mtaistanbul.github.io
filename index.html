@@ -984,29 +984,51 @@ function addToCart(name){
   const ids=["textile","handbags","silver","stone-art","tea-coffee","mosaic-lamps","turkish-delights"];
   const sections=ids.map(id=>document.getElementById(id)).filter(Boolean);
   const categoryBar=document.querySelector(".categories");
+  const delights=document.getElementById("turkish-delights");
+
+  // Always reset Turkish Delights to its own subcategory menu.
+  // This prevents a previously selected product panel from staying active
+  // after the visitor leaves the collection or opens another collection.
+  function resetTurkishDelights(){
+    if(!delights)return;
+    const menu=delights.querySelector(".td-subcategory-menu");
+    const panels=Array.from(delights.querySelectorAll(".td-subcategory-panel"));
+    panels.forEach(panel=>panel.hidden=true);
+    if(menu)menu.hidden=false;
+  }
+
   function closeCollections(){
     sections.forEach(section=>section.classList.remove("mta-collection-open"));
+    resetTurkishDelights();
     if(location.hash && ids.includes(location.hash.slice(1))) history.replaceState(null,"",location.pathname+location.search);
     if(categoryBar) categoryBar.scrollIntoView({behavior:"smooth",block:"start"});
   }
+
   function openCollection(id,updateHash){
     const target=document.getElementById(id);
     if(!target || !ids.includes(id)) return false;
+
+    // Opening any other collection clears the last Turkish Delights subpage.
+    // Reopening Turkish Delights always starts from its three category choices.
+    resetTurkishDelights();
     sections.forEach(section=>section.classList.toggle("mta-collection-open",section===target));
+
     if(!target.querySelector(".mta-collection-back")){
       const back=document.createElement("button");
-      back.type="button";back.className="mta-collection-back";
+      back.type="button";
+      back.className="mta-collection-back";
       back.textContent=document.documentElement.lang==="ar"?"← العودة إلى الأقسام":(document.documentElement.lang==="es"?"← Volver a las colecciones":"← Back to collections");
-      
-back.addEventListener("click",closeCollections);
+      back.addEventListener("click",closeCollections);
       target.insertBefore(back,target.firstChild);
     }
     const back=target.querySelector(".mta-collection-back");
     if(back) back.textContent=document.documentElement.lang==="ar"?"← العودة إلى الأقسام":(document.documentElement.lang==="es"?"← Volver a las colecciones":"← Back to collections");
+
     if(updateHash && location.hash!=="#"+id) history.pushState(null,"","#"+id);
     target.scrollIntoView({behavior:"smooth",block:"start"});
     return true;
   }
+
   document.addEventListener("click",function(event){
     const link=event.target.closest('a[href^="#"]');
     if(!link) return;
@@ -1016,13 +1038,18 @@ back.addEventListener("click",closeCollections);
       openCollection(id,true);
     }
   });
+
   window.addEventListener("popstate",function(){
     const id=location.hash.slice(1);
     if(ids.includes(id)) openCollection(id,false);
-    else sections.forEach(section=>section.classList.remove("mta-collection-open"));
+    else closeCollections();
   });
+
+  // A direct visit or refresh never restores a stale subcategory panel.
+  resetTurkishDelights();
   const initial=location.hash.slice(1);
   if(ids.includes(initial)) openCollection(initial,false);
+  else closeCollections();
 })();
 </script>
 
