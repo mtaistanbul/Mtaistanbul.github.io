@@ -928,7 +928,7 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
   });
 })();
 </script>
-<script id="mta-mosaic-size-buttons">\n(function(){\n document.addEventListener("click",function(event){\n  const button=event.target.closest(".mosaic-size-btn");\n  if(!button)return;\n  const group=button.closest(".mosaic-lamp-info");\n  const select=group&&group.querySelector(".mosaic-lamp-select");\n  if(!select)return;\n  select.value=button.dataset.value;\n  select.dispatchEvent(new Event("change",{bubbles:true}));\n  group.querySelectorAll(".mosaic-size-btn").forEach(function(item){\n   const active=item===button;item.classList.toggle("is-selected",active);item.setAttribute("aria-pressed",String(active));\n  });\n });\n})();\n</script>\n<script src="shipping-config.js"></script>
+<script src="shipping-config.js"></script>
 <script id="mta-basket-functionality">
 (function(){
   let items=[];try{items=JSON.parse(localStorage.getItem('mta-basket')||'[]')}catch(e){}
