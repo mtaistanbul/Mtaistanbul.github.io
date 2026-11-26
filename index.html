@@ -550,7 +550,7 @@ html[lang="ar"] .footer-grid{direction:rtl}
       </div>
     </article>
     <article class="tea-product-card">
-      <div class="tea-product-image"><img src="/images/IMG_20261122_230156.jpg" alt="Turkish glass tea set design one" loading="lazy"></div>
+      <div class="tea-product-image tea-glass-design"><img src="/images/IMG_20261122_230156.jpg" alt="Turkish glass tea set design one" loading="lazy"></div>
       <div class="tea-product-info">
         <h3>Turkish Glass Tea Set – Design 1</h3>
         <p class="tea-product-description">A complete 12-piece set featuring 6 traditional Turkish tea glasses and 6 matching saucers. A lovely addition to your tea table or a thoughtful gift.</p>
@@ -559,7 +559,7 @@ html[lang="ar"] .footer-grid{direction:rtl}
       </div>
     </article>
     <article class="tea-product-card">
-      <div class="tea-product-image"><img src="/images/IMG_20261122_230224.jpg" alt="Turkish glass tea set design two" loading="lazy"></div>
+      <div class="tea-product-image tea-glass-design"><img src="/images/IMG_20261122_230224.jpg" alt="Turkish glass tea set design two" loading="lazy"></div>
       <div class="tea-product-info">
         <h3>Turkish Glass Tea Set – Design 2</h3>
         <p class="tea-product-description">A complete 12-piece set featuring 6 traditional Turkish tea glasses and 6 matching saucers. A lovely addition to your tea table or a thoughtful gift.</p>
@@ -568,7 +568,7 @@ html[lang="ar"] .footer-grid{direction:rtl}
       </div>
     </article>
     <article class="tea-product-card">
-      <div class="tea-product-image"><img src="/images/IMG_20261122_230300.jpg" alt="Turkish glass tea set design three" loading="lazy"></div>
+      <div class="tea-product-image tea-glass-design"><img src="/images/IMG_20261122_230300.jpg" alt="Turkish glass tea set design three" loading="lazy"></div>
       <div class="tea-product-info">
         <h3>Turkish Glass Tea Set – Design 3</h3>
         <p class="tea-product-description">A complete 12-piece set featuring 6 traditional Turkish tea glasses and 6 matching saucers. A lovely addition to your tea table or a thoughtful gift.</p>
@@ -859,6 +859,28 @@ back.addEventListener("click",closeCollections);
 .mta-basket-panel{display:none;position:fixed;right:16px;top:auto;bottom:82px;width:min(390px,calc(100vw - 32px));max-height:76vh;overflow:auto;z-index:9999;background:#fff;color:#18304a;border:1px solid #d6a84d;border-radius:14px;padding:18px;box-shadow:0 12px 38px #0003}
 .mta-basket-panel.open{display:block}.mta-basket-panel h3{margin:0 0 12px}.mta-basket-item{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #eee;font-size:13px}.mta-basket-actions{display:flex;gap:8px;margin-top:14px}.mta-basket-actions button{flex:1;padding:10px;border:0;border-radius:20px;font-weight:700;cursor:pointer}.mta-basket-checkout{background:#10a85a;color:white}.mta-basket-clear{background:#eee;color:#18304a}
 
+/* Refined display background for the three newly added glass tea sets */
+#tea-coffee .tea-product-image.tea-glass-design{
+  position:relative;
+  overflow:hidden;
+  padding:18px;
+  background:
+    radial-gradient(ellipse at 50% 38%,rgba(255,255,255,.98) 0%,rgba(255,253,247,.94) 34%,rgba(239,226,203,.82) 72%,rgba(224,207,177,.78) 100%),
+    linear-gradient(145deg,#fbf7ee 0%,#e9dcc4 100%);
+  border-bottom:1px solid rgba(190,160,111,.28);
+}
+#tea-coffee .tea-product-image.tea-glass-design img{
+  position:relative;
+  z-index:1;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  border-radius:7px;
+  filter:drop-shadow(0 9px 10px rgba(66,48,25,.16));
+}
+@media(max-width:600px){
+  #tea-coffee .tea-product-image.tea-glass-design{height:270px;padding:16px}
+}
 /* MTA warm luxury page background */
 body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
 .section{background:linear-gradient(135deg,#f4f0e7 0%,#faf8f3 52%,#eee8dc 100%)}
