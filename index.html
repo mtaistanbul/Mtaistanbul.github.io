@@ -1023,7 +1023,7 @@ function addToCart(name){
         exit.className="td-menu-exit";
         exit.textContent=document.documentElement.lang==="ar"?"← العودة إلى الأقسام":(document.documentElement.lang==="es"?"← Volver a las colecciones":"← Back to collections");
         exit.addEventListener("click",closeCollections);
-        menu.parentNode.insertBefore(exit,menu);
+        menu.insertBefore(exit,menu.firstChild);
       }
       const oldBack=target.querySelector(".mta-collection-back");
       if(oldBack)oldBack.remove();
