@@ -303,10 +303,12 @@ html[lang="ar"] .footer-grid{direction:rtl}
 
 
 /* MTA collection navigation: open one product gallery when its category is selected */
-#textile, #handbags, #silver, #stone-art, #tea-coffee { display:none; }
+#textile, #handbags, #silver, #stone-art, #tea-coffee { display:none !important; }
 #textile.mta-collection-open, #handbags.mta-collection-open,
 #silver.mta-collection-open, #stone-art.mta-collection-open,
-#tea-coffee.mta-collection-open { display:block; }
+#tea-coffee.mta-collection-open { display:block !important; }
+/* Keep handbag photos off the homepage; show only inside the Handbags category. */
+#handbags:not(.mta-collection-open) { display:none !important; }
 .mta-collection-back{
   display:inline-flex;align-items:center;gap:8px;margin:0 0 24px;
   padding:10px 16px;border:1px solid #d6c39f;border-radius:24px;
