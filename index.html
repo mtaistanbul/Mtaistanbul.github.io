@@ -1038,5 +1038,58 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
 })();
 </script>
 
+
+<style id="mta-image-protection">
+/* Light-touch image protection: visible brand watermark without blocking product details */
+.mta-protected-image{
+  position:relative!important;
+}
+.mta-protected-image::after{
+  content:"MTA ISTANBUL";
+  position:absolute;
+  z-index:4;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) rotate(-24deg);
+  color:rgba(255,255,255,.62);
+  font:700 clamp(13px,2vw,21px)/1 Arial,Helvetica,sans-serif;
+  letter-spacing:3px;
+  white-space:nowrap;
+  text-shadow:0 1px 4px rgba(0,0,0,.55),0 0 2px rgba(0,0,0,.4);
+  pointer-events:none;
+  user-select:none;
+}
+#mta-image-lightbox .mta-lightbox-image{
+  -webkit-user-drag:none;
+  user-select:none;
+}
+</style>
+<script id="mta-image-protection-script">
+(function(){
+  function protectProductImages(){
+    const selector="#tea-coffee img,#handbags img,#textile img,#silver img,#stone-art img,#mosaic-lamps img,.product img,.product-card img";
+    document.querySelectorAll(selector).forEach(function(img){
+      if(img.closest("#mta-image-lightbox")) return;
+      const host=img.parentElement;
+      if(!host) return;
+      host.classList.add("mta-protected-image");
+      img.setAttribute("draggable","false");
+      img.style.webkitUserDrag="none";
+    });
+  }
+  document.addEventListener("contextmenu",function(event){
+    if(event.target.closest("#tea-coffee img,#handbags img,#textile img,#silver img,#stone-art img,#mosaic-lamps img,.product img,.product-card img,#mta-image-lightbox img")){
+      event.preventDefault();
+    }
+  });
+  document.addEventListener("dragstart",function(event){
+    if(event.target.matches("img")) event.preventDefault();
+  });
+  document.addEventListener("DOMContentLoaded",protectProductImages);
+  protectProductImages();
+  window.addEventListener("load",protectProductImages);
+})();
+</script>
+
 </body>
 </html>
