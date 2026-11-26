@@ -1064,6 +1064,23 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
   user-select:none;
 }
 </style>
+<style id="mta-lightbox-watermark">
+#mta-image-lightbox::after{
+  content:"MTA ISTANBUL";
+  position:absolute;
+  z-index:10002;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) rotate(-24deg);
+  color:rgba(255,255,255,.62);
+  font:700 clamp(15px,3vw,25px)/1 Arial,Helvetica,sans-serif;
+  letter-spacing:3px;
+  white-space:nowrap;
+  text-shadow:0 1px 4px rgba(0,0,0,.7),0 0 2px rgba(0,0,0,.5);
+  pointer-events:none;
+  user-select:none;
+}
+</style>
 <script id="mta-image-protection-script">
 (function(){
   function protectProductImages(){
