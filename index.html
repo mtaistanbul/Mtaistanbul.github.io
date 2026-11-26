@@ -317,10 +317,11 @@ html[lang="ar"] .footer-grid{direction:rtl}
 @media(max-width:760px){#mosaic-lamps .mosaic-lamp-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}#mosaic-lamps .mosaic-lamp-photo{height:205px;padding:8px}#mosaic-lamps .mosaic-photo-cleanup{left:8px;right:8px;bottom:8px}}
 
 /* MTA collection navigation: open one product gallery when its category is selected */
-#textile, #handbags, #silver, #stone-art, #tea-coffee, #mosaic-lamps { display:none; }
+#textile, #handbags, #silver, #stone-art, #tea-coffee, #mosaic-lamps, #turkish-delights { display:none; }
 #textile.mta-collection-open, #handbags.mta-collection-open,
 #silver.mta-collection-open, #stone-art.mta-collection-open,
-#tea-coffee.mta-collection-open, #mosaic-lamps.mta-collection-open { display:block; }
+#tea-coffee.mta-collection-open, #mosaic-lamps.mta-collection-open,
+#turkish-delights.mta-collection-open { display:block; }
 /* Keep handbag product photos inside their own category only. */
 #handbags:not(.mta-collection-open) { display:none !important; }
 .mta-collection-back{
@@ -943,7 +944,7 @@ function addToCart(name){
 
 <script id="mta-collection-navigation">
 (function(){
-  const ids=["textile","handbags","silver","stone-art","tea-coffee","mosaic-lamps"];
+  const ids=["textile","handbags","silver","stone-art","tea-coffee","mosaic-lamps","turkish-delights"];
   const sections=ids.map(id=>document.getElementById(id)).filter(Boolean);
   const categoryBar=document.querySelector(".categories");
   function closeCollections(){
