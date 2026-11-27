@@ -1963,12 +1963,10 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
        const extraWhiteSheetStretch=sheetIndex===1;
        const fullH=extraWhiteSheetStretch?gh*1.16:gh;
        ctx.save();
-       if(extraWhiteSheetStretch){
-        // Smooth oval lower edge: no straight cutoff; extend to the metal collar.
-        ctx.beginPath();ctx.ellipse(x+gw*.5,y+fullH*.5,gw*.5,fullH*.5,0,0,Math.PI*2);ctx.clip();
-       }else{
-        ctx.beginPath();ctx.rect(x,y,gw,gh);ctx.clip();
-       }
+       // Clip every replacement globe to an oval silhouette so the brown backing
+       // can never show as a rectangular tile around the glass.
+       // White-sheet globes keep their slightly extended lower edge.
+       ctx.beginPath();ctx.ellipse(x+gw*.5,y+fullH*.5,gw*.5,fullH*.5,0,0,Math.PI*2);ctx.clip();
        // Keep the backing tone inside the globe silhouette; never leave a brown square.
        const bg=ctx.createRadialGradient(x+gw*.48,y+fullH*.3,gw*.04,x+gw*.5,y+fullH*.5,gw*.62);
        bg.addColorStop(0,'#bda985');bg.addColorStop(.75,'#806747');bg.addColorStop(1,'#463729');
