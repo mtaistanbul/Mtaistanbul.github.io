@@ -1959,7 +1959,7 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
        const out=document.createElement('canvas');out.width=base.naturalWidth;out.height=base.naturalHeight;
        const ctx=out.getContext('2d');ctx.drawImage(base,0,0);
        // Cover only the original glass globe, leaving the brass collars and lamp base untouched.
-       const x=base.naturalWidth*.325,y=base.naturalHeight*.286,gw=base.naturalWidth*.355,gh=base.naturalHeight*.245;
+       const x=base.naturalWidth*.326,y=base.naturalHeight*.294,gw=base.naturalWidth*.35,gh=base.naturalHeight*.23;
        ctx.save();ctx.beginPath();ctx.ellipse(x+gw/2,y+gh/2,gw*.505,gh*.51,0,0,Math.PI*2);ctx.clip();
        const bg=ctx.createRadialGradient(x+gw*.48,y+gh*.3,gw*.04,x+gw*.5,y+gh*.5,gw*.62);
        bg.addColorStop(0,'#bda985');bg.addColorStop(.75,'#806747');bg.addColorStop(1,'#463729');
