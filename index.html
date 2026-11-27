@@ -1288,21 +1288,16 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
 (function(){
   const root=document.getElementById('mosaic-lamps');
   if(!root)return;
-  // Read globe numbers from the numbered cards in Globes Guide itself.
-  const globeOptions=Array.from(root.querySelectorAll('[data-mosaic-panel="globes-guide"] .mosaic-lamp-card'))
-    .map(card=>{
-      const heading=card.querySelector('.mosaic-lamp-info h3')?.textContent||'';
-      const match=heading.match(/\b(\d+)\b/);
-      return match?String(Number(match[1])):null;
-    }).filter(Boolean);
-  const options='<option value="">Choose a globe</option>'+globeOptions.map(number=>'<option value="'+number+'">Globe '+number+'</option>').join('');
+  // Keep the globe selector as a clean numbered list from 1 to 54.
+  const globeOptions=Array.from({length:54},(_,index)=>String(index+1));
+  const options='<option value="">Choose a globe</option>'+globeOptions.map(number=>'<option value="'+number+'">'+number+'</option>').join('');
   root.querySelectorAll('.mosaic-category-panel:not([data-mosaic-panel="globes-guide"]) .mosaic-lamp-card').forEach(card=>{
     if(card.querySelector('.mta-globe-select'))return;
     const info=card.querySelector('.mosaic-lamp-info');
     if(!info)return;
     const label=document.createElement('label');
     label.className='mta-globe-choice';
-    label.textContent='Choose Your Globe';
+    label.textContent='Choose Your Globe from Globe Guide List';
     const select=document.createElement('select');
     select.className='mta-globe-select';
     select.setAttribute('aria-label','Choose your glass globe');
@@ -1607,7 +1602,7 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
 </html>
 +amount.toFixed(2).replace(/\\.00$/,'');
       }
-      if(globeSelector && globeSelector.value) productName+=' — Globe No. '+globeSelector.value;
+      if(globeSelector && globeSelector.value) productName+=' — Globe '+globeSelector.value;
       return {name:productName,price:productPrice};
     }
     function syncVariant(){
