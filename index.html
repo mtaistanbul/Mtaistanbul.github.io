@@ -1958,20 +1958,19 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
        // the photo width and 23% of its height. Slightly generous bounds remove the
        // old mosaic rim while staying clear of the upper and lower brass collars.
        const x=base.naturalWidth*.319,y=base.naturalHeight*.294,gw=base.naturalWidth*.38,gh=base.naturalHeight*.23;
-       // First fully erase the old glass inside its complete replacement rectangle.
-       // Do not ellipse-clip this backing: that was leaving a crescent of the old
-       // shade visible beneath the new globe along its lower/upper edge.
-       const bg=ctx.createRadialGradient(x+gw*.48,y+gh*.3,gw*.04,x+gw*.5,y+gh*.5,gw*.62);
+       // Extend the replacement area downward to meet the lower metal rim.
+       // Keep the top half unchanged and stretch only the lower half further.
+       const fullH=gh*1.16;
+       const bg=ctx.createRadialGradient(x+gw*.48,y+fullH*.3,gw*.04,x+gw*.5,y+fullH*.5,gw*.62);
        bg.addColorStop(0,'#bda985');bg.addColorStop(.75,'#806747');bg.addColorStop(1,'#463729');
-       ctx.fillStyle=bg;ctx.fillRect(x,y,gw,gh);
-       // Keep the upper half at its current scale, then vertically stretch
-       // only the lower half so the mosaic reaches the lower metal collar.
-       // Clip to the exact glass-shade bounds so the stretch cannot cover brass.
+       ctx.fillStyle=bg;ctx.fillRect(x,y,gw,fullH);
+       // A smooth oval mask removes the former straight horizontal cutoff.
+       // Its lower edge now follows the glass down to the metal collar.
        ctx.save();
-       ctx.beginPath();ctx.rect(x,y,gw,gh);ctx.clip();
+       ctx.beginPath();ctx.ellipse(x+gw*.5,y+fullH*.5,gw*.5,fullH*.5,0,0,Math.PI*2);ctx.clip();
        ctx.drawImage(crop,0,0,crop.width,crop.height*.5,x,y,gw,gh*.5);
        ctx.drawImage(crop,0,crop.height*.5,crop.width,crop.height*.5,
-         x,y+gh*.5,gw,gh*.59);
+         x,y+gh*.5,gw,fullH-gh*.5);
        ctx.restore();
        resolve(out.toDataURL('image/png'));
       };
