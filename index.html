@@ -1941,10 +1941,11 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
       const mask=document.createElement('canvas');mask.width=360;mask.height=300;
       const mc=mask.getContext('2d');
       // Match the wide, flattened silhouette of the replacement lamp globe.
-      mc.save();mc.beginPath();mc.ellipse(180,150,177,101,0,0,Math.PI*2);mc.clip();
+      mc.save();mc.beginPath();mc.ellipse(180,150,177,119,0,0,Math.PI*2);mc.clip();
       mc.drawImage(cell,0,0);mc.restore();
-      const crop=document.createElement('canvas');crop.width=354;crop.height=202;
-      crop.getContext('2d').drawImage(mask,3,49,354,202,0,0,354,202);
+      // Keep the extracted globe at the same aspect ratio as the original shade.
+      const crop=document.createElement('canvas');crop.width=354;crop.height=238;
+      crop.getContext('2d').drawImage(mask,3,31,354,238,0,0,354,238);
       const base=new Image();base.crossOrigin='anonymous';
       base.onload=()=>{
        const out=document.createElement('canvas');out.width=base.naturalWidth;out.height=base.naturalHeight;
@@ -1952,7 +1953,8 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
        // Cover only the original glass globe, leaving the brass collars and lamp base untouched.
        // Replace the complete original glass shade: wider bounds remove the old-glass rim,
        // while the brass collars above and below remain visible.
-       const x=base.naturalWidth*.28,y=base.naturalHeight*.305,gw=base.naturalWidth*.44,gh=base.naturalHeight*.22;
+       // Calibrated to the visible original-globe boundary in this lamp photo.
+       const x=base.naturalWidth*.322,y=base.naturalHeight*.296,gw=base.naturalWidth*.339,gh=base.naturalHeight*.228;
        ctx.save();ctx.beginPath();ctx.ellipse(x+gw/2,y+gh/2,gw*.505,gh*.51,0,0,Math.PI*2);ctx.clip();
        const bg=ctx.createRadialGradient(x+gw*.48,y+gh*.3,gw*.04,x+gw*.5,y+gh*.5,gw*.62);
        bg.addColorStop(0,'#bda985');bg.addColorStop(.75,'#806747');bg.addColorStop(1,'#463729');
