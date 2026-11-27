@@ -1964,9 +1964,15 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
        const bg=ctx.createRadialGradient(x+gw*.48,y+gh*.3,gw*.04,x+gw*.5,y+gh*.5,gw*.62);
        bg.addColorStop(0,'#bda985');bg.addColorStop(.75,'#806747');bg.addColorStop(1,'#463729');
        ctx.fillStyle=bg;ctx.fillRect(x,y,gw,gh);
-       // The globe image keeps its oval glass silhouette; transparent corners reveal
-       // only the neutral backing above, never the original mosaic glass.
-       ctx.drawImage(crop,0,0,crop.width,crop.height,x,y,gw,gh);
+       // Keep the upper half at its current scale, then vertically stretch
+       // only the lower half so the mosaic reaches the lower metal collar.
+       // Clip to the exact glass-shade bounds so the stretch cannot cover brass.
+       ctx.save();
+       ctx.beginPath();ctx.rect(x,y,gw,gh);ctx.clip();
+       ctx.drawImage(crop,0,0,crop.width,crop.height*.5,x,y,gw,gh*.5);
+       ctx.drawImage(crop,0,crop.height*.5,crop.width,crop.height*.5,
+         x,y+gh*.5,gw,gh*.59);
+       ctx.restore();
        resolve(out.toDataURL('image/png'));
       };
       base.onerror=reject;base.src=lamp.currentSrc||lamp.src;
