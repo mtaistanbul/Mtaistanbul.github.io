@@ -1510,18 +1510,55 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
 </style>
 <script id="mta-mosaic-subcategory-navigation">
 (function(){
- const root=document.getElementById("mosaic-lamps");if(!root)return;
- const menu=root.querySelector("#mosaic-subcategory-menu");
- const panels=[...root.querySelectorAll("[data-mosaic-panel]")];
- function showMenu(){panels.forEach(p=>p.hidden=true);menu.hidden=false;}
- function showPanel(target){menu.hidden=true;panels.forEach(p=>p.hidden=p.dataset.mosaicPanel!==target);}
- root.addEventListener("click",e=>{
-  const choice=e.target.closest("[data-mosaic-open]");
-  if(choice){const target=choice.dataset.mosaicOpen;history.pushState({mtaCollection:"mosaic-lamps",mtaMosaicCategory:target},"","#mosaic-lamps");showPanel(target);root.scrollIntoView({behavior:"smooth",block:"start"});return;}
-  if(e.target.closest(".mosaic-sub-back")){if(history.state&&history.state.mtaMosaicCategory)history.back();else showMenu();}
- });
- window.addEventListener("popstate",function(){if(location.hash==="#mosaic-lamps"&&history.state&&history.state.mtaMosaicCategory)showPanel(history.state.mtaMosaicCategory);else showMenu();});
- showMenu();
+  const root=document.getElementById("mosaic-lamps");
+  if(!root)return;
+  const menu=root.querySelector(".mosaic-subcategory-menu");
+  const panels=Array.from(root.querySelectorAll("[data-mosaic-panel]"));
+  if(!menu||!panels.length)return;
+
+  function showMenu(){
+    panels.forEach(panel=>{panel.hidden=true;});
+    menu.hidden=false;
+  }
+  function showPanel(target){
+    const exists=panels.some(panel=>panel.dataset.mosaicPanel===target);
+    if(!exists){showMenu();return;}
+    menu.hidden=true;
+    panels.forEach(panel=>{panel.hidden=panel.dataset.mosaicPanel!==target;});
+  }
+
+  root.addEventListener("click",function(event){
+    const choice=event.target.closest("[data-mosaic-open]");
+    if(choice&&root.contains(choice)){
+      event.preventDefault();
+      event.stopPropagation();
+      const target=choice.dataset.mosaicOpen;
+      history.pushState({mtaCollection:"mosaic-lamps",mtaMosaicCategory:target},"","#mosaic-lamps");
+      showPanel(target);
+      root.scrollIntoView({behavior:"smooth",block:"start"});
+      return;
+    }
+    const back=event.target.closest(".mosaic-sub-back");
+    if(back&&root.contains(back)){
+      event.preventDefault();
+      event.stopPropagation();
+      if(history.state&&history.state.mtaCollection==="mosaic-lamps"&&history.state.mtaMosaicCategory){
+        history.back();
+      }else{
+        showMenu();
+      }
+    }
+  });
+
+  window.addEventListener("popstate",function(){
+    if(location.hash==="#mosaic-lamps"&&history.state&&history.state.mtaCollection==="mosaic-lamps"&&history.state.mtaMosaicCategory){
+      showPanel(history.state.mtaMosaicCategory);
+    }else{
+      showMenu();
+    }
+  });
+
+  showMenu();
 })();
 </script>
 </body>
