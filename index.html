@@ -1888,7 +1888,7 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
 #mta-live-globe-modal .live-caption{text-align:center;color:#756b5b;font-size:13px;margin:0 0 12px}
 #mta-live-globe-modal .live-stage{position:relative;width:min(100%,560px);margin:auto;line-height:0}
 #mta-live-globe-modal .live-stage>img{display:block;width:100%;height:auto;border-radius:10px}
-#mta-live-globe-modal .live-texture{position:absolute;left:32.3%;top:29.5%;width:36.1%;height:23.2%;object-fit:cover;border-radius:49% 49% 46% 46%;opacity:1;mix-blend-mode:normal;filter:saturate(1.08) contrast(1.05);box-shadow:inset 0 0 10px #0005}
+#mta-live-globe-modal .live-texture{display:none!important}
 #mta-live-globe-modal .live-note{text-align:center;font-size:12px;line-height:1.5;color:#766d60;margin:12px 5px 0}
 #mosaic-lamps [data-mosaic-panel="table-lamps"] .mta-live-preview-button{display:block;width:100%;margin:9px 0;padding:12px 14px;border:1px solid #c99a3e;border-radius:24px;background:#102f50;color:#fff;font-weight:700;cursor:pointer}
 @media(max-width:560px){#mta-live-globe-modal .live-dialog{padding:14px}#mta-live-globe-modal h2{font-size:20px}}
@@ -1926,50 +1926,57 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
   let activeUrl='';
   function makeGlobeTexture(number){
    return new Promise((resolve,reject)=>{
-    const sheetIndex=Math.floor((number-1)/18);
-    const cellIndex=(number-1)%18;
-    const source=sheets[sheetIndex];
+    const sheetIndex=Math.floor((number-1)/18),cellIndex=(number-1)%18,source=sheets[sheetIndex];
     if(!source){reject(new Error('Globe sheet unavailable'));return;}
-    const img=new Image();img.crossOrigin='anonymous';
-    img.onload=()=>{
-     const cols=3,rows=6,cw=img.naturalWidth/cols,ch=img.naturalHeight/rows;
-     const col=cellIndex%cols,row=Math.floor(cellIndex/cols);
-     const sx=col*cw+cw*.045,sy=row*ch+ch*.045,sw=cw*.91,sh=ch*.91;
-     const work=document.createElement('canvas');work.width=360;work.height=250;
-     const w=work.getContext('2d',{willReadFrequently:true});
-     w.drawImage(img,sx,sy,sw,sh,0,0,360,250);
-     const frame=w.getImageData(0,0,360,250),px=frame.data;
-     const seen=new Uint8Array(360*250),queue=new Int32Array(360*250);let head=0,tail=0;
-     function isWood(i){
-      const r=px[i*4],g=px[i*4+1],b=px[i*4+2];
-      const max=Math.max(r,g,b),min=Math.min(r,g,b),sat=max?((max-min)/max)*100:0;
-      const hue=(function(){let h=0,d=max-min;if(!d)return 0;if(max===r)h=((g-b)/d)%6;else if(max===g)h=(b-r)/d+2;else h=(r-g)/d+4;return (h*60+360)%360;})();
-      return hue>=8&&hue<=43&&sat>=12&&sat<=78&&r>=65&&g>=35&&r>g*1.04&&g>b*1.02;
-     }
-     function add(x,y){const k=y*360+x;if(!seen[k]&&isWood(k)){seen[k]=1;queue[tail++]=k;}}
-     for(let x=0;x<360;x++){add(x,0);add(x,249);}
-     for(let y=0;y<250;y++){add(0,y);add(359,y);}
-     while(head<tail){
-      const k=queue[head++],x=k%360,y=(k/360)|0;
-      if(x>0)add(x-1,y);if(x<359)add(x+1,y);if(y>0)add(x,y-1);if(y<249)add(x,y+1);
-     }
-     for(let k=0;k<seen.length;k++)if(seen[k])px[k*4+3]=0;
-     w.putImageData(frame,0,0);
-     const canvas=document.createElement('canvas');canvas.width=420;canvas.height=280;
-     const ctx=canvas.getContext('2d');
-     ctx.save();ctx.beginPath();ctx.ellipse(210,140,207,137,0,0,Math.PI*2);ctx.clip();
-     const base=ctx.createRadialGradient(190,92,20,210,145,235);
-     base.addColorStop(0,'#d6c5a0');base.addColorStop(.62,'#9a8060');base.addColorStop(1,'#594632');
-     ctx.fillStyle=base;ctx.fillRect(0,0,420,280);
-     ctx.drawImage(work,0,0,420,280);
-     ctx.globalCompositeOperation='source-atop';
-     const shade=ctx.createRadialGradient(210,108,35,210,140,225);
-     shade.addColorStop(0,'rgba(255,255,255,.12)');shade.addColorStop(.68,'rgba(255,255,255,0)');
-     shade.addColorStop(1,'rgba(15,10,25,.24)');ctx.fillStyle=shade;ctx.fillRect(0,0,420,280);
-     ctx.restore();
-     resolve(canvas.toDataURL('image/png'));
+    const sheet=new Image();sheet.crossOrigin='anonymous';
+    sheet.onload=()=>{
+     try{
+      const cols=3,rows=6,cw=sheet.naturalWidth/cols,ch=sheet.naturalHeight/rows;
+      const col=cellIndex%cols,row=Math.floor(cellIndex/cols);
+      const sx=col*cw+cw*.025,sy=row*ch+ch*.025,sw=cw*.95,sh=ch*.95;
+      const cell=document.createElement('canvas');cell.width=360;cell.height=300;
+      const cc=cell.getContext('2d',{willReadFrequently:true});cc.drawImage(sheet,sx,sy,sw,sh,0,0,360,300);
+      const im=cc.getImageData(0,0,360,300),d=im.data,w=360,h=300;
+      const seen=new Uint8Array(w*h),queue=new Int32Array(w*h);let head=0,tail=0;
+      function background(k){
+       const i=k*4,r=d[i],g=d[i+1],b=d[i+2],mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+       const sat=mx?((mx-mn)/mx)*100:0;
+       // Wood is low-to-medium saturation brown; retain bright/saturated glass pieces.
+       return r>g*1.08 && g>b*1.08 && r>65 && g>35 && sat<72 && r-g<115;
+      }
+      function seed(x,y){const k=y*w+x;if(!seen[k]&&background(k)){seen[k]=1;queue[tail++]=k;}}
+      for(let x=0;x<w;x++){seed(x,0);seed(x,h-1);}
+      for(let y=0;y<h;y++){seed(0,y);seed(w-1,y);}
+      while(head<tail){const k=queue[head++],x=k%w,y=(k/w)|0;if(x)seed(x-1,y);if(x<w-1)seed(x+1,y);if(y)seed(x,y-1);if(y<h-1)seed(x,y+1);}
+      let minX=w,minY=h,maxX=0,maxY=0,count=0;
+      for(let y=0;y<h;y++)for(let x=0;x<w;x++){const k=y*w+x;if(seen[k])d[k*4+3]=0;else if(d[k*4+3]>0){minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y);count++;}}
+      if(count<1500)throw new Error('Could not isolate selected globe');
+      cc.putImageData(im,0,0);
+      const crop=document.createElement('canvas');crop.width=maxX-minX+1;crop.height=maxY-minY+1;
+      crop.getContext('2d').drawImage(cell,minX,minY,crop.width,crop.height,0,0,crop.width,crop.height);
+      const base=new Image();base.crossOrigin='anonymous';
+      base.onload=()=>{
+       const out=document.createElement('canvas');out.width=base.naturalWidth;out.height=base.naturalHeight;
+       const ctx=out.getContext('2d');ctx.drawImage(base,0,0);
+       // Cover only the original glass globe, leaving the brass collars and lamp base untouched.
+       const x=base.naturalWidth*.325,y=base.naturalHeight*.286,gw=base.naturalWidth*.355,gh=base.naturalHeight*.245;
+       ctx.save();ctx.beginPath();ctx.ellipse(x+gw/2,y+gh/2,gw*.505,gh*.51,0,0,Math.PI*2);ctx.clip();
+       const bg=ctx.createRadialGradient(x+gw*.48,y+gh*.3,gw*.04,x+gw*.5,y+gh*.5,gw*.62);
+       bg.addColorStop(0,'#bda985');bg.addColorStop(.75,'#806747');bg.addColorStop(1,'#463729');
+       ctx.fillStyle=bg;ctx.fillRect(x,y,gw,gh);
+       // Fit the cropped glass to the actual shade opening, preserving its aspect ratio.
+       const targetRatio=gw/gh,sourceRatio=crop.width/crop.height;
+       let dw=gw,dh=gh;if(sourceRatio>targetRatio){dh=gw/sourceRatio;}else{dw=gh*sourceRatio;}
+       ctx.drawImage(crop,x+(gw-dw)/2,y+(gh-dh)/2,dw,dh);
+       const shade=ctx.createLinearGradient(x,y,x+gw,y+gh);
+       shade.addColorStop(0,'rgba(255,255,255,.10)');shade.addColorStop(.55,'rgba(255,255,255,0)');shade.addColorStop(1,'rgba(15,10,25,.18)');
+       ctx.globalCompositeOperation='source-atop';ctx.fillStyle=shade;ctx.fillRect(x,y,gw,gh);ctx.restore();
+       resolve(out.toDataURL('image/jpeg',.94));
+      };
+      base.onerror=reject;base.src=lamp.currentSrc||lamp.src;
+     }catch(e){reject(e);}
     };
-    img.onerror=reject;img.src=source.currentSrc||source.src;
+    sheet.onerror=reject;sheet.src=source.currentSrc||source.src;
    });
   }
   function close(){modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
@@ -1979,7 +1986,7 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
    try{
     liveButton.disabled=true;liveButton.textContent='Preparing your lamp…';
     const url=await makeGlobeTexture(number);
-    activeUrl=url;texture.src=url;lampPreview.src=lamp.currentSrc||lamp.src;
+    activeUrl=url;lampPreview.src=url;texture.style.display='none';
     modal.querySelector('#mta-live-title').textContent='Your Mosaic Lamp — Globe '+number;
     modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
    }catch(e){alert('This globe image could not be prepared. Please try again.');}
