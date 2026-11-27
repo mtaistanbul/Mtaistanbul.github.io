@@ -1878,5 +1878,93 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
 })();
 </script>
 
+
+<style id="mta-live-globe-composite-style">
+#mta-live-globe-modal{position:fixed;inset:0;z-index:21000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(4,18,30,.82)}
+#mta-live-globe-modal.is-open{display:flex}
+#mta-live-globe-modal .live-dialog{position:relative;width:min(760px,100%);max-height:94vh;overflow:auto;background:#fffdf8;border:1px solid #d6a84d;border-radius:18px;padding:18px;box-shadow:0 22px 70px #0007}
+#mta-live-globe-modal .live-close{position:absolute;right:12px;top:12px;width:38px;height:38px;border:0;border-radius:50%;background:#102f50;color:#fff;font-size:23px;cursor:pointer}
+#mta-live-globe-modal h2{text-align:center;color:#102f50;font:700 24px Georgia,serif;margin:4px 44px 5px}
+#mta-live-globe-modal .live-caption{text-align:center;color:#756b5b;font-size:13px;margin:0 0 12px}
+#mta-live-globe-modal .live-stage{position:relative;width:min(100%,560px);margin:auto;line-height:0}
+#mta-live-globe-modal .live-stage>img{display:block;width:100%;height:auto;border-radius:10px}
+#mta-live-globe-modal .live-texture{position:absolute;left:32.3%;top:29.5%;width:36.1%;height:23.2%;object-fit:cover;border-radius:49% 49% 46% 46%;opacity:.94;mix-blend-mode:multiply;filter:saturate(1.13) contrast(1.08);box-shadow:inset 0 0 10px #0005}
+#mta-live-globe-modal .live-note{text-align:center;font-size:12px;line-height:1.5;color:#766d60;margin:12px 5px 0}
+#mosaic-lamps [data-mosaic-panel="table-lamps"] .mta-live-preview-button{display:block;width:100%;margin:9px 0;padding:12px 14px;border:1px solid #c99a3e;border-radius:24px;background:#102f50;color:#fff;font-weight:700;cursor:pointer}
+@media(max-width:560px){#mta-live-globe-modal .live-dialog{padding:14px}#mta-live-globe-modal h2{font-size:20px}}
+</style>
+<div id="mta-live-globe-modal" aria-hidden="true">
+ <div class="live-dialog" role="dialog" aria-modal="true" aria-labelledby="mta-live-title">
+  <button type="button" class="live-close" aria-label="Close">×</button>
+  <h2 id="mta-live-title">Your Mosaic Lamp</h2>
+  <p class="live-caption">Live preview with your selected Globe</p>
+  <div class="live-stage"><img class="live-lamp" alt="Mosaic lamp with selected globe"><img class="live-texture" alt="" aria-hidden="true"></div>
+  <p class="live-note">Preview concept: the selected globe texture is fitted over the lamp's glass shade. Final handmade glass placement may vary slightly.</p>
+ </div>
+</div>
+<script id="mta-first-lamp-live-composite">
+(function(){
+ function init(){
+  const root=document.getElementById('mosaic-lamps');
+  const modal=document.getElementById('mta-live-globe-modal');
+  if(!root||!modal||root.dataset.firstLampCompositeReady==='true')return;
+  root.dataset.firstLampCompositeReady='true';
+  const panel=root.querySelector('[data-mosaic-panel="table-lamps"]');
+  const card=panel?.querySelector('.mosaic-lamp-card');
+  const select=card?.querySelector('.mta-globe-select');
+  const lamp=card?.querySelector('.mosaic-lamp-photo img');
+  const guide=root.querySelector('[data-mosaic-panel="globes-guide"]');
+  const sheets=guide?Array.from(guide.querySelectorAll('.mosaic-lamp-card img')):[];
+  const button=card?.querySelector('.mta-preview-button');
+  if(!card||!select||!lamp||sheets.length<3||!button)return;
+  const liveButton=button.cloneNode(true);
+  liveButton.className='mta-live-preview-button';
+  liveButton.textContent='Preview My Lamp';
+  button.replaceWith(liveButton);
+  const texture=modal.querySelector('.live-texture');
+  const lampPreview=modal.querySelector('.live-lamp');
+  let activeUrl='';
+  function makeGlobeTexture(number){
+   return new Promise((resolve,reject)=>{
+    const sheetIndex=Math.floor((number-1)/18);
+    const cellIndex=(number-1)%18;
+    const source=sheets[sheetIndex];
+    if(!source){reject(new Error('Globe sheet unavailable'));return;}
+    const img=new Image();img.crossOrigin='anonymous';
+    img.onload=()=>{
+     const cols=3,rows=6,cw=img.naturalWidth/cols,ch=img.naturalHeight/rows;
+     const col=cellIndex%cols,row=Math.floor(cellIndex/cols);
+     const insetX=cw*.055,insetY=ch*.055;
+     const sx=col*cw+insetX,sy=row*ch+insetY,sw=cw-2*insetX,sh=ch-2*insetY;
+     const canvas=document.createElement('canvas');canvas.width=360;canvas.height=250;
+     const ctx=canvas.getContext('2d');
+     ctx.save();ctx.beginPath();ctx.ellipse(180,125,174,119,0,0,Math.PI*2);ctx.clip();
+     ctx.drawImage(img,sx,sy,sw,sh,0,0,360,250);ctx.restore();
+     resolve(canvas.toDataURL('image/png'));
+    };
+    img.onerror=reject;img.src=source.currentSrc||source.src;
+   });
+  }
+  function close(){modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  liveButton.addEventListener('click',async()=>{
+   const number=Number(select.value);
+   if(!number){select.focus();alert('Please choose a globe number first.');return;}
+   try{
+    liveButton.disabled=true;liveButton.textContent='Preparing your lamp…';
+    const url=await makeGlobeTexture(number);
+    activeUrl=url;texture.src=url;lampPreview.src=lamp.currentSrc||lamp.src;
+    modal.querySelector('#mta-live-title').textContent='Your Mosaic Lamp — Globe '+number;
+    modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+   }catch(e){alert('This globe image could not be prepared. Please try again.');}
+   finally{liveButton.disabled=false;liveButton.textContent='Preview My Lamp';}
+  });
+  modal.querySelector('.live-close').addEventListener('click',close);
+  modal.addEventListener('click',e=>{if(e.target===modal)close();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('is-open'))close();});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
 </body>
 </html>
