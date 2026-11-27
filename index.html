@@ -1490,39 +1490,44 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
     if(!menu || !panels.length) return;
     root.dataset.mosaicNavigationReady="true";
 
-    function showMenu(){
+    function showMenu(scroll){
       panels.forEach(panel=>{panel.hidden=true;});
       menu.hidden=false;
+      if(scroll) root.scrollIntoView({behavior:"smooth",block:"start"});
     }
-    function showPanel(target){
+    function showPanel(target,scroll){
       const active=panels.find(panel=>panel.dataset.mosaicPanel===target);
-      if(!active){showMenu();return;}
+      if(!active){showMenu(false);return;}
       menu.hidden=true;
       panels.forEach(panel=>{panel.hidden=panel!==active;});
-      root.scrollIntoView({behavior:"smooth",block:"start"});
+      if(scroll) root.scrollIntoView({behavior:"smooth",block:"start"});
     }
 
-    // One delegated capture listener keeps the category buttons responsive
-    // even if another page-level click handler stops bubbling.
-    root.addEventListener("click",function(event){
-      const openButton=event.target.closest("button[data-mosaic-open]");
-      if(openButton && root.contains(openButton)){
-        event.preventDefault();
-        event.stopPropagation();
+    // Capture at document level so other page navigation handlers cannot
+    // swallow the Mosaic category clicks before this menu receives them.
+    document.addEventListener("click",function(event){
+      const el=event.target instanceof Element ? event.target : event.target.parentElement;
+      if(!el || !root.contains(el)) return;
+      const openButton=el.closest("button[data-mosaic-open]");
+      if(openButton){
         const target=openButton.getAttribute("data-mosaic-open");
         if(!panels.some(panel=>panel.dataset.mosaicPanel===target)) return;
-        history.pushState({mtaCollection:"mosaic-lamps",mtaMosaicCategory:target},"","#mosaic-lamps");
-        showPanel(target);
-        return;
-      }
-      const backButton=event.target.closest(".mosaic-sub-back");
-      if(backButton && root.contains(backButton)){
         event.preventDefault();
         event.stopPropagation();
+        if(event.stopImmediatePropagation) event.stopImmediatePropagation();
+        history.pushState({mtaCollection:"mosaic-lamps",mtaMosaicCategory:target},"","#mosaic-lamps");
+        showPanel(target,true);
+        return;
+      }
+      const backButton=el.closest(".mosaic-sub-back");
+      if(backButton){
+        event.preventDefault();
+        event.stopPropagation();
+        if(event.stopImmediatePropagation) event.stopImmediatePropagation();
         if(history.state && history.state.mtaCollection==="mosaic-lamps" && history.state.mtaMosaicCategory){
           history.back();
         }else{
-          showMenu();
+          showMenu(true);
         }
       }
     },true);
@@ -1530,12 +1535,12 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
     window.addEventListener("popstate",function(){
       const state=history.state;
       if(location.hash==="#mosaic-lamps" && state && state.mtaCollection==="mosaic-lamps" && state.mtaMosaicCategory){
-        showPanel(state.mtaMosaicCategory);
+        showPanel(state.mtaMosaicCategory,true);
       }else{
-        showMenu();
+        showMenu(false);
       }
     });
-    showMenu();
+    showMenu(false);
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",initMosaicNavigation,{once:true});
   else initMosaicNavigation();
