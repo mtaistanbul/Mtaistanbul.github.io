@@ -1958,15 +1958,15 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
        // the photo width and 23% of its height. Slightly generous bounds remove the
        // old mosaic rim while staying clear of the upper and lower brass collars.
        const x=base.naturalWidth*.319,y=base.naturalHeight*.294,gw=base.naturalWidth*.38,gh=base.naturalHeight*.23;
-       ctx.save();ctx.beginPath();ctx.ellipse(x+gw/2,y+gh/2,gw*.505,gh*.51,0,0,Math.PI*2);ctx.clip();
+       // First fully erase the old glass inside its complete replacement rectangle.
+       // Do not ellipse-clip this backing: that was leaving a crescent of the old
+       // shade visible beneath the new globe along its lower/upper edge.
        const bg=ctx.createRadialGradient(x+gw*.48,y+gh*.3,gw*.04,x+gw*.5,y+gh*.5,gw*.62);
        bg.addColorStop(0,'#bda985');bg.addColorStop(.75,'#806747');bg.addColorStop(1,'#463729');
        ctx.fillStyle=bg;ctx.fillRect(x,y,gw,gh);
-       // Fill the exact original-globe replacement bounds. No contain/letterbox:
-       // leftover gaps reveal the old glass around the new globe.
+       // The globe image keeps its oval glass silhouette; transparent corners reveal
+       // only the neutral backing above, never the original mosaic glass.
        ctx.drawImage(crop,0,0,crop.width,crop.height,x,y,gw,gh);
-       // Keep the source globe's original colors untouched; do not tint it with a lamp-wide overlay.
-       ctx.restore();
        resolve(out.toDataURL('image/png'));
       };
       base.onerror=reject;base.src=lamp.currentSrc||lamp.src;
