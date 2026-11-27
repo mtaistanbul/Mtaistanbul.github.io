@@ -1490,59 +1490,52 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
     const root=document.getElementById("mosaic-lamps");
     if(!root || root.dataset.mosaicNavigationReady==="true") return;
     const menu=root.querySelector(".mosaic-subcategory-menu");
+    const buttons=Array.from(root.querySelectorAll("button[data-mosaic-open]"));
     const panels=Array.from(root.querySelectorAll(".mosaic-category-panel[data-mosaic-panel]"));
-    if(!menu || !panels.length) return;
+    if(!menu || !buttons.length || !panels.length) return;
     root.dataset.mosaicNavigationReady="true";
 
     function showMenu(scroll){
-      panels.forEach(panel=>{panel.hidden=true;});
+      panels.forEach(panel=>{panel.hidden=true;panel.style.display="none";});
       menu.hidden=false;
+      menu.style.display="grid";
       if(scroll) root.scrollIntoView({behavior:"smooth",block:"start"});
     }
     function showPanel(target,scroll){
       const active=panels.find(panel=>panel.dataset.mosaicPanel===target);
       if(!active){showMenu(false);return;}
       menu.hidden=true;
-      panels.forEach(panel=>{panel.hidden=panel!==active;});
-      if(scroll) root.scrollIntoView({behavior:"smooth",block:"start"});
+      menu.style.display="none";
+      panels.forEach(panel=>{
+        const selected=panel===active;
+        panel.hidden=!selected;
+        panel.style.display=selected?"block":"none";
+      });
+      if(scroll) active.scrollIntoView({behavior:"smooth",block:"start"});
     }
 
-    // Capture at document level so other page navigation handlers cannot
-    // swallow the Mosaic category clicks before this menu receives them.
-    document.addEventListener("click",function(event){
-      const el=event.target instanceof Element ? event.target : event.target.parentElement;
-      if(!el || !root.contains(el)) return;
-      const openButton=el.closest("button[data-mosaic-open]");
-      if(openButton){
-        const target=openButton.getAttribute("data-mosaic-open");
-        if(!panels.some(panel=>panel.dataset.mosaicPanel===target)) return;
+    buttons.forEach(button=>{
+      button.addEventListener("click",function(event){
         event.preventDefault();
         event.stopPropagation();
-        if(event.stopImmediatePropagation) event.stopImmediatePropagation();
+        const target=button.getAttribute("data-mosaic-open");
+        if(!panels.some(panel=>panel.dataset.mosaicPanel===target)) return;
         history.pushState({mtaCollection:"mosaic-lamps",mtaMosaicCategory:target},"","#mosaic-lamps");
         showPanel(target,true);
-        return;
-      }
-      const backButton=el.closest(".mosaic-sub-back");
-      if(backButton){
+      });
+    });
+    root.querySelectorAll(".mosaic-sub-back").forEach(button=>{
+      button.addEventListener("click",function(event){
         event.preventDefault();
         event.stopPropagation();
-        if(event.stopImmediatePropagation) event.stopImmediatePropagation();
-        if(history.state && history.state.mtaCollection==="mosaic-lamps" && history.state.mtaMosaicCategory){
-          history.back();
-        }else{
-          showMenu(true);
-        }
-      }
-    },true);
-
+        if(history.state && history.state.mtaCollection==="mosaic-lamps" && history.state.mtaMosaicCategory) history.back();
+        else showMenu(true);
+      });
+    });
     window.addEventListener("popstate",function(){
       const state=history.state;
-      if(location.hash==="#mosaic-lamps" && state && state.mtaCollection==="mosaic-lamps" && state.mtaMosaicCategory){
-        showPanel(state.mtaMosaicCategory,true);
-      }else{
-        showMenu(false);
-      }
+      if(location.hash==="#mosaic-lamps" && state && state.mtaCollection==="mosaic-lamps" && state.mtaMosaicCategory) showPanel(state.mtaMosaicCategory,true);
+      else showMenu(false);
     });
     showMenu(false);
   }
@@ -1550,5 +1543,5 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
   else initMosaicNavigation();
 })();
 </script>
-</body>
+\n<style id="mta-mosaic-panel-display-fix">\n#mosaic-lamps .mosaic-category-panel:not([hidden]){display:block!important;visibility:visible!important;opacity:1!important}\n#mosaic-lamps .mosaic-category-panel[hidden],#mosaic-lamps .mosaic-subcategory-menu[hidden]{display:none!important}\n</style>\n</body>
 </html>
