@@ -1958,6 +1958,9 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
      const canvas=document.createElement('canvas');canvas.width=420;canvas.height=280;
      const ctx=canvas.getContext('2d');
      ctx.save();ctx.beginPath();ctx.ellipse(210,140,207,137,0,0,Math.PI*2);ctx.clip();
+     const base=ctx.createRadialGradient(190,92,20,210,145,235);
+     base.addColorStop(0,'#d6c5a0');base.addColorStop(.62,'#9a8060');base.addColorStop(1,'#594632');
+     ctx.fillStyle=base;ctx.fillRect(0,0,420,280);
      ctx.drawImage(work,0,0,420,280);
      ctx.globalCompositeOperation='source-atop';
      const shade=ctx.createRadialGradient(210,108,35,210,140,225);
