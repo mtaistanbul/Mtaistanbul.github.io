@@ -483,9 +483,9 @@ html[lang="ar"] .footer-grid{direction:rtl}
     <a class="wa" href="https://wa.me/905344921008?text=Hello%20MTA%20Istanbul%2C%20I%20am%20interested%20in%20the%20Handmade%20Mosaic%20Floor%20Lamp.%20Please%20share%20the%20price%20and%20details.">Order via WhatsApp</a>
   </div>
 </article></div></div><div class="mosaic-category-panel" data-mosaic-panel="globes-guide" hidden><button type="button" class="mosaic-sub-back">← Back to Mosaic collections</button><div class="section-title"><h2>Globes Guide</h2><p>Explore our handmade Turkish mosaic glass globes, each photographed against a natural wood background.</p></div><div class="mosaic-lamp-grid">
-  <article class="mosaic-lamp-card"><div class="mosaic-lamp-photo"><img src="/1795783705818.jpg" alt="Handmade Turkish mosaic glass globe on a wooden background" loading="lazy"></div><div class="mosaic-lamp-info"><h3>Handmade Mosaic Glass Globe</h3><p class="mosaic-lamp-description">A decorative handmade Turkish mosaic glass globe. Please contact us for available styles and details.</p></div></article>
-  <article class="mosaic-lamp-card"><div class="mosaic-lamp-photo"><img src="/1795783714411.jpg" alt="Handmade Turkish mosaic glass globe on a wooden background" loading="lazy"></div><div class="mosaic-lamp-info"><h3>Handmade Mosaic Glass Globe</h3><p class="mosaic-lamp-description">A decorative handmade Turkish mosaic glass globe. Please contact us for available styles and details.</p></div></article>
-  <article class="mosaic-lamp-card"><div class="mosaic-lamp-photo"><img src="/1795783721895.jpg" alt="Handmade Turkish mosaic glass globe on a wooden background" loading="lazy"></div><div class="mosaic-lamp-info"><h3>Handmade Mosaic Glass Globe</h3><p class="mosaic-lamp-description">A decorative handmade Turkish mosaic glass globe. Please contact us for available styles and details.</p></div></article>
+  <article class="mosaic-lamp-card"><div class="mosaic-lamp-photo"><img src="/1795783705818.jpg" alt="Handmade Turkish mosaic glass globe on a wooden background" loading="lazy"></div><div class="mosaic-lamp-info"><h3>Globe No. 01</h3><p class="mosaic-lamp-description">Choose this handmade Turkish glass globe by its reference number when ordering any mosaic lamp.</p></div></article>
+  <article class="mosaic-lamp-card"><div class="mosaic-lamp-photo"><img src="/1795783714411.jpg" alt="Handmade Turkish mosaic glass globe on a wooden background" loading="lazy"></div><div class="mosaic-lamp-info"><h3>Globe No. 02</h3><p class="mosaic-lamp-description">Choose this handmade Turkish glass globe by its reference number when ordering any mosaic lamp.</p></div></article>
+  <article class="mosaic-lamp-card"><div class="mosaic-lamp-photo"><img src="/1795783721895.jpg" alt="Handmade Turkish mosaic glass globe on a wooden background" loading="lazy"></div><div class="mosaic-lamp-info"><h3>Globe No. 03</h3><p class="mosaic-lamp-description">Choose this handmade Turkish glass globe by its reference number when ordering any mosaic lamp.</p></div></article>
 </div></div>
 <div class="mosaic-category-panel" data-mosaic-panel="ceiling-lamps" hidden><button type="button" class="mosaic-sub-back">← Back to Mosaic collections</button><div class="section-title"><h2>Ceiling Lamps</h2><p>Our handmade Turkish mosaic ceiling lamps will be featured here. Product photos and details coming soon.</p></div></div></section>
 
@@ -1278,6 +1278,42 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
 })();
 </script>
 <script src="shipping-config.js"></script>
+<style id="mta-globe-selection-style">
+#mosaic-lamps .mta-globe-choice{display:block;margin:12px 0 10px;text-align:left;color:#18304a;font-size:12px;font-weight:700}
+#mosaic-lamps .mta-globe-select{display:block;width:100%;margin-top:7px;padding:11px 12px;border:1px solid #d7ad58;border-radius:9px;background:#fffefa;color:#18304a;font-size:14px;font-weight:600}
+#mosaic-lamps [data-mosaic-panel="globes-guide"] .mosaic-lamp-info h3{font-size:19px;color:#9a6c20}
+#mosaic-lamps [data-mosaic-panel="globes-guide"] .mosaic-lamp-photo{background:linear-gradient(145deg,#f4ead9,#fffdf8)}
+</style>
+<script id="mta-globe-selection-setup">
+(function(){
+  const root=document.getElementById('mosaic-lamps');
+  if(!root)return;
+  const options='<option value="">Choose a globe</option>'+['<option value="01">Globe No. 01</option>'+'<option value="02">Globe No. 02</option>'+'<option value="03">Globe No. 03</option>'].join('');
+  root.querySelectorAll('.mosaic-category-panel:not([data-mosaic-panel="globes-guide"]) .mosaic-lamp-card').forEach(card=>{
+    if(card.querySelector('.mta-globe-select'))return;
+    const info=card.querySelector('.mosaic-lamp-info');
+    if(!info)return;
+    const label=document.createElement('label');
+    label.className='mta-globe-choice';
+    label.textContent='Choose Your Globe';
+    const select=document.createElement('select');
+    select.className='mta-globe-select';
+    select.setAttribute('aria-label','Choose your glass globe');
+    select.innerHTML=options;
+    label.appendChild(select);
+    const price=info.querySelector('.mosaic-lamp-price');
+    info.insertBefore(label,price||info.querySelector('.wa'));
+    select.addEventListener('change',()=>{
+      const link=info.querySelector('a.wa');
+      if(link){
+        const product=(info.querySelector('h3')?.textContent||'Mosaic lamp').trim();
+        const globe=select.value?'Globe No. '+select.value:'Globe not selected';
+        link.href='https://wa.me/905344921008?text='+encodeURIComponent('Hello MTA Istanbul, I am interested in the '+product+'. My selected glass globe is: '+globe+'. Please confirm availability and price.');
+      }
+    });
+  });
+})();
+</script>
 <script id="mta-basket-functionality">
 (function(){
   let items=[];try{items=JSON.parse(localStorage.getItem('mta-basket')||'[]')}catch(e){}
@@ -1342,22 +1378,226 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
     const name=(card.querySelector('h3')||card.querySelector('h2'))?.textContent.trim()||'MTA product';
     const priceElement=card.querySelector('.price,.handbag-price,.tea-price')||card.querySelector('strong');
     const selector=card.querySelector('.cezve-size-select');
+    const globeSelector=card.querySelector('.mta-globe-select');
     function selectedDetails(){
-      if(!selector)return {name,price:priceElement?.textContent.trim()||'Price on request'};
-      const option=selector.options[selector.selectedIndex];
-      const amount=Number(option.dataset.price);
-      const unit=selector.dataset.unit||'Persons';
-      return {name:name+' — '+option.value+' '+unit,price:'$'+amount.toFixed(2).replace(/\.00$/,'')};
+      let productName=name;
+      let productPrice=priceElement?.textContent.trim()||'Price on request';
+      if(selector){
+        const option=selector.options[selector.selectedIndex];
+        const amount=Number(option.dataset.price);
+        const unit=selector.dataset.unit||'Persons';
+        productName+=' — '+option.value+' '+unit;
+        productPrice='
+    const btn=document.createElement('button');btn.type='button';btn.className='mta-add-basket';btn.textContent='＋ Add to Basket';
+    btn.addEventListener('click',()=>{
+      const details=selectedDetails();
+      const found=items.find(x=>x.name===details.name&&x.price===details.price);
+      if(found)found.qty++;else items.push({name:details.name,price:details.price,qty:1});
+      save();panel.classList.add('open');panel.setAttribute('aria-hidden','false');
+    });
+    link.insertAdjacentElement('afterend',btn);
+  });
+  render();
+})();
+</script>
+
+
+<style id="mta-image-protection">
+/* Light-touch image protection: visible brand watermark without blocking product details */
+.mta-protected-image{
+  position:relative!important;
+}
+.mta-protected-image::after{
+  content:"MTA ISTANBUL";
+  position:absolute;
+  z-index:4;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) rotate(-24deg);
+  color:rgba(255,255,255,.30);
+  font:300 clamp(13px,2vw,21px)/1 "Helvetica Neue",Arial,sans-serif;
+  letter-spacing:3px;
+  white-space:nowrap;
+  text-shadow:0 1px 2px rgba(0,0,0,.10);
+  pointer-events:none;
+  user-select:none;
+}
+#mta-image-lightbox .mta-lightbox-image{
+  -webkit-user-drag:none;
+  user-select:none;
+}
+</style>
+<style id="mta-lightbox-watermark">
+#mta-image-lightbox::after{
+  content:"MTA ISTANBUL";
+  position:absolute;
+  z-index:10002;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) rotate(-24deg);
+  color:rgba(255,255,255,.30);
+  font:300 clamp(15px,3vw,25px)/1 "Helvetica Neue",Arial,sans-serif;
+  letter-spacing:3px;
+  white-space:nowrap;
+  text-shadow:0 1px 2px rgba(0,0,0,.10);
+  pointer-events:none;
+  user-select:none;
+}
+</style>
+<script id="mta-image-protection-script">
+(function(){
+  function protectProductImages(){
+    const selector="#tea-coffee img,#handbags img,#textile img,#silver img,#stone-art img,#mosaic-lamps img,.product img,.product-card img";
+    document.querySelectorAll(selector).forEach(function(img){
+      if(img.closest("#mta-image-lightbox")) return;
+      const host=img.parentElement;
+      if(!host) return;
+      host.classList.add("mta-protected-image");
+      img.setAttribute("draggable","false");
+      img.style.webkitUserDrag="none";
+    });
+  }
+  document.addEventListener("contextmenu",function(event){
+    if(event.target.closest("#tea-coffee img,#handbags img,#textile img,#silver img,#stone-art img,#mosaic-lamps img,.product img,.product-card img,#mta-image-lightbox img")){
+      event.preventDefault();
+    }
+  });
+  document.addEventListener("dragstart",function(event){
+    if(event.target.matches("img")) event.preventDefault();
+  });
+  document.addEventListener("DOMContentLoaded",protectProductImages);
+  protectProductImages();
+  window.addEventListener("load",protectProductImages);
+})();
+</script>
+
+
+<script id="mta-turkish-delights-subcategory-navigation">
+(function(){
+  const section=document.getElementById("turkish-delights");
+  if(!section)return;
+  const menu=section.querySelector(".td-subcategory-menu");
+  const panels=Array.from(section.querySelectorAll(".td-subcategory-panel"));
+  function showMenu(){
+    panels.forEach(panel=>panel.hidden=true);
+    menu.hidden=false;
+    menu.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  function showPanel(target){
+    menu.hidden=true;
+    panels.forEach(panel=>panel.hidden=panel.dataset.tdPanel!==target);
+    const active=panels.find(panel=>panel.dataset.tdPanel===target);
+    if(active)active.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  section.addEventListener("click",function(event){
+    const category=event.target.closest("[data-td-category]");
+    if(category){
+      const target=category.dataset.tdCategory;
+      // Add a separate browser-history step so Android Back returns to the
+      // three Turkish Delights choices instead of leaving the collection.
+      history.pushState({mtaCollection:"turkish-delights",mtaTdCategory:target},"", "#turkish-delights");
+      showPanel(target);
+      return;
+    }
+    if(event.target.closest(".td-subcategory-back")){
+      if(history.state && history.state.mtaTdCategory) history.back();
+      else showMenu();
+    }
+  });
+})();
+</script>
+
+<style id="mta-mosaic-subcategories">
+#mosaic-lamps .mosaic-subcategory-menu{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;max-width:1200px;margin:28px auto 8px;padding:0 16px}
+#mosaic-lamps .mosaic-subcategory-menu button{min-height:145px;border:1px solid #dfc58e;border-radius:16px;background:linear-gradient(145deg,#fffefa,#f3eadb);color:#18304a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 8px 22px rgba(25,43,62,.09)}
+#mosaic-lamps .mosaic-subcategory-menu button>span{font-size:30px}
+#mosaic-lamps .mosaic-subcategory-menu strong{font:700 18px Georgia,serif}
+#mosaic-lamps .mosaic-subcategory-menu small{font-size:12px;color:#6b6255}
+#mosaic-lamps [data-mosaic-panel][hidden]{display:none!important}
+#mosaic-lamps .mosaic-sub-back{display:inline-flex;margin:0 0 18px;padding:10px 16px;border:1px solid #d6c39f;border-radius:24px;background:#fffdf8;color:#18304a;font-weight:700;cursor:pointer}
+#mosaic-lamps .mosaic-category-panel>.section-title{margin-top:12px}
+@media(max-width:760px){#mosaic-lamps .mosaic-subcategory-menu{grid-template-columns:1fr;gap:12px}#mosaic-lamps .mosaic-subcategory-menu button{min-height:112px}}
+</style>
+<script id="mta-mosaic-subcategory-navigation">
+(function(){
+  function initMosaicNavigation(){
+    const root=document.getElementById("mosaic-lamps");
+    if(!root || root.dataset.mosaicNavigationReady==="true") return;
+    const menu=root.querySelector(".mosaic-subcategory-menu");
+    const buttons=Array.from(root.querySelectorAll("button[data-mosaic-open]"));
+    const panels=Array.from(root.querySelectorAll(".mosaic-category-panel[data-mosaic-panel]"));
+    if(!menu || !buttons.length || !panels.length) return;
+    root.dataset.mosaicNavigationReady="true";
+
+    function showMenu(scroll){
+      panels.forEach(panel=>{panel.hidden=true;panel.style.display="none";});
+      menu.hidden=false;
+      menu.style.display="grid";
+      if(scroll) root.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+    function showPanel(target,scroll){
+      const active=panels.find(panel=>panel.dataset.mosaicPanel===target);
+      if(!active){showMenu(false);return;}
+      menu.hidden=true;
+      menu.style.display="none";
+      panels.forEach(panel=>{
+        const selected=panel===active;
+        panel.hidden=!selected;
+        panel.style.display=selected?"block":"none";
+      });
+      if(scroll) active.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+
+    buttons.forEach(button=>{
+      button.addEventListener("click",function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        const target=button.getAttribute("data-mosaic-open");
+        if(!panels.some(panel=>panel.dataset.mosaicPanel===target)) return;
+        history.pushState({mtaCollection:"mosaic-lamps",mtaMosaicCategory:target},"","#mosaic-lamps");
+        showPanel(target,true);
+      });
+    });
+    root.querySelectorAll(".mosaic-sub-back").forEach(button=>{
+      button.addEventListener("click",function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        if(history.state && history.state.mtaCollection==="mosaic-lamps" && history.state.mtaMosaicCategory) history.back();
+        else showMenu(true);
+      });
+    });
+    window.addEventListener("popstate",function(){
+      const state=history.state;
+      if(location.hash==="#mosaic-lamps" && state && state.mtaCollection==="mosaic-lamps" && state.mtaMosaicCategory) showPanel(state.mtaMosaicCategory,true);
+      else showMenu(false);
+    });
+    showMenu(false);
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",initMosaicNavigation,{once:true});
+  else initMosaicNavigation();
+})();
+</script>
+\n<style id="mta-mosaic-panel-display-fix">\n#mosaic-lamps .mosaic-category-panel:not([hidden]){display:block!important;visibility:visible!important;opacity:1!important}\n#mosaic-lamps .mosaic-category-panel[hidden],#mosaic-lamps .mosaic-subcategory-menu[hidden]{display:none!important}\n</style>\n</body>
+</html>
++amount.toFixed(2).replace(/\\.00$/,'');
+      }
+      if(globeSelector && globeSelector.value) productName+=' — Globe No. '+globeSelector.value;
+      return {name:productName,price:productPrice};
     }
     function syncVariant(){
-      if(!selector)return;
+      if(!selector && !globeSelector)return;
       const details=selectedDetails();
-      if(priceElement)priceElement.textContent=details.price;
-      const option=selector.options[selector.selectedIndex];
-      const unit=selector.dataset.unit||'persons';
-      link.href='https://wa.me/905344921008?text='+encodeURIComponent('Hello MTA, I am interested in the '+name+' — '+option.value+' '+unit+' - '+details.price);
+      if(selector){
+        if(priceElement)priceElement.textContent=details.price;
+        const option=selector.options[selector.selectedIndex];
+        const unit=selector.dataset.unit||'persons';
+        link.href='https://wa.me/905344921008?text='+encodeURIComponent('Hello MTA, I am interested in the '+details.name+' - '+details.price);
+      } else if(globeSelector){
+        link.href='https://wa.me/905344921008?text='+encodeURIComponent('Hello MTA Istanbul, I am interested in the '+details.name+'. Please confirm availability and price.');
+      }
     }
     if(selector){selector.addEventListener('change',syncVariant);syncVariant();}
+    if(globeSelector){globeSelector.addEventListener('change',syncVariant);syncVariant();}
     const btn=document.createElement('button');btn.type='button';btn.className='mta-add-basket';btn.textContent='＋ Add to Basket';
     btn.addEventListener('click',()=>{
       const details=selectedDetails();
