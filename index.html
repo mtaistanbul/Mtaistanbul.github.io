@@ -1484,10 +1484,10 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
 (function(){
   function initMosaicNavigation(){
     const root=document.getElementById("mosaic-lamps");
-    if(!root||root.dataset.mosaicNavigationReady==="true")return;
+    if(!root || root.dataset.mosaicNavigationReady==="true") return;
     const menu=root.querySelector(".mosaic-subcategory-menu");
-    const panels=Array.from(root.querySelectorAll("[data-mosaic-panel]"));
-    if(!menu||!panels.length)return;
+    const panels=Array.from(root.querySelectorAll(".mosaic-category-panel[data-mosaic-panel]"));
+    if(!menu || !panels.length) return;
     root.dataset.mosaicNavigationReady="true";
 
     function showMenu(){
@@ -1502,30 +1502,34 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
       root.scrollIntoView({behavior:"smooth",block:"start"});
     }
 
-    menu.querySelectorAll("[data-mosaic-open]").forEach(button=>{
-      button.addEventListener("click",function(event){
+    // One delegated capture listener keeps the category buttons responsive
+    // even if another page-level click handler stops bubbling.
+    root.addEventListener("click",function(event){
+      const openButton=event.target.closest("button[data-mosaic-open]");
+      if(openButton && root.contains(openButton)){
         event.preventDefault();
         event.stopPropagation();
-        const target=button.getAttribute("data-mosaic-open");
-        try{history.pushState({mtaCollection:"mosaic-lamps",mtaMosaicCategory:target},"","#mosaic-lamps");}catch(error){}
+        const target=openButton.getAttribute("data-mosaic-open");
+        if(!panels.some(panel=>panel.dataset.mosaicPanel===target)) return;
+        history.pushState({mtaCollection:"mosaic-lamps",mtaMosaicCategory:target},"","#mosaic-lamps");
         showPanel(target);
-      });
-    });
-
-    panels.forEach(panel=>{
-      const back=panel.querySelector(".mosaic-sub-back");
-      if(!back)return;
-      back.addEventListener("click",function(event){
+        return;
+      }
+      const backButton=event.target.closest(".mosaic-sub-back");
+      if(backButton && root.contains(backButton)){
         event.preventDefault();
         event.stopPropagation();
-        showMenu();
-        try{history.pushState({mtaCollection:"mosaic-lamps",mtaMosaicCategory:null},"","#mosaic-lamps");}catch(error){}
-      });
-    });
+        if(history.state && history.state.mtaCollection==="mosaic-lamps" && history.state.mtaMosaicCategory){
+          history.back();
+        }else{
+          showMenu();
+        }
+      }
+    },true);
 
     window.addEventListener("popstate",function(){
       const state=history.state;
-      if(location.hash==="#mosaic-lamps"&&state&&state.mtaCollection==="mosaic-lamps"&&state.mtaMosaicCategory){
+      if(location.hash==="#mosaic-lamps" && state && state.mtaCollection==="mosaic-lamps" && state.mtaMosaicCategory){
         showPanel(state.mtaMosaicCategory);
       }else{
         showMenu();
@@ -1533,7 +1537,7 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
     });
     showMenu();
   }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initMosaicNavigation);
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",initMosaicNavigation,{once:true});
   else initMosaicNavigation();
 })();
 </script>
