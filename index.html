@@ -1387,7 +1387,25 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
         const amount=Number(option.dataset.price);
         const unit=selector.dataset.unit||'Persons';
         productName+=' — '+option.value+' '+unit;
-        productPrice='
+        productPrice='$'+amount.toFixed(2).replace(/\.00$/,'');
+      }
+      if(globeSelector && globeSelector.value) productName+=' — Globe No. '+globeSelector.value;
+      return {name:productName,price:productPrice};
+    }
+    function syncVariant(){
+      if(!selector && !globeSelector)return;
+      const details=selectedDetails();
+      if(selector){
+        if(priceElement)priceElement.textContent=details.price;
+        const option=selector.options[selector.selectedIndex];
+        const unit=selector.dataset.unit||'persons';
+        link.href='https://wa.me/905344921008?text='+encodeURIComponent('Hello MTA, I am interested in the '+details.name+' - '+details.price);
+      } else if(globeSelector){
+        link.href='https://wa.me/905344921008?text='+encodeURIComponent('Hello MTA Istanbul, I am interested in the '+details.name+'. Please confirm availability and price.');
+      }
+    }
+    if(selector){selector.addEventListener('change',syncVariant);syncVariant();}
+    if(globeSelector){globeSelector.addEventListener('change',syncVariant);syncVariant();}
     const btn=document.createElement('button');btn.type='button';btn.className='mta-add-basket';btn.textContent='＋ Add to Basket';
     btn.addEventListener('click',()=>{
       const details=selectedDetails();
