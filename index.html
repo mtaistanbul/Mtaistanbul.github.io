@@ -1941,8 +1941,8 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
       function background(k){
        const i=k*4,r=d[i],g=d[i+1],b=d[i+2],mx=Math.max(r,g,b),mn=Math.min(r,g,b);
        const sat=mx?((mx-mn)/mx)*100:0;
-       // Wood is low-to-medium saturation brown; retain bright/saturated glass pieces.
-       return r>g*1.08 && g>b*1.08 && r>65 && g>35 && sat<72 && r-g<115;
+       // Remove only neutral brown wood at the cell border; preserve warm/red/orange mosaic glass.
+       return r>g*1.16 && g>b*1.12 && r>82 && g>48 && sat<39 && (r-g)<92;
       }
       function seed(x,y){const k=y*w+x;if(!seen[k]&&background(k)){seen[k]=1;queue[tail++]=k;}}
       for(let x=0;x<w;x++){seed(x,0);seed(x,h-1);}
@@ -1968,10 +1968,9 @@ body{background:linear-gradient(180deg,#f4f0e7 0%,#f8f5ee 42%,#eee8dc 100%)}
        const targetRatio=gw/gh,sourceRatio=crop.width/crop.height;
        let dw=gw,dh=gh;if(sourceRatio>targetRatio){dh=gw/sourceRatio;}else{dw=gh*sourceRatio;}
        ctx.drawImage(crop,x+(gw-dw)/2,y+(gh-dh)/2,dw,dh);
-       const shade=ctx.createLinearGradient(x,y,x+gw,y+gh);
-       shade.addColorStop(0,'rgba(255,255,255,.10)');shade.addColorStop(.55,'rgba(255,255,255,0)');shade.addColorStop(1,'rgba(15,10,25,.18)');
-       ctx.globalCompositeOperation='source-atop';ctx.fillStyle=shade;ctx.fillRect(x,y,gw,gh);ctx.restore();
-       resolve(out.toDataURL('image/jpeg',.94));
+       // Keep the source globe's original colors untouched; do not tint it with a lamp-wide overlay.
+       ctx.restore();
+       resolve(out.toDataURL('image/png'));
       };
       base.onerror=reject;base.src=lamp.currentSrc||lamp.src;
      }catch(e){reject(e);}
